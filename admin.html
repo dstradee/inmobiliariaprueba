@@ -203,12 +203,11 @@
     </div>
 
     <!-- ========================================== -->
-    <!-- CONTENEDOR OCULTO PARA EL PDF PERFECTO     -->
-    <!-- Display:none evita que estorbe visualmente -->
-    <!-- Width:794px simula matemáticamente un A4   -->
+    <!-- CONTENEDOR INVISIBLE PARA EL PDF PERFECTO  -->
+    <!-- Ahora el ancho es obligatorio y estricto   -->
     <!-- ========================================== -->
-    <div id="pdf-wrapper" style="display: none;">
-        <div id="pdf-template" class="bg-white p-10 text-black mx-auto" style="width: 794px; box-sizing: border-box;">
+    <div id="pdf-wrapper" style="display: none; position: absolute; left: -9999px; top: 0; width: 794px;">
+        <div id="pdf-template" class="bg-white p-10 text-black w-full" style="box-sizing: border-box;">
             
             <div class="border-b-2 border-black pb-4 mb-6 flex justify-between items-center">
                 <h1 class="text-3xl font-serif font-bold tracking-wide">Refugios del Sur</h1>
@@ -245,15 +244,13 @@
     </div>
 
     <script>
-        // --- CONFIGURACIÓN SUPABASE Y CLOUDINARY ---
+        // --- CONFIGURACIÓN SUPABASE ---
         var supabaseUrl = 'https://zqsoagqdypchtdtcudre.supabase.co'; 
         var supabaseAnonKey = 'sb_publishable_YUCsQxlUtRpWUiyb1EahFw_Q-o-0grz';
         var supabase = window.supabase.createClient(supabaseUrl, supabaseAnonKey);
 
         const CLOUDINARY_CLOUD_NAME = 'dkg1ytbxb'; 
         const CLOUDINARY_UPLOAD_PRESET = 'tienda_ropa'; 
-        const TELEGRAM_BOT_TOKEN = '8603553045:AAFpmVcNjxbvzsvb09egdVzLxcscAtaRr-Y';
-        const TELEGRAM_CHAT_IDS = ['7200570066', '6519651464']; 
 
         let signaturePad;
 
@@ -266,7 +263,7 @@
         });
 
         // ==========================================
-        // LOGIN (EXACTO A TU PRIMER CÓDIGO)
+        // LOGIN
         // ==========================================
         document.getElementById('login-form').addEventListener('submit', async (e) => {
             e.preventDefault();
@@ -413,26 +410,25 @@
             const wrapper = document.getElementById('pdf-wrapper');
             const element = document.getElementById('pdf-template');
 
-            // Truco maestro para que html2canvas no se confunda con coordenadas negativas:
-            // Lo mostramos, pero lo fijamos al fondo de la pantalla (z-index:-9999) para que el usuario no vea el salto.
-            wrapper.style.display = 'block';
-            wrapper.style.position = 'fixed';
-            wrapper.style.top = '0';
-            wrapper.style.left = '0';
-            wrapper.style.zIndex = '-9999';
+            wrapper.style.display = 'block'; // Mostramos el contenedor oculto 
 
+            // EXPLICACIÓN DEL TRUCO: 
+            // width: 794 y windowWidth: 794 obligan a la librería a comportarse como si estuviera 
+            // en un ordenador de escritorio independientemente de si estás usando un móvil.
             const opt = {
-                margin:       0.4,
+                margin:       0.4, 
                 filename:     `Hoja_Visita_${client.replace(/\s+/g, '_')}.pdf`,
                 image:        { type: 'jpeg', quality: 0.98 },
-                html2canvas:  { scale: 2 },
+                html2canvas:  { 
+                    scale: 2, 
+                    width: 794,
+                    windowWidth: 794 
+                },
                 jsPDF:        { unit: 'in', format: 'a4', orientation: 'portrait' }
             };
 
             html2pdf().set(opt).from(element).save().then(() => {
-                // Al terminar de descargar, volvemos a ocultar todo en silencio
-                wrapper.style.display = 'none';
-                wrapper.style.position = '';
+                wrapper.style.display = 'none'; // Volvemos a ocultarlo
             });
         }
 
