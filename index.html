@@ -5,22 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Refugios del Sur | Inmobiliaria Boutique</title>
     
-    <!-- Google Fonts: Playfair Display (Serif) y Montserrat (Sans) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
     
-    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     colors: {
-                        zahara: '#F9F9F6',    /* Blanco tiza / arena */
-                        carbon: '#2A2927',    /* Gris carbón cálido */
-                        terracota: '#DFB69F', /* Atardecer suave */
-                        salvia: '#7E8D7B',    /* Verde vegetación */
+                        zahara: '#F9F9F6',    
+                        carbon: '#2A2927',    
+                        terracota: '#DFB69F', 
+                        salvia: '#7E8D7B',    
                     },
                     fontFamily: {
                         serif: ['"Playfair Display"', 'serif'],
@@ -40,12 +38,9 @@
 </head>
 <body class="bg-zahara min-h-screen font-sans text-carbon antialiased selection:bg-terracota selection:text-white">
 
-    <!-- Cabecera -->
     <header class="bg-zahara/80 backdrop-blur-md sticky top-0 z-40 border-b border-carbon/5">
         <div class="max-w-7xl mx-auto px-6 py-5 flex justify-between items-center">
             <h1 class="text-2xl md:text-3xl font-serif font-semibold tracking-wide text-carbon">Refugios del Sur</h1>
-            
-            <!-- Botón Favoritos -->
             <button onclick="toggleFavorites()" class="text-carbon hover:text-terracota transition-colors focus:outline-none relative p-2">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
                 <span id="fav-badge" class="absolute top-0 right-0 bg-terracota text-white text-[10px] font-medium w-4 h-4 flex items-center justify-center rounded-full hidden">0</span>
@@ -53,33 +48,26 @@
         </div>
     </header>
 
-    <!-- Hero Section -->
     <section class="max-w-7xl mx-auto px-6 pt-16 pb-12 text-center md:pt-24 md:pb-20">
         <h2 class="text-4xl md:text-6xl font-serif text-carbon mb-6 leading-tight">Encuentra tu paz <br><span class="text-terracota italic">frente al Mediterráneo</span></h2>
         <p class="font-light text-carbon/70 max-w-2xl mx-auto text-lg md:text-xl">Selección exclusiva de propiedades diseñadas para respirar, vivir despacio y sentir la brisa del mar.</p>
     </section>
 
-    <!-- Contenedor Principal de Propiedades -->
     <main class="max-w-7xl mx-auto px-6 py-8">
         <div id="property-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
-            <!-- Las propiedades se cargarán aquí -->
+            <!-- Casas se cargan aquí -->
         </div>
     </main>
 
-    <!-- MODAL DE LA PROPIEDAD -->
+    <!-- MODAL CASA -->
     <div id="property-modal" class="fixed inset-0 z-50 hidden bg-carbon/40 backdrop-blur-sm flex items-center justify-center p-4 md:p-8 opacity-0 transition-opacity duration-500">
-        
         <div class="bg-zahara rounded-2xl shadow-soft w-full max-w-6xl max-h-[90vh] overflow-hidden flex flex-col md:flex-row relative transform scale-95 transition-transform duration-500" id="modal-content">
-            
-            <!-- Botón Cerrar -->
             <button onclick="closeModal()" class="absolute top-4 right-4 z-20 bg-zahara/80 hover:bg-zahara rounded-full p-2 text-carbon shadow-sm backdrop-blur-md transition-all focus:outline-none border border-carbon/10">
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
             </button>
 
-            <!-- Carrusel de Imágenes -->
             <div class="w-full md:w-3/5 h-[40vh] md:h-auto bg-carbon/5 relative group">
                 <div id="modal-image-container" class="w-full h-full relative"></div>
-                
                 <div id="carousel-arrows" class="absolute inset-x-0 top-1/2 -translate-y-1/2 flex justify-between px-4 pointer-events-none hidden z-10">
                     <button onclick="prevImage(event)" class="pointer-events-auto bg-zahara/90 hover:bg-zahara text-carbon p-2 rounded-full shadow-sm transition-transform hover:scale-105 focus:outline-none">
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
@@ -90,13 +78,11 @@
                 </div>
             </div>
 
-            <!-- Detalles de la Propiedad -->
             <div class="w-full md:w-2/5 p-8 md:p-12 flex flex-col overflow-y-auto">
                 <span class="text-salvia text-sm tracking-widest uppercase font-medium mb-2" id="modal-location">Ubicación</span>
                 <h2 class="text-3xl md:text-4xl font-serif text-carbon mb-2" id="modal-title">Nombre Casa</h2>
                 <p class="text-2xl font-light text-carbon/80 mb-8" id="modal-price">0 €</p>
                 
-                <!-- Características -->
                 <div class="flex gap-6 mb-8 border-y border-carbon/10 py-4">
                     <div class="text-center">
                         <span class="block text-xl font-serif text-carbon" id="modal-beds">0</span>
@@ -112,7 +98,12 @@
                     </div>
                 </div>
 
-                <p class="text-carbon/70 font-light text-sm md:text-base mb-10 leading-relaxed" id="modal-description">Descripción...</p>
+                <p class="text-carbon/70 font-light text-sm md:text-base mb-6 leading-relaxed whitespace-pre-line" id="modal-description"></p>
+                
+                <div class="bg-carbon/5 p-4 rounded-lg mb-10">
+                    <h4 class="text-xs font-bold uppercase tracking-wider text-carbon/60 mb-2">Información Legal</h4>
+                    <p class="text-xs font-light text-carbon/80 whitespace-pre-line" id="modal-legal"></p>
+                </div>
                 
                 <div class="mt-auto flex gap-4">
                     <button onclick="addToFavorites()" id="btn-add-fav" class="flex-1 bg-zahara border border-carbon text-carbon py-4 rounded-lg font-medium tracking-wide hover:bg-carbon hover:text-zahara transition-all duration-300 focus:outline-none">
@@ -126,9 +117,8 @@
         </div>
     </div>
 
-    <!-- PANEL LATERAL: FAVORITOS Y CONTACTO -->
+    <!-- PANEL LATERAL -->
     <div id="side-panel" class="fixed inset-y-0 right-0 z-[60] w-full max-w-md bg-zahara shadow-2xl transform translate-x-full transition-transform duration-500 flex flex-col">
-        
         <div class="px-8 py-6 border-b border-carbon/10 flex justify-between items-center">
             <h2 class="text-xl font-serif text-carbon" id="panel-title">Tus Favoritos</h2>
             <button onclick="toggleFavorites()" class="p-2 text-carbon/60 hover:text-carbon transition-colors focus:outline-none">
@@ -136,19 +126,17 @@
             </button>
         </div>
 
-        <!-- Lista de Favoritos -->
         <div id="favorites-list" class="flex-1 overflow-y-auto p-8 space-y-6"></div>
 
-        <!-- Formulario de Contacto (Oculto por defecto) -->
         <div id="lead-form-container" class="flex-1 overflow-y-auto p-8 hidden">
             <p class="text-sm font-light text-carbon/70 mb-6">Déjanos tus datos y un asesor se pondrá en contacto contigo para organizar una visita a <strong id="lead-property-name" class="font-medium text-carbon">la propiedad</strong>.</p>
             
             <form id="lead-form" class="space-y-4">
                 <input type="hidden" id="lead-property-id">
-                <input type="text" id="lead-name" required placeholder="Nombre completo" class="w-full px-4 py-3 bg-white border border-carbon/10 rounded-lg focus:border-terracota focus:ring-1 focus:ring-terracota outline-none text-sm font-light transition-colors">
-                <input type="email" id="lead-email" required placeholder="Correo electrónico" class="w-full px-4 py-3 bg-white border border-carbon/10 rounded-lg focus:border-terracota focus:ring-1 focus:ring-terracota outline-none text-sm font-light transition-colors">
-                <input type="tel" id="lead-phone" required placeholder="Teléfono" class="w-full px-4 py-3 bg-white border border-carbon/10 rounded-lg focus:border-terracota focus:ring-1 focus:ring-terracota outline-none text-sm font-light transition-colors">
-                <textarea id="lead-message" rows="3" placeholder="Mensaje o disponibilidad (Opcional)" class="w-full px-4 py-3 bg-white border border-carbon/10 rounded-lg focus:border-terracota focus:ring-1 focus:ring-terracota outline-none text-sm font-light transition-colors resize-none"></textarea>
+                <input type="text" id="lead-name" required placeholder="Nombre completo" class="w-full px-4 py-3 bg-white border border-carbon/10 rounded-lg focus:border-terracota outline-none text-sm font-light">
+                <input type="email" id="lead-email" required placeholder="Correo electrónico" class="w-full px-4 py-3 bg-white border border-carbon/10 rounded-lg focus:border-terracota outline-none text-sm font-light">
+                <input type="tel" id="lead-phone" required placeholder="Teléfono" class="w-full px-4 py-3 bg-white border border-carbon/10 rounded-lg focus:border-terracota outline-none text-sm font-light">
+                <textarea id="lead-message" rows="3" placeholder="Mensaje o disponibilidad (Opcional)" class="w-full px-4 py-3 bg-white border border-carbon/10 rounded-lg focus:border-terracota outline-none text-sm font-light resize-none"></textarea>
                 
                 <button type="submit" id="btn-submit-lead" class="w-full bg-salvia text-white py-4 rounded-lg font-medium tracking-wide hover:bg-[#6c7a69] transition-colors shadow-sm mt-4 focus:outline-none">
                     Enviar Solicitud
@@ -160,16 +148,12 @@
     
     <div id="side-overlay" onclick="toggleFavorites()" class="fixed inset-0 bg-carbon/20 backdrop-blur-sm z-[55] hidden opacity-0 transition-opacity duration-500"></div>
 
-    <!-- Supabase -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
     <script>
-        // CONFIGURACIÓN SUPABASE INMOBILIARIA
         const supabaseUrl = 'https://zqsoagqdypchtdtcudre.supabase.co'; 
         const supabaseAnonKey = 'sb_publishable_YUCsQxlUtRpWUiyb1EahFw_Q-o-0grz';
         const supabase = window.supabase.createClient(supabaseUrl, supabaseAnonKey);
 
-        // CONFIGURACIÓN TELEGRAM
         const TELEGRAM_BOT_TOKEN = '8603553045:AAFpmVcNjxbvzsvb09egdVzLxcscAtaRr-Y';
         const TELEGRAM_CHAT_IDS = ['7200570066', '6519651464']; 
 
@@ -179,70 +163,46 @@
         let currentCarouselImages = [];
         let currentCarouselIndex = 0;
 
-        // Utilidad: Formatear precio (ej: 1.200.000 €)
         const formatPrice = (price) => new Intl.NumberFormat('es-ES').format(price) + ' €';
 
         function renderProperties(data) {
             const grid = document.getElementById('property-grid');
             grid.innerHTML = ''; 
-
             if (!data || data.length === 0) {
                 grid.innerHTML = `<p class="col-span-full text-center text-carbon/50 mt-10 font-light">No hay propiedades disponibles en este momento.</p>`;
                 return;
             }
-
             data.forEach(prop => {
                 const firstImage = prop.image_urls ? prop.image_urls.split(',')[0].trim() : 'https://via.placeholder.com/600x400?text=Sin+Imagen';
-                
-                const card = `
+                grid.innerHTML += `
                     <div class="group cursor-pointer flex flex-col" onclick="openModal(${prop.id})">
                         <div class="w-full aspect-[4/3] rounded-xl overflow-hidden mb-4 relative shadow-soft">
-                            <img src="${firstImage}" alt="${prop.title}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+                            <img src="${firstImage}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
                             <div class="absolute inset-0 bg-carbon/10 group-hover:bg-transparent transition-colors duration-500"></div>
+                            ${prop.status !== 'Disponible' ? `<div class="absolute top-4 left-4 bg-carbon text-zahara text-xs px-3 py-1 rounded-full font-medium tracking-wider uppercase">${prop.status}</div>` : ''}
                         </div>
                         <span class="text-salvia text-xs tracking-widest uppercase font-medium mb-1">${prop.location}</span>
                         <h3 class="text-lg font-serif text-carbon mb-1">${prop.title}</h3>
                         <p class="text-carbon/70 font-light">${formatPrice(prop.price)}</p>
                     </div>
                 `;
-                grid.innerHTML += card;
             });
         }
 
-        // --- LÓGICA DEL MODAL Y CARRUSEL ---
         function renderCarouselImage() {
             const container = document.getElementById('modal-image-container');
             const arrows = document.getElementById('carousel-arrows');
-
             if (currentCarouselImages.length === 0) {
                 container.innerHTML = `<div class="w-full h-full flex items-center justify-center bg-carbon/5">Sin fotos</div>`;
                 arrows.classList.add('hidden');
                 return;
             }
-
-            const imgUrl = currentCarouselImages[currentCarouselIndex];
-            container.innerHTML = `<img src="${imgUrl}" class="w-full h-full object-cover absolute inset-0 transition-opacity duration-300">`;
-
-            if (currentCarouselImages.length > 1) {
-                arrows.classList.remove('hidden');
-            } else {
-                arrows.classList.add('hidden');
-            }
+            container.innerHTML = `<img src="${currentCarouselImages[currentCarouselIndex]}" class="w-full h-full object-cover absolute inset-0 transition-opacity duration-300">`;
+            currentCarouselImages.length > 1 ? arrows.classList.remove('hidden') : arrows.classList.add('hidden');
         }
 
-        function nextImage(e) {
-            if(e) e.stopPropagation();
-            if (currentCarouselImages.length <= 1) return;
-            currentCarouselIndex = (currentCarouselIndex + 1) % currentCarouselImages.length;
-            renderCarouselImage();
-        }
-
-        function prevImage(e) {
-            if(e) e.stopPropagation();
-            if (currentCarouselImages.length <= 1) return;
-            currentCarouselIndex = (currentCarouselIndex - 1 + currentCarouselImages.length) % currentCarouselImages.length;
-            renderCarouselImage();
-        }
+        function nextImage(e) { e.stopPropagation(); currentCarouselIndex = (currentCarouselIndex + 1) % currentCarouselImages.length; renderCarouselImage(); }
+        function prevImage(e) { e.stopPropagation(); currentCarouselIndex = (currentCarouselIndex - 1 + currentCarouselImages.length) % currentCarouselImages.length; renderCarouselImage(); }
 
         function openModal(id) {
             currentProperty = properties.find(p => p.id === id);
@@ -254,99 +214,57 @@
             document.getElementById('modal-beds').innerText = currentProperty.bedrooms || '-';
             document.getElementById('modal-baths').innerText = currentProperty.bathrooms || '-';
             document.getElementById('modal-sqm').innerText = currentProperty.sqm || '-';
-            document.getElementById('modal-description').innerText = currentProperty.description || '';
+            document.getElementById('modal-description').innerText = currentProperty.description || 'Sin descripción detallada.';
+            document.getElementById('modal-legal').innerText = currentProperty.legal_info || 'Consultar con el asesor.';
             
-            if (currentProperty.image_urls) {
-                currentCarouselImages = currentProperty.image_urls.split(',').map(url => url.trim()).filter(url => url !== "");
-            } else {
-                currentCarouselImages = [];
-            }
+            currentCarouselImages = currentProperty.image_urls ? currentProperty.image_urls.split(',').map(u => u.trim()).filter(u => u !== "") : [];
             currentCarouselIndex = 0;
             renderCarouselImage();
-
             updateFavButtonState();
 
             const modal = document.getElementById('property-modal');
             const content = document.getElementById('modal-content');
             modal.classList.remove('hidden');
-            setTimeout(() => {
-                modal.classList.remove('opacity-0');
-                content.classList.remove('scale-95');
-            }, 10);
+            setTimeout(() => { modal.classList.remove('opacity-0'); content.classList.remove('scale-95'); }, 10);
         }
 
         function closeModal() {
             const modal = document.getElementById('property-modal');
             const content = document.getElementById('modal-content');
-            
-            modal.classList.add('opacity-0');
-            content.classList.add('scale-95');
-            
-            setTimeout(() => {
-                modal.classList.add('hidden');
-            }, 500);
+            modal.classList.add('opacity-0'); content.classList.add('scale-95');
+            setTimeout(() => { modal.classList.add('hidden'); }, 500);
         }
+        document.getElementById('property-modal').addEventListener('click', function(e) { if (e.target === this) closeModal(); });
 
-        document.getElementById('property-modal').addEventListener('click', function(e) {
-            if (e.target === this) closeModal();
-        });
-
-        // --- SISTEMA DE FAVORITOS ---
         function addToFavorites() {
             if (!currentProperty) return;
             const exists = favorites.find(f => f.id === currentProperty.id);
-            
-            if (exists) {
-                favorites = favorites.filter(f => f.id !== currentProperty.id);
-            } else {
-                favorites.push({
-                    id: currentProperty.id,
-                    title: currentProperty.title,
-                    price: currentProperty.price,
-                    location: currentProperty.location,
-                    image: currentProperty.image_urls ? currentProperty.image_urls.split(',')[0] : null
-                });
-            }
+            if (exists) favorites = favorites.filter(f => f.id !== currentProperty.id);
+            else favorites.push({ id: currentProperty.id, title: currentProperty.title, price: currentProperty.price, location: currentProperty.location, image: currentProperty.image_urls ? currentProperty.image_urls.split(',')[0] : null });
             localStorage.setItem('zahara_favs', JSON.stringify(favorites));
-            updateFavButtonState();
-            updateFavBadge();
-            renderFavoritesList();
+            updateFavButtonState(); updateFavBadge(); renderFavoritesList();
         }
 
         function updateFavButtonState() {
             if(!currentProperty) return;
             const btn = document.getElementById('btn-add-fav');
-            const exists = favorites.find(f => f.id === currentProperty.id);
-            if(exists) {
-                btn.innerText = "Quitar Favorito";
-                btn.classList.add('bg-carbon', 'text-zahara');
-                btn.classList.remove('bg-zahara', 'text-carbon');
+            if(favorites.find(f => f.id === currentProperty.id)) {
+                btn.innerText = "Quitar Favorito"; btn.classList.add('bg-carbon', 'text-zahara'); btn.classList.remove('bg-zahara', 'text-carbon');
             } else {
-                btn.innerText = "Guardar Favorito";
-                btn.classList.remove('bg-carbon', 'text-zahara');
-                btn.classList.add('bg-zahara', 'text-carbon');
+                btn.innerText = "Guardar Favorito"; btn.classList.remove('bg-carbon', 'text-zahara'); btn.classList.add('bg-zahara', 'text-carbon');
             }
         }
 
         function updateFavBadge() {
             const badge = document.getElementById('fav-badge');
-            if (favorites.length > 0) {
-                badge.innerText = favorites.length;
-                badge.classList.remove('hidden');
-            } else {
-                badge.classList.add('hidden');
-            }
+            if (favorites.length > 0) { badge.innerText = favorites.length; badge.classList.remove('hidden'); } 
+            else { badge.classList.add('hidden'); }
         }
 
         function renderFavoritesList() {
             const container = document.getElementById('favorites-list');
             container.innerHTML = '';
-            
-            if (favorites.length === 0) {
-                container.innerHTML = '<p class="text-carbon/50 font-light text-center mt-10">No has guardado ninguna propiedad todavía.</p>';
-                return;
-            }
-
+            if (favorites.length === 0) { container.innerHTML = '<p class="text-carbon/50 font-light text-center mt-10">No has guardado ninguna propiedad todavía.</p>'; return; }
             favorites.forEach((fav) => {
                 const img = fav.image ? `<img src="${fav.image}" class="w-20 h-20 object-cover rounded-lg">` : `<div class="w-20 h-20 bg-carbon/5 rounded-lg"></div>`;
                 container.innerHTML += `
@@ -357,151 +275,84 @@
                             <h4 class="font-serif text-carbon text-sm leading-tight mb-1">${fav.title}</h4>
                             <span class="font-light text-carbon/80 text-sm block">${formatPrice(fav.price)}</span>
                         </div>
-                        <button onclick="removeFavorite(${fav.id})" class="text-carbon/40 hover:text-terracota transition p-2 focus:outline-none">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
-                        </button>
-                    </div>
-                `;
+                        <button onclick="removeFavorite(${fav.id})" class="text-carbon/40 hover:text-terracota transition p-2 focus:outline-none">✕</button>
+                    </div>`;
             });
         }
 
         function removeFavorite(id) {
-            favorites = favorites.filter(f => f.id !== id);
-            localStorage.setItem('zahara_favs', JSON.stringify(favorites));
-            updateFavBadge();
-            renderFavoritesList();
+            favorites = favorites.filter(f => f.id !== id); localStorage.setItem('zahara_favs', JSON.stringify(favorites));
+            updateFavBadge(); renderFavoritesList();
             if(currentProperty && currentProperty.id === id) updateFavButtonState();
         }
 
-        // --- PANEL LATERAL ---
         function toggleFavorites() {
-            const panel = document.getElementById('side-panel');
-            const overlay = document.getElementById('side-overlay');
-            const isClosed = panel.classList.contains('translate-x-full');
-            
-            if (isClosed) {
-                showFavoritesView();
-                overlay.classList.remove('hidden');
-                setTimeout(() => overlay.classList.remove('opacity-0'), 10);
+            const panel = document.getElementById('side-panel'); const overlay = document.getElementById('side-overlay');
+            if (panel.classList.contains('translate-x-full')) {
+                document.getElementById('panel-title').innerText = "Tus Favoritos";
+                document.getElementById('favorites-list').classList.remove('hidden');
+                document.getElementById('lead-form-container').classList.add('hidden');
+                renderFavoritesList();
+                overlay.classList.remove('hidden'); setTimeout(() => overlay.classList.remove('opacity-0'), 10);
                 panel.classList.remove('translate-x-full');
             } else {
-                panel.classList.add('translate-x-full');
-                overlay.classList.add('opacity-0');
+                panel.classList.add('translate-x-full'); overlay.classList.add('opacity-0');
                 setTimeout(() => overlay.classList.add('hidden'), 500);
             }
         }
 
-        function showFavoritesView() {
-            document.getElementById('panel-title').innerText = "Tus Favoritos";
-            document.getElementById('favorites-list').classList.remove('hidden');
-            document.getElementById('lead-form-container').classList.add('hidden');
-            renderFavoritesList();
-        }
-
         function openLeadForm() {
             if(!currentProperty) return;
-            
-            // Si el modal está abierto, lo cerramos
             closeModal();
-            
-            // Preparamos formulario
             document.getElementById('panel-title').innerText = "Solicitar Visita";
             document.getElementById('lead-property-id').value = currentProperty.id;
             document.getElementById('lead-property-name').innerText = currentProperty.title;
-            
             document.getElementById('favorites-list').classList.add('hidden');
             document.getElementById('lead-form-container').classList.remove('hidden');
             document.getElementById('lead-msg').classList.add('hidden');
-            
-            // Abrimos panel
-            const panel = document.getElementById('side-panel');
-            const overlay = document.getElementById('side-overlay');
+            const panel = document.getElementById('side-panel'); const overlay = document.getElementById('side-overlay');
             if (panel.classList.contains('translate-x-full')) {
-                overlay.classList.remove('hidden');
-                setTimeout(() => overlay.classList.remove('opacity-0'), 10);
+                overlay.classList.remove('hidden'); setTimeout(() => overlay.classList.remove('opacity-0'), 10);
                 panel.classList.remove('translate-x-full');
             }
         }
 
-        // --- ENVÍO DE LEAD (CONTACTO) ---
         document.getElementById('lead-form').addEventListener('submit', async (e) => {
             e.preventDefault();
-            
-            const btn = document.getElementById('btn-submit-lead');
-            const msg = document.getElementById('lead-msg');
-            const propId = document.getElementById('lead-property-id').value;
-            const propName = document.getElementById('lead-property-name').innerText;
-            const name = document.getElementById('lead-name').value;
-            const email = document.getElementById('lead-email').value;
-            const phone = document.getElementById('lead-phone').value;
-            const message = document.getElementById('lead-message').value;
-
-            btn.disabled = true;
-            btn.innerText = "Enviando...";
-            msg.classList.add('hidden');
-
+            const btn = document.getElementById('btn-submit-lead'); const msg = document.getElementById('lead-msg');
+            btn.disabled = true; btn.innerText = "Enviando..."; msg.classList.add('hidden');
             try {
-                // Guardar en Supabase (Tabla Leads)
                 const { error } = await supabase.from('leads').insert([{
-                    property_id: parseInt(propId),
-                    property_title: propName,
-                    customer_name: name,
-                    customer_email: email,
-                    customer_phone: phone,
-                    message: message
+                    property_id: parseInt(document.getElementById('lead-property-id').value),
+                    property_title: document.getElementById('lead-property-name').innerText,
+                    customer_name: document.getElementById('lead-name').value,
+                    customer_email: document.getElementById('lead-email').value,
+                    customer_phone: document.getElementById('lead-phone').value,
+                    message: document.getElementById('lead-message').value
                 }]);
-
                 if (error) throw error;
-
-                // Notificación Telegram
-                const telegramText = `🏡 ¡NUEVA SOLICITUD DE VISITA!\n\nPropiedad: ${propName}\n\n👤 Cliente: ${name}\n📞 Teléfono: ${phone}\n📧 Email: ${email}\n💬 Mensaje: ${message || '-'}`;
-                
-                await Promise.all(TELEGRAM_CHAT_IDS.map(chatId => 
-                    fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ chat_id: chatId, text: telegramText })
-                    })
-                ));
-
+                const telegramText = `🏡 ¡NUEVA SOLICITUD DE VISITA!\n\nPropiedad: ${document.getElementById('lead-property-name').innerText}\n👤 Cliente: ${document.getElementById('lead-name').value}\n📞 Teléfono: ${document.getElementById('lead-phone').value}\n📧 Email: ${document.getElementById('lead-email').value}\n💬 Mensaje: ${document.getElementById('lead-message').value || '-'}`;
+                await Promise.all(TELEGRAM_CHAT_IDS.map(id => fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ chat_id: id, text: telegramText }) })));
                 document.getElementById('lead-form').reset();
                 msg.innerText = "Solicitud enviada con éxito. Te contactaremos pronto.";
                 msg.className = "text-center font-medium mt-4 p-4 rounded-lg bg-salvia/10 text-salvia text-sm block";
                 btn.classList.add('hidden');
-                
                 setTimeout(() => toggleFavorites(), 3000);
-
             } catch (err) {
-                console.error(err);
                 msg.innerText = "Hubo un error. Por favor, intenta de nuevo.";
                 msg.className = "text-center font-medium mt-4 p-4 rounded-lg bg-red-50 text-red-600 text-sm block";
-                btn.disabled = false;
-                btn.innerText = "Enviar Solicitud";
+                btn.disabled = false; btn.innerText = "Enviar Solicitud";
             }
         });
 
-        // --- CARGA DE DATOS ---
         async function fetchProperties() {
-            const { data, error } = await supabase
-                .from('properties')
-                .select('*')
-                .eq('is_visible', true)
-                .order('created_at', { ascending: false });
-
-            if (!error && data) {
-                properties = data;
-                renderProperties(properties);
-            }
+            const { data, error } = await supabase.from('properties').select('*').eq('is_visible', true).order('created_at', { ascending: false });
+            if (!error && data) { properties = data; renderProperties(properties); }
         }
 
         document.addEventListener('DOMContentLoaded', () => {
-            fetchProperties();
-            updateFavBadge();
-            
-            // Refresco en tiempo real
-            supabase.channel('public:properties')
-                .on('postgres_changes', { event: '*', schema: 'public', table: 'properties' }, fetchProperties)
-                .subscribe();
+            fetchProperties(); updateFavBadge();
+            supabase.channel('public:properties').on('postgres_changes', { event: '*', schema: 'public', table: 'properties' }, fetchProperties).subscribe();
         });
     </script>
 </body>
