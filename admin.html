@@ -39,7 +39,7 @@
         canvas#signature-pad { touch-action: none; }
     </style>
 </head>
-<body class="bg-fondo min-h-screen p-4 md:p-8 font-sans text-carbon antialiased relative z-0">
+<body class="bg-fondo min-h-screen p-4 md:p-8 font-sans text-carbon antialiased relative">
 
     <!-- SECCIÓN DE LOGIN -->
     <div id="login-section" class="max-w-md mx-auto bg-zahara p-10 rounded-2xl shadow-lg border border-carbon/5 mt-20">
@@ -203,54 +203,58 @@
     </div>
 
     <!-- ========================================== -->
-    <!-- CONTENEDOR INVISIBLE PARA EL PDF PERFECTO  -->
-    <!-- Ahora el ancho es obligatorio y estricto   -->
+    <!-- PLANTILLA OCULTA BLINDADA CON ESTILOS INLINE PARA EL PDF -->
+    <!-- Esto asegura que no se rompa nunca al generar el PDF   -->
     <!-- ========================================== -->
-    <div id="pdf-wrapper" style="display: none; position: absolute; left: -9999px; top: 0; width: 794px;">
-        <div id="pdf-template" class="bg-white p-10 text-black w-full" style="box-sizing: border-box;">
+    <div id="pdf-template" class="hidden">
+        <!-- El ancho de 800px es el tamaño estándar de la foto para el folio -->
+        <div style="width: 800px; padding: 40px; box-sizing: border-box; font-family: 'Montserrat', sans-serif; background: white; color: #2A2927;">
             
-            <div class="border-b-2 border-black pb-4 mb-6 flex justify-between items-center">
-                <h1 class="text-3xl font-serif font-bold tracking-wide">Refugios del Sur</h1>
-                <span class="text-sm font-medium tracking-widest uppercase text-gray-500">Hoja de Visita</span>
+            <div style="border-bottom: 2px solid #2A2927; padding-bottom: 16px; margin-bottom: 24px; display: flex; justify-content: space-between; align-items: center;">
+                <h1 style="font-family: 'Playfair Display', serif; font-size: 30px; font-weight: bold; margin: 0;">Refugios del Sur</h1>
+                <span style="font-size: 14px; font-weight: 500; text-transform: uppercase; color: #6b7280;">Hoja de Visita</span>
             </div>
             
-            <div class="mb-8 bg-gray-50 p-6 rounded border border-gray-200">
-                <p class="mb-2"><strong>Fecha y Hora:</strong> <span id="pdf-date" class="font-light"></span></p>
-                <p class="mb-2"><strong>Inmueble Visitado:</strong> <span id="pdf-property" class="font-light"></span></p>
-                <p class="mb-2"><strong>Nombre del Cliente:</strong> <span id="pdf-client" class="font-light"></span></p>
-                <p class="mb-0"><strong>DNI / NIE:</strong> <span id="pdf-dni" class="font-light"></span></p>
+            <div style="margin-bottom: 32px; background-color: #f9fafb; padding: 24px; border: 1px solid #e5e7eb; border-radius: 4px;">
+                <p style="margin: 0 0 8px 0;"><strong>Fecha y Hora:</strong> <span id="pdf-date" style="font-weight: 300;"></span></p>
+                <p style="margin: 0 0 8px 0;"><strong>Inmueble Visitado:</strong> <span id="pdf-property" style="font-weight: 300;"></span></p>
+                <p style="margin: 0 0 8px 0;"><strong>Nombre del Cliente:</strong> <span id="pdf-client" style="font-weight: 300;"></span></p>
+                <p style="margin: 0;"><strong>DNI / NIE:</strong> <span id="pdf-dni" style="font-weight: 300;"></span></p>
             </div>
             
-            <div class="text-sm text-justify mb-10 leading-relaxed pr-2">
-                <strong class="text-base mb-2 block">Acuerdo de Visita y Reconocimiento de Honorarios:</strong>
+            <div style="font-size: 14px; text-align: justify; margin-bottom: 40px; line-height: 1.6;">
+                <strong style="font-size: 16px; margin-bottom: 8px; display: block;">Acuerdo de Visita y Reconocimiento de Honorarios:</strong>
                 El cliente reconoce haber visitado el inmueble indicado a través de la agencia <strong>Refugios del Sur</strong>. Se compromete expresamente a no realizar ninguna transacción (compra, alquiler, o trato directo con la propiedad) a espaldas de la agencia.<br><br>
                 En caso de formalizar una operación sobre dicho inmueble, de forma directa o indirecta (a través de familiares, socios o empresas vinculadas), el cliente reconoce y asume de forma irrevocable el pago de los honorarios profesionales correspondientes a la agencia inmobiliaria por los servicios prestados de intermediación.
             </div>
             
-            <div class="flex justify-between items-end mt-10">
-                <div class="w-1/2">
-                    <p class="font-bold mb-2">El Cliente (Firma):</p>
-                    <img id="pdf-signature" src="" class="h-28 border-b border-black w-4/5 object-contain">
+            <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-top: 40px;">
+                <div style="width: 50%;">
+                    <p style="font-weight: bold; margin-bottom: 8px;">El Cliente (Firma):</p>
+                    <img id="pdf-signature" src="" style="height: 112px; border-bottom: 1px solid #2A2927; width: 80%; object-fit: contain;">
                 </div>
-                <div class="w-1/2 text-right">
-                    <p class="text-xs text-gray-500 italic leading-tight">
+                <div style="width: 50%; text-align: right;">
+                    <p style="font-size: 12px; color: #6b7280; font-style: italic; line-height: 1.2; margin: 0;">
                         Documento generado digitalmente<br>
                         por la plataforma administrativa de<br>
                         <strong>Refugios del Sur</strong>
                     </p>
                 </div>
             </div>
+            
         </div>
     </div>
 
     <script>
-        // --- CONFIGURACIÓN SUPABASE ---
+        // --- CONFIGURACIÓN SUPABASE Y CLOUDINARY ---
         var supabaseUrl = 'https://zqsoagqdypchtdtcudre.supabase.co'; 
         var supabaseAnonKey = 'sb_publishable_YUCsQxlUtRpWUiyb1EahFw_Q-o-0grz';
         var supabase = window.supabase.createClient(supabaseUrl, supabaseAnonKey);
 
         const CLOUDINARY_CLOUD_NAME = 'dkg1ytbxb'; 
         const CLOUDINARY_UPLOAD_PRESET = 'tienda_ropa'; 
+        const TELEGRAM_BOT_TOKEN = '8603553045:AAFpmVcNjxbvzsvb09egdVzLxcscAtaRr-Y';
+        const TELEGRAM_CHAT_IDS = ['7200570066', '6519651464']; 
 
         let signaturePad;
 
@@ -407,28 +411,34 @@
             document.getElementById('pdf-dni').innerText = dni;
             document.getElementById('pdf-signature').src = signatureData;
 
-            const wrapper = document.getElementById('pdf-wrapper');
-            const element = document.getElementById('pdf-template');
+            // EL TRUCO MAESTRO: En vez de intentar fotografiar un elemento escondido, 
+            // creamos un clon temporal, lo ponemos en la coordenada 0,0 invisiblemente, 
+            // le tomamos la foto y lo destruimos. ¡Infalible!
+            const originalElement = document.getElementById('pdf-template');
+            const clone = originalElement.cloneNode(true);
+            
+            clone.style.display = "block";
+            clone.style.position = "absolute";
+            clone.style.top = "0px";
+            clone.style.left = "0px";
+            clone.style.zIndex = "-9999";
+            
+            document.body.appendChild(clone);
 
-            wrapper.style.display = 'block'; // Mostramos el contenedor oculto 
-
-            // EXPLICACIÓN DEL TRUCO: 
-            // width: 794 y windowWidth: 794 obligan a la librería a comportarse como si estuviera 
-            // en un ordenador de escritorio independientemente de si estás usando un móvil.
             const opt = {
-                margin:       0.4, 
+                margin:       0.5,
                 filename:     `Hoja_Visita_${client.replace(/\s+/g, '_')}.pdf`,
                 image:        { type: 'jpeg', quality: 0.98 },
                 html2canvas:  { 
                     scale: 2, 
-                    width: 794,
-                    windowWidth: 794 
+                    width: 800,
+                    windowWidth: 800
                 },
                 jsPDF:        { unit: 'in', format: 'a4', orientation: 'portrait' }
             };
 
-            html2pdf().set(opt).from(element).save().then(() => {
-                wrapper.style.display = 'none'; // Volvemos a ocultarlo
+            html2pdf().set(opt).from(clone).save().then(() => {
+                document.body.removeChild(clone); // Limpiamos el clon
             });
         }
 
