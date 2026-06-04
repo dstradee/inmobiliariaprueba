@@ -27,20 +27,18 @@
                     fontFamily: {
                         sans: ['Montserrat', 'sans-serif'],
                         serif: ['"Playfair Display"', 'serif'],
-                    },
-                    boxShadow: {
-                        'soft': '0 10px 40px -10px rgba(42, 41, 39, 0.05)',
                     }
                 }
             }
         }
     </script>
 </head>
-<body class="bg-fondo min-h-screen p-4 md:p-8 font-sans text-carbon antialiased selection:bg-terracota selection:text-white">
+<body class="bg-fondo min-h-screen p-4 md:p-8 font-sans text-carbon antialiased">
 
     <!-- LOGIN -->
-    <div id="login-section" class="max-w-md mx-auto bg-zahara p-10 rounded-2xl shadow-soft border border-carbon/5 mt-20">
+    <div id="login-section" class="max-w-md mx-auto bg-zahara p-10 rounded-2xl shadow-lg border border-carbon/5 mt-20">
         <h2 class="text-3xl font-serif text-center mb-8 text-carbon">Acceso Privado</h2>
+        <!-- Formulario restaurado a su versión más robusta -->
         <form id="login-form" class="space-y-5">
             <div>
                 <label class="block text-sm font-medium text-carbon/70 mb-1.5">Email corporativo</label>
@@ -50,19 +48,19 @@
                 <label class="block text-sm font-medium text-carbon/70 mb-1.5">Contraseña</label>
                 <input type="password" id="login-password" required class="w-full px-4 py-3 bg-white border border-carbon/10 rounded-lg focus:border-terracota outline-none font-light">
             </div>
+            <!-- Botón tipo submit estándar -->
             <button type="submit" id="login-btn" class="w-full bg-salvia text-white py-3.5 rounded-lg font-medium tracking-wide hover:bg-[#6c7a69] transition-colors mt-2">
                 Acceder al despacho
             </button>
             <div id="login-error" class="bg-red-50 p-4 mt-4 rounded-lg hidden border border-red-100">
                 <p class="text-red-600 text-sm font-medium" id="login-error-text"></p>
-                <p class="text-red-600 text-xs mt-1 font-light">Recuerda: Debes dar de alta este correo en la sección Authentication de tu Supabase.</p>
             </div>
         </form>
     </div>
 
     <!-- PANEL ADMINISTRADOR -->
     <div id="admin-section" class="hidden max-w-6xl mx-auto">
-        <div class="flex justify-between items-center mb-8 bg-zahara px-8 py-5 rounded-2xl shadow-soft border border-carbon/5">
+        <div class="flex justify-between items-center mb-8 bg-zahara px-8 py-5 rounded-2xl shadow-sm border border-carbon/5">
             <div class="flex gap-6">
                 <button onclick="switchTab('add')" id="btn-tab-add" class="font-medium text-carbon border-b-2 border-carbon pb-1 transition-colors focus:outline-none">Nueva Propiedad</button>
                 <button onclick="switchTab('catalog')" id="btn-tab-catalog" class="font-light text-carbon/50 hover:text-carbon pb-1 transition-colors focus:outline-none">Cartera de Inmuebles</button>
@@ -77,7 +75,7 @@
         </div>
 
         <!-- FORMULARIO PROPIEDAD -->
-        <div id="tab-add" class="bg-zahara p-8 md:p-12 rounded-2xl shadow-soft border border-carbon/5">
+        <div id="tab-add" class="bg-zahara p-8 md:p-12 rounded-2xl shadow-sm border border-carbon/5">
             <h1 class="text-3xl font-serif text-carbon mb-8" id="form-title">Añadir Nueva Propiedad</h1>
             <form id="property-form" class="space-y-8">
                 <input type="hidden" id="property-id">
@@ -162,7 +160,7 @@
         </div>
 
         <!-- CARTERA -->
-        <div id="tab-catalog" class="hidden bg-zahara p-8 rounded-2xl shadow-soft border border-carbon/5">
+        <div id="tab-catalog" class="hidden bg-zahara p-8 rounded-2xl shadow-sm border border-carbon/5">
             <div class="overflow-x-auto">
                 <table class="w-full text-left border-collapse">
                     <thead>
@@ -177,13 +175,14 @@
         </div>
 
         <!-- SOLICITUDES -->
-        <div id="tab-leads" class="hidden bg-zahara p-8 rounded-2xl shadow-soft border border-carbon/5">
+        <div id="tab-leads" class="hidden bg-zahara p-8 rounded-2xl shadow-sm border border-carbon/5">
             <h2 class="text-2xl font-serif text-carbon mb-6">Solicitudes de Visita y Contacto</h2>
             <div id="leads-container" class="grid gap-4"></div>
         </div>
     </div>
 
     <script>
+        // CONFIGURACIÓN SUPABASE
         const supabaseUrl = 'https://zqsoagqdypchtdtcudre.supabase.co'; 
         const supabaseAnonKey = 'sb_publishable_YUCsQxlUtRpWUiyb1EahFw_Q-o-0grz';
         const supabase = window.supabase.createClient(supabaseUrl, supabaseAnonKey);
@@ -191,35 +190,69 @@
         const CLOUDINARY_CLOUD_NAME = 'dkg1ytbxb'; 
         const CLOUDINARY_UPLOAD_PRESET = 'tienda_ropa'; 
 
-        // LOGIN MEJORADO
-        document.getElementById('login-form').addEventListener('submit', async (e) => {
-            e.preventDefault();
+        // ==========================================
+        // LOGIN BLINDADO (Event Listener en el form)
+        // ==========================================
+        document.getElementById('login-form').addEventListener('submit', async function(e) {
+            e.preventDefault(); // Detenemos la recarga nativa para que la sesión viva
+            
             const email = document.getElementById('login-email').value;
             const password = document.getElementById('login-password').value;
             const btn = document.getElementById('login-btn');
-            
-            btn.innerText = 'Verificando...';
-            const { data, error } = await supabase.auth.signInWithPassword({ email, password });
-            
-            if (error) {
-                // Muestra exactamente el error que devuelve Supabase
-                document.getElementById('login-error-text').innerText = "Error: " + error.message;
-                document.getElementById('login-error').classList.remove('hidden');
+            const errorDiv = document.getElementById('login-error');
+            const errorText = document.getElementById('login-error-text');
+
+            btn.innerText = 'Verificando credenciales...';
+            btn.disabled = true;
+            errorDiv.classList.add('hidden');
+
+            try {
+                const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+                
+                if (error) {
+                    errorText.innerText = "Error: " + error.message;
+                    errorDiv.classList.remove('hidden');
+                    btn.innerText = 'Acceder al despacho';
+                    btn.disabled = false;
+                } else {
+                    // Si entra, ocultamos la pantalla de login sin recargar la página web
+                    document.getElementById('login-section').classList.add('hidden');
+                    document.getElementById('admin-section').classList.remove('hidden');
+                    loadCatalog(); 
+                    setupRealtime();
+                }
+            } catch (err) {
+                errorText.innerText = "Error de conexión: " + err.message;
+                errorDiv.classList.remove('hidden');
                 btn.innerText = 'Acceder al despacho';
-            } else {
-                location.reload(); 
+                btn.disabled = false;
             }
         });
 
-        async function logout() { await supabase.auth.signOut(); location.reload(); }
+        // CERRAR SESIÓN
+        async function logout() { 
+            await supabase.auth.signOut(); 
+            document.getElementById('admin-section').classList.add('hidden');
+            document.getElementById('login-section').classList.remove('hidden');
+            document.getElementById('login-email').value = '';
+            document.getElementById('login-password').value = '';
+            document.getElementById('login-btn').innerText = 'Acceder al despacho';
+            document.getElementById('login-btn').disabled = false;
+        }
 
+        // AUTO-LOGIN SI YA TIENES LA SESIÓN ABIERTA
         supabase.auth.getSession().then(({ data: { session } }) => {
             if (session) {
                 document.getElementById('login-section').classList.add('hidden');
                 document.getElementById('admin-section').classList.remove('hidden');
-                loadCatalog(); setupRealtime();
+                loadCatalog(); 
+                setupRealtime();
             }
         });
+
+        // ==========================================
+        // RESTO DE LÓGICA (CASAS Y LEADS)
+        // ==========================================
 
         function setupRealtime() {
             supabase.channel('schema-db-changes')
