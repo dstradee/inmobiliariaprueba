@@ -39,7 +39,7 @@
         canvas#signature-pad { touch-action: none; }
     </style>
 </head>
-<body class="bg-fondo min-h-screen p-4 md:p-8 font-sans text-carbon antialiased">
+<body class="bg-fondo min-h-screen p-4 md:p-8 font-sans text-carbon antialiased relative z-0">
 
     <!-- SECCIÓN DE LOGIN -->
     <div id="login-section" class="max-w-md mx-auto bg-zahara p-10 rounded-2xl shadow-lg border border-carbon/5 mt-20">
@@ -63,7 +63,7 @@
     </div>
 
     <!-- PANEL ADMINISTRADOR -->
-    <div id="admin-section" class="hidden max-w-6xl mx-auto">
+    <div id="admin-section" class="hidden max-w-6xl mx-auto bg-fondo">
         
         <!-- MENÚ SUPERIOR -->
         <div class="flex flex-col md:flex-row justify-between items-center mb-8 bg-zahara px-8 py-5 rounded-2xl shadow-sm border border-carbon/5 gap-4">
@@ -203,11 +203,12 @@
     </div>
 
     <!-- ========================================== -->
-    <!-- CONTENEDOR INVISIBLE PARA EL PDF PERFECTO  -->
-    <!-- Ahora fijado a 680px exactos para que quepa en el A4 -->
+    <!-- CONTENEDOR OCULTO PARA EL PDF PERFECTO     -->
+    <!-- Display:none evita que estorbe visualmente -->
+    <!-- Width:794px simula matemáticamente un A4   -->
     <!-- ========================================== -->
-    <div style="position: absolute; left: -9999px; top: 0;">
-        <div id="pdf-template" class="bg-white p-8 text-black" style="width: 680px; box-sizing: border-box;">
+    <div id="pdf-wrapper" style="display: none;">
+        <div id="pdf-template" class="bg-white p-10 text-black mx-auto" style="width: 794px; box-sizing: border-box;">
             
             <div class="border-b-2 border-black pb-4 mb-6 flex justify-between items-center">
                 <h1 class="text-3xl font-serif font-bold tracking-wide">Refugios del Sur</h1>
@@ -265,7 +266,7 @@
         });
 
         // ==========================================
-        // LOGIN
+        // LOGIN (EXACTO A TU PRIMER CÓDIGO)
         // ==========================================
         document.getElementById('login-form').addEventListener('submit', async (e) => {
             e.preventDefault();
@@ -336,7 +337,7 @@
         }
 
         // ==========================================
-        // HOJAS DE VISITA Y PDF
+        // HOJAS DE VISITA Y PDF PERFECTO
         // ==========================================
         async function loadDropdownProperties() {
             const select = document.getElementById('visit-property');
@@ -402,26 +403,37 @@
         }
 
         window.downloadPDF = function(date, property, client, dni, signatureData) {
+            // Rellenar datos
             document.getElementById('pdf-date').innerText = date;
             document.getElementById('pdf-property').innerText = property;
             document.getElementById('pdf-client').innerText = client;
             document.getElementById('pdf-dni').innerText = dni;
             document.getElementById('pdf-signature').src = signatureData;
 
+            const wrapper = document.getElementById('pdf-wrapper');
             const element = document.getElementById('pdf-template');
 
+            // Truco maestro para que html2canvas no se confunda con coordenadas negativas:
+            // Lo mostramos, pero lo fijamos al fondo de la pantalla (z-index:-9999) para que el usuario no vea el salto.
+            wrapper.style.display = 'block';
+            wrapper.style.position = 'fixed';
+            wrapper.style.top = '0';
+            wrapper.style.left = '0';
+            wrapper.style.zIndex = '-9999';
+
             const opt = {
-                margin:       [0.4, 0.4, 0.4, 0.4], 
+                margin:       0.4,
                 filename:     `Hoja_Visita_${client.replace(/\s+/g, '_')}.pdf`,
                 image:        { type: 'jpeg', quality: 0.98 },
-                html2canvas:  { 
-                    scale: 2, 
-                    windowWidth: 700 
-                },
+                html2canvas:  { scale: 2 },
                 jsPDF:        { unit: 'in', format: 'a4', orientation: 'portrait' }
             };
 
-            html2pdf().set(opt).from(element).save();
+            html2pdf().set(opt).from(element).save().then(() => {
+                // Al terminar de descargar, volvemos a ocultar todo en silencio
+                wrapper.style.display = 'none';
+                wrapper.style.position = '';
+            });
         }
 
         // ==========================================
