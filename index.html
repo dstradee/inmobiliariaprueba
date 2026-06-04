@@ -149,226 +149,252 @@
     
     <div id="side-overlay" onclick="toggleFavorites()" class="fixed inset-0 bg-carbon/20 backdrop-blur-sm z-[55] hidden opacity-0 transition-opacity duration-500"></div>
 
+    <!-- Carga de Supabase -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    
     <script>
-        const supabaseUrl = 'https://zqsoagqdypchtdtcudre.supabase.co'; 
-        const supabaseAnonKey = 'sb_publishable_YUCsQxlUtRpWUiyb1EahFw_Q-o-0grz';
-        const supabase = window.supabase.createClient(supabaseUrl, supabaseAnonKey);
+        // ESCUDO 1: Comprobar si Supabase cargó correctamente
+        if (typeof window.supabase === 'undefined') {
+            document.getElementById('property-grid').innerHTML = '<p class="col-span-full text-center text-red-500 mt-10 font-bold">Error: No se ha podido cargar Supabase. Es posible que tengas un AdBlocker bloqueando la conexión o fallos de red.</p>';
+        } else {
+            const supabaseUrl = 'https://zqsoagqdypchtdtcudre.supabase.co'; 
+            const supabaseAnonKey = 'sb_publishable_YUCsQxlUtRpWUiyb1EahFw_Q-o-0grz';
+            const supabase = window.supabase.createClient(supabaseUrl, supabaseAnonKey);
 
-        const TELEGRAM_BOT_TOKEN = '8603553045:AAFpmVcNjxbvzsvb09egdVzLxcscAtaRr-Y';
-        const TELEGRAM_CHAT_IDS = ['7200570066', '6519651464']; 
+            const TELEGRAM_BOT_TOKEN = '8603553045:AAFpmVcNjxbvzsvb09egdVzLxcscAtaRr-Y';
+            const TELEGRAM_CHAT_IDS = ['7200570066', '6519651464']; 
 
-        let properties = []; 
-        let currentProperty = null;
-        let favorites = JSON.parse(localStorage.getItem('zahara_favs')) || [];
-        let currentCarouselImages = [];
-        let currentCarouselIndex = 0;
-
-        const formatPrice = (price) => new Intl.NumberFormat('es-ES').format(price) + ' €';
-
-        function renderProperties(data) {
-            const grid = document.getElementById('property-grid');
-            grid.innerHTML = ''; 
-            if (!data || data.length === 0) {
-                grid.innerHTML = `<p class="col-span-full text-center text-carbon/50 mt-10 font-light">No hay propiedades disponibles en este momento.</p>`;
-                return;
-            }
-            data.forEach(prop => {
-                const firstImage = prop.image_urls ? prop.image_urls.split(',')[0].trim() : 'https://via.placeholder.com/600x400?text=Sin+Imagen';
-                grid.innerHTML += `
-                    <div class="group cursor-pointer flex flex-col" onclick="openModal(${prop.id})">
-                        <div class="w-full aspect-[4/3] rounded-xl overflow-hidden mb-4 relative shadow-soft">
-                            <img src="${firstImage}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
-                            <div class="absolute inset-0 bg-carbon/10 group-hover:bg-transparent transition-colors duration-500"></div>
-                            ${prop.status !== 'Disponible' ? `<div class="absolute top-4 left-4 bg-carbon text-zahara text-xs px-3 py-1 rounded-full font-medium tracking-wider uppercase shadow-md">${prop.status}</div>` : ''}
-                        </div>
-                        <span class="text-salvia text-xs tracking-widest uppercase font-medium mb-1">${prop.location}</span>
-                        <h3 class="text-lg font-serif text-carbon mb-1">${prop.title}</h3>
-                        <p class="text-carbon/70 font-light">${formatPrice(prop.price)}</p>
-                    </div>
-                `;
-            });
-        }
-
-        function renderCarouselImage() {
-            const container = document.getElementById('modal-image-container');
-            const arrows = document.getElementById('carousel-arrows');
-            if (currentCarouselImages.length === 0) {
-                container.innerHTML = `<div class="w-full h-full flex items-center justify-center bg-carbon/5">Sin fotos</div>`;
-                arrows.classList.add('hidden');
-                return;
-            }
-            container.innerHTML = `<img src="${currentCarouselImages[currentCarouselIndex]}" class="w-full h-full object-cover absolute inset-0 transition-opacity duration-300">`;
-            currentCarouselImages.length > 1 ? arrows.classList.remove('hidden') : arrows.classList.add('hidden');
-        }
-
-        function nextImage(e) { e.stopPropagation(); currentCarouselIndex = (currentCarouselIndex + 1) % currentCarouselImages.length; renderCarouselImage(); }
-        function prevImage(e) { e.stopPropagation(); currentCarouselIndex = (currentCarouselIndex - 1 + currentCarouselImages.length) % currentCarouselImages.length; renderCarouselImage(); }
-
-        function openModal(id) {
-            currentProperty = properties.find(p => p.id === id);
-            if (!currentProperty) return;
+            let properties = []; 
+            let currentProperty = null;
+            let currentCarouselImages = [];
+            let currentCarouselIndex = 0;
             
-            document.getElementById('modal-title').innerText = currentProperty.title;
-            document.getElementById('modal-location').innerText = currentProperty.location;
-            document.getElementById('modal-price').innerText = formatPrice(currentProperty.price);
-            document.getElementById('modal-beds').innerText = currentProperty.bedrooms || '-';
-            document.getElementById('modal-baths').innerText = currentProperty.bathrooms || '-';
-            document.getElementById('modal-sqm').innerText = currentProperty.sqm || '-';
-            document.getElementById('modal-description').innerText = currentProperty.description || 'Sin descripción detallada.';
-            document.getElementById('modal-legal').innerText = currentProperty.legal_info || 'Consultar con el asesor.';
-            
-            currentCarouselImages = currentProperty.image_urls ? currentProperty.image_urls.split(',').map(u => u.trim()).filter(u => u !== "") : [];
-            currentCarouselIndex = 0;
-            renderCarouselImage();
-            updateFavButtonState();
-
-            const modal = document.getElementById('property-modal');
-            const content = document.getElementById('modal-content');
-            modal.classList.remove('hidden');
-            setTimeout(() => { modal.classList.remove('opacity-0'); content.classList.remove('scale-95'); }, 10);
-        }
-
-        function closeModal() {
-            const modal = document.getElementById('property-modal');
-            const content = document.getElementById('modal-content');
-            modal.classList.add('opacity-0'); content.classList.add('scale-95');
-            setTimeout(() => { modal.classList.add('hidden'); }, 500);
-        }
-        document.getElementById('property-modal').addEventListener('click', function(e) { if (e.target === this) closeModal(); });
-
-        function addToFavorites() {
-            if (!currentProperty) return;
-            const exists = favorites.find(f => f.id === currentProperty.id);
-            if (exists) favorites = favorites.filter(f => f.id !== currentProperty.id);
-            else favorites.push({ id: currentProperty.id, title: currentProperty.title, price: currentProperty.price, location: currentProperty.location, image: currentProperty.image_urls ? currentProperty.image_urls.split(',')[0] : null });
-            localStorage.setItem('zahara_favs', JSON.stringify(favorites));
-            updateFavButtonState(); updateFavBadge(); renderFavoritesList();
-        }
-
-        function updateFavButtonState() {
-            if(!currentProperty) return;
-            const btn = document.getElementById('btn-add-fav');
-            if(favorites.find(f => f.id === currentProperty.id)) {
-                btn.innerText = "Quitar Favorito"; btn.classList.add('bg-carbon', 'text-zahara'); btn.classList.remove('bg-zahara', 'text-carbon');
-            } else {
-                btn.innerText = "Guardar Favorito"; btn.classList.remove('bg-carbon', 'text-zahara'); btn.classList.add('bg-zahara', 'text-carbon');
+            // ESCUDO 2: Evitar que una memoria corrupta rompa toda la web
+            let favorites = [];
+            try {
+                const favs = localStorage.getItem('zahara_favs');
+                if(favs) favorites = JSON.parse(favs);
+            } catch (error) {
+                console.error("Favoritos reseteados por error de lectura");
+                favorites = [];
             }
-        }
 
-        function updateFavBadge() {
-            const badge = document.getElementById('fav-badge');
-            if (favorites.length > 0) { badge.innerText = favorites.length; badge.classList.remove('hidden'); } 
-            else { badge.classList.add('hidden'); }
-        }
+            const formatPrice = (price) => new Intl.NumberFormat('es-ES').format(price) + ' €';
 
-        function renderFavoritesList() {
-            const container = document.getElementById('favorites-list');
-            container.innerHTML = '';
-            if (favorites.length === 0) { container.innerHTML = '<p class="text-carbon/50 font-light text-center mt-10">No has guardado ninguna propiedad todavía.</p>'; return; }
-            favorites.forEach((fav) => {
-                const img = fav.image ? `<img src="${fav.image}" class="w-20 h-20 object-cover rounded-lg">` : `<div class="w-20 h-20 bg-carbon/5 rounded-lg"></div>`;
-                container.innerHTML += `
-                    <div class="flex gap-4 items-center bg-white p-3 rounded-xl border border-carbon/5 shadow-sm">
-                        ${img}
-                        <div class="flex-1">
-                            <span class="text-[10px] uppercase text-salvia tracking-widest block mb-1">${fav.location}</span>
-                            <h4 class="font-serif text-carbon text-sm leading-tight mb-1">${fav.title}</h4>
-                            <span class="font-light text-carbon/80 text-sm block">${formatPrice(fav.price)}</span>
+            function renderProperties(data) {
+                const grid = document.getElementById('property-grid');
+                grid.innerHTML = ''; 
+                if (!data || data.length === 0) {
+                    grid.innerHTML = `<p class="col-span-full text-center text-carbon/50 mt-10 font-medium text-lg">Aún no hay propiedades públicas en la web.</p>`;
+                    return;
+                }
+                data.forEach(prop => {
+                    const firstImage = prop.image_urls ? prop.image_urls.split(',')[0].trim() : 'https://via.placeholder.com/600x400?text=Sin+Imagen';
+                    grid.innerHTML += `
+                        <div class="group cursor-pointer flex flex-col" onclick="openModal(${prop.id})">
+                            <div class="w-full aspect-[4/3] rounded-xl overflow-hidden mb-4 relative shadow-soft">
+                                <img src="${firstImage}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+                                <div class="absolute inset-0 bg-carbon/10 group-hover:bg-transparent transition-colors duration-500"></div>
+                                ${prop.status !== 'Disponible' ? `<div class="absolute top-4 left-4 bg-carbon text-zahara text-xs px-3 py-1 rounded-full font-medium tracking-wider uppercase shadow-md">${prop.status}</div>` : ''}
+                            </div>
+                            <span class="text-salvia text-xs tracking-widest uppercase font-medium mb-1">${prop.location}</span>
+                            <h3 class="text-lg font-serif text-carbon mb-1">${prop.title}</h3>
+                            <p class="text-carbon/70 font-light">${formatPrice(prop.price)}</p>
                         </div>
-                        <button onclick="removeFavorite(${fav.id})" class="text-carbon/40 hover:text-terracota transition p-2 focus:outline-none">✕</button>
-                    </div>`;
-            });
-        }
-
-        function removeFavorite(id) {
-            favorites = favorites.filter(f => f.id !== id); localStorage.setItem('zahara_favs', JSON.stringify(favorites));
-            updateFavBadge(); renderFavoritesList();
-            if(currentProperty && currentProperty.id === id) updateFavButtonState();
-        }
-
-        function toggleFavorites() {
-            const panel = document.getElementById('side-panel'); const overlay = document.getElementById('side-overlay');
-            if (panel.classList.contains('translate-x-full')) {
-                document.getElementById('panel-title').innerText = "Tus Favoritos";
-                document.getElementById('favorites-list').classList.remove('hidden');
-                document.getElementById('lead-form-container').classList.add('hidden');
-                renderFavoritesList();
-                overlay.classList.remove('hidden'); setTimeout(() => overlay.classList.remove('opacity-0'), 10);
-                panel.classList.remove('translate-x-full');
-            } else {
-                panel.classList.add('translate-x-full'); overlay.classList.add('opacity-0');
-                setTimeout(() => overlay.classList.add('hidden'), 500);
+                    `;
+                });
             }
-        }
 
-        function openLeadForm() {
-            if(!currentProperty) return;
-            closeModal();
-            document.getElementById('panel-title').innerText = "Solicitar Visita";
-            document.getElementById('lead-property-id').value = currentProperty.id;
-            document.getElementById('lead-property-name').innerText = currentProperty.title;
-            document.getElementById('favorites-list').classList.add('hidden');
-            document.getElementById('lead-form-container').classList.remove('hidden');
-            document.getElementById('lead-msg').classList.add('hidden');
-            const panel = document.getElementById('side-panel'); const overlay = document.getElementById('side-overlay');
-            if (panel.classList.contains('translate-x-full')) {
-                overlay.classList.remove('hidden'); setTimeout(() => overlay.classList.remove('opacity-0'), 10);
-                panel.classList.remove('translate-x-full');
+            function renderCarouselImage() {
+                const container = document.getElementById('modal-image-container');
+                const arrows = document.getElementById('carousel-arrows');
+                if (currentCarouselImages.length === 0) {
+                    container.innerHTML = `<div class="w-full h-full flex items-center justify-center bg-carbon/5">Sin fotos</div>`;
+                    arrows.classList.add('hidden');
+                    return;
+                }
+                container.innerHTML = `<img src="${currentCarouselImages[currentCarouselIndex]}" class="w-full h-full object-cover absolute inset-0 transition-opacity duration-300">`;
+                currentCarouselImages.length > 1 ? arrows.classList.remove('hidden') : arrows.classList.add('hidden');
             }
-        }
 
-        document.getElementById('lead-form').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const btn = document.getElementById('btn-submit-lead'); const msg = document.getElementById('lead-msg');
-            btn.disabled = true; btn.innerText = "Enviando..."; msg.classList.add('hidden');
-            try {
-                const { error } = await supabase.from('leads').insert([{
-                    property_id: parseInt(document.getElementById('lead-property-id').value),
-                    property_title: document.getElementById('lead-property-name').innerText,
-                    customer_name: document.getElementById('lead-name').value,
-                    customer_email: document.getElementById('lead-email').value,
-                    customer_phone: document.getElementById('lead-phone').value,
-                    message: document.getElementById('lead-message').value
-                }]);
-                if (error) throw error;
-                const telegramText = `🏡 ¡NUEVA SOLICITUD DE VISITA!\n\nPropiedad: ${document.getElementById('lead-property-name').innerText}\n👤 Cliente: ${document.getElementById('lead-name').value}\n📞 Teléfono: ${document.getElementById('lead-phone').value}\n📧 Email: ${document.getElementById('lead-email').value}\n💬 Mensaje: ${document.getElementById('lead-message').value || '-'}`;
-                await Promise.all(TELEGRAM_CHAT_IDS.map(id => fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ chat_id: id, text: telegramText }) })));
-                document.getElementById('lead-form').reset();
-                msg.innerText = "Solicitud enviada con éxito. Te contactaremos pronto.";
-                msg.className = "text-center font-medium mt-4 p-4 rounded-lg bg-salvia/10 text-salvia text-sm block";
-                btn.classList.add('hidden');
-                setTimeout(() => toggleFavorites(), 3000);
-            } catch (err) {
-                msg.innerText = "Hubo un error. Por favor, intenta de nuevo.";
-                msg.className = "text-center font-medium mt-4 p-4 rounded-lg bg-red-50 text-red-600 text-sm block";
-                btn.disabled = false; btn.innerText = "Enviar Solicitud";
-            }
-        });
+            function nextImage(e) { e.stopPropagation(); currentCarouselIndex = (currentCarouselIndex + 1) % currentCarouselImages.length; renderCarouselImage(); }
+            function prevImage(e) { e.stopPropagation(); currentCarouselIndex = (currentCarouselIndex - 1 + currentCarouselImages.length) % currentCarouselImages.length; renderCarouselImage(); }
 
-        async function fetchProperties() {
-            const grid = document.getElementById('property-grid');
-            try {
-                const { data, error } = await supabase
-                    .from('properties')
-                    .select('*')
-                    .eq('is_visible', true)
-                    .order('created_at', { ascending: false });
-
-                if (error) throw error;
+            function openModal(id) {
+                currentProperty = properties.find(p => p.id === id);
+                if (!currentProperty) return;
                 
-                properties = data;
-                renderProperties(properties);
-            } catch(error) {
-                grid.innerHTML = `<p class="col-span-full text-center text-red-500 mt-10 font-light">Error de conexión: Por favor, asegúrate de haber ejecutado el código SQL en Supabase para habilitar los permisos.</p>`;
-                console.error(error);
-            }
-        }
+                document.getElementById('modal-title').innerText = currentProperty.title;
+                document.getElementById('modal-location').innerText = currentProperty.location;
+                document.getElementById('modal-price').innerText = formatPrice(currentProperty.price);
+                document.getElementById('modal-beds').innerText = currentProperty.bedrooms || '-';
+                document.getElementById('modal-baths').innerText = currentProperty.bathrooms || '-';
+                document.getElementById('modal-sqm').innerText = currentProperty.sqm || '-';
+                document.getElementById('modal-description').innerText = currentProperty.description || 'Sin descripción detallada.';
+                document.getElementById('modal-legal').innerText = currentProperty.legal_info || 'Consultar con el asesor.';
+                
+                currentCarouselImages = currentProperty.image_urls ? currentProperty.image_urls.split(',').map(u => u.trim()).filter(u => u !== "") : [];
+                currentCarouselIndex = 0;
+                renderCarouselImage();
+                updateFavButtonState();
 
-        document.addEventListener('DOMContentLoaded', () => {
-            fetchProperties(); updateFavBadge();
+                const modal = document.getElementById('property-modal');
+                const content = document.getElementById('modal-content');
+                modal.classList.remove('hidden');
+                setTimeout(() => { modal.classList.remove('opacity-0'); content.classList.remove('scale-95'); }, 10);
+            }
+
+            function closeModal() {
+                const modal = document.getElementById('property-modal');
+                const content = document.getElementById('modal-content');
+                modal.classList.add('opacity-0'); content.classList.add('scale-95');
+                setTimeout(() => { modal.classList.add('hidden'); }, 500);
+            }
+            document.getElementById('property-modal').addEventListener('click', function(e) { if (e.target === this) closeModal(); });
+
+            function addToFavorites() {
+                if (!currentProperty) return;
+                const exists = favorites.find(f => f.id === currentProperty.id);
+                if (exists) favorites = favorites.filter(f => f.id !== currentProperty.id);
+                else favorites.push({ id: currentProperty.id, title: currentProperty.title, price: currentProperty.price, location: currentProperty.location, image: currentProperty.image_urls ? currentProperty.image_urls.split(',')[0] : null });
+                localStorage.setItem('zahara_favs', JSON.stringify(favorites));
+                updateFavButtonState(); updateFavBadge(); renderFavoritesList();
+            }
+
+            function updateFavButtonState() {
+                if(!currentProperty) return;
+                const btn = document.getElementById('btn-add-fav');
+                if(favorites.find(f => f.id === currentProperty.id)) {
+                    btn.innerText = "Quitar Favorito"; btn.classList.add('bg-carbon', 'text-zahara'); btn.classList.remove('bg-zahara', 'text-carbon');
+                } else {
+                    btn.innerText = "Guardar Favorito"; btn.classList.remove('bg-carbon', 'text-zahara'); btn.classList.add('bg-zahara', 'text-carbon');
+                }
+            }
+
+            function updateFavBadge() {
+                const badge = document.getElementById('fav-badge');
+                if (favorites.length > 0) { badge.innerText = favorites.length; badge.classList.remove('hidden'); } 
+                else { badge.classList.add('hidden'); }
+            }
+
+            function renderFavoritesList() {
+                const container = document.getElementById('favorites-list');
+                container.innerHTML = '';
+                if (favorites.length === 0) { container.innerHTML = '<p class="text-carbon/50 font-light text-center mt-10">No has guardado ninguna propiedad todavía.</p>'; return; }
+                favorites.forEach((fav) => {
+                    const img = fav.image ? `<img src="${fav.image}" class="w-20 h-20 object-cover rounded-lg">` : `<div class="w-20 h-20 bg-carbon/5 rounded-lg"></div>`;
+                    container.innerHTML += `
+                        <div class="flex gap-4 items-center bg-white p-3 rounded-xl border border-carbon/5 shadow-sm">
+                            ${img}
+                            <div class="flex-1">
+                                <span class="text-[10px] uppercase text-salvia tracking-widest block mb-1">${fav.location}</span>
+                                <h4 class="font-serif text-carbon text-sm leading-tight mb-1">${fav.title}</h4>
+                                <span class="font-light text-carbon/80 text-sm block">${formatPrice(fav.price)}</span>
+                            </div>
+                            <button onclick="removeFavorite(${fav.id})" class="text-carbon/40 hover:text-terracota transition p-2 focus:outline-none">✕</button>
+                        </div>`;
+                });
+            }
+
+            function removeFavorite(id) {
+                favorites = favorites.filter(f => f.id !== id); localStorage.setItem('zahara_favs', JSON.stringify(favorites));
+                updateFavBadge(); renderFavoritesList();
+                if(currentProperty && currentProperty.id === id) updateFavButtonState();
+            }
+
+            function toggleFavorites() {
+                const panel = document.getElementById('side-panel'); const overlay = document.getElementById('side-overlay');
+                if (panel.classList.contains('translate-x-full')) {
+                    document.getElementById('panel-title').innerText = "Tus Favoritos";
+                    document.getElementById('favorites-list').classList.remove('hidden');
+                    document.getElementById('lead-form-container').classList.add('hidden');
+                    renderFavoritesList();
+                    overlay.classList.remove('hidden'); setTimeout(() => overlay.classList.remove('opacity-0'), 10);
+                    panel.classList.remove('translate-x-full');
+                } else {
+                    panel.classList.add('translate-x-full'); overlay.classList.add('opacity-0');
+                    setTimeout(() => overlay.classList.add('hidden'), 500);
+                }
+            }
+
+            function openLeadForm() {
+                if(!currentProperty) return;
+                closeModal();
+                document.getElementById('panel-title').innerText = "Solicitar Visita";
+                document.getElementById('lead-property-id').value = currentProperty.id;
+                document.getElementById('lead-property-name').innerText = currentProperty.title;
+                document.getElementById('favorites-list').classList.add('hidden');
+                document.getElementById('lead-form-container').classList.remove('hidden');
+                document.getElementById('lead-msg').classList.add('hidden');
+                const panel = document.getElementById('side-panel'); const overlay = document.getElementById('side-overlay');
+                if (panel.classList.contains('translate-x-full')) {
+                    overlay.classList.remove('hidden'); setTimeout(() => overlay.classList.remove('opacity-0'), 10);
+                    panel.classList.remove('translate-x-full');
+                }
+            }
+
+            document.getElementById('lead-form').addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const btn = document.getElementById('btn-submit-lead'); const msg = document.getElementById('lead-msg');
+                btn.disabled = true; btn.innerText = "Enviando..."; msg.classList.add('hidden');
+                try {
+                    const { error } = await supabase.from('leads').insert([{
+                        property_id: parseInt(document.getElementById('lead-property-id').value),
+                        property_title: document.getElementById('lead-property-name').innerText,
+                        customer_name: document.getElementById('lead-name').value,
+                        customer_email: document.getElementById('lead-email').value,
+                        customer_phone: document.getElementById('lead-phone').value,
+                        message: document.getElementById('lead-message').value
+                    }]);
+                    if (error) throw error;
+                    const telegramText = `🏡 ¡NUEVA SOLICITUD DE VISITA!\n\nPropiedad: ${document.getElementById('lead-property-name').innerText}\n👤 Cliente: ${document.getElementById('lead-name').value}\n📞 Teléfono: ${document.getElementById('lead-phone').value}\n📧 Email: ${document.getElementById('lead-email').value}\n💬 Mensaje: ${document.getElementById('lead-message').value || '-'}`;
+                    await Promise.all(TELEGRAM_CHAT_IDS.map(id => fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ chat_id: id, text: telegramText }) })));
+                    document.getElementById('lead-form').reset();
+                    msg.innerText = "Solicitud enviada con éxito. Te contactaremos pronto.";
+                    msg.className = "text-center font-medium mt-4 p-4 rounded-lg bg-salvia/10 text-salvia text-sm block";
+                    btn.classList.add('hidden');
+                    setTimeout(() => toggleFavorites(), 3000);
+                } catch (err) {
+                    msg.innerText = "Hubo un error. Por favor, intenta de nuevo.";
+                    msg.className = "text-center font-medium mt-4 p-4 rounded-lg bg-red-50 text-red-600 text-sm block";
+                    btn.disabled = false; btn.innerText = "Enviar Solicitud";
+                }
+            });
+
+            async function fetchProperties() {
+                const grid = document.getElementById('property-grid');
+                try {
+                    const { data, error } = await supabase
+                        .from('properties')
+                        .select('*')
+                        .eq('is_visible', true)
+                        .order('created_at', { ascending: false });
+
+                    if (error) {
+                        grid.innerHTML = `<p class="col-span-full text-center text-red-600 font-medium mt-10 bg-red-50 p-4 rounded-lg border border-red-200">
+                        Supabase ha bloqueado la carga de casas. Faltan permisos.<br><br>
+                        Entra a Supabase > SQL Editor y ejecuta:<br><br>
+                        <code class="text-xs bg-white p-2 rounded text-left block mt-2 mx-auto max-w-max">
+                        DROP POLICY IF EXISTS "Permitir a todos ver las casas" ON properties;<br>
+                        CREATE POLICY "Permitir a todos ver las casas" ON properties FOR SELECT USING (true);
+                        </code>
+                        </p>`;
+                        return;
+                    }
+                    
+                    properties = data;
+                    renderProperties(properties);
+                } catch(error) {
+                    grid.innerHTML = `<p class="col-span-full text-center text-red-500 mt-10 font-bold">Error interno de JavaScript al cargar: ${error.message}</p>`;
+                    console.error(error);
+                }
+            }
+
+            // ESCUDO 3: Llamar la carga DIRECTAMENTE, sin esperar eventos raros del navegador
+            fetchProperties(); 
+            updateFavBadge();
             supabase.channel('public:properties').on('postgres_changes', { event: '*', schema: 'public', table: 'properties' }, fetchProperties).subscribe();
-        });
+        }
     </script>
 </body>
 </html>
