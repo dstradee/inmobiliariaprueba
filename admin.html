@@ -139,6 +139,7 @@
             <h1 class="text-3xl font-serif text-carbon mb-8" id="form-title">Añadir Nueva Propiedad</h1>
             <form id="property-form" class="space-y-8">
                 <input type="hidden" id="property-id">
+                
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                     <div class="col-span-1 md:col-span-2">
                         <label class="block text-sm font-medium text-carbon/70 mb-1.5">Título / Referencia *</label>
@@ -149,18 +150,31 @@
                         <input type="number" id="price" required class="w-full px-4 py-3 bg-white border border-carbon/10 rounded-lg outline-none font-light focus:border-terracota">
                     </div>
                 </div>
-                
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+
+                <div class="grid grid-cols-2 md:grid-cols-5 gap-6">
                     <div class="col-span-2 md:col-span-1">
                         <label class="block text-sm font-medium text-carbon/70 mb-1.5">Ubicación *</label>
                         <input type="text" id="location" required class="w-full px-4 py-3 bg-white border border-carbon/10 rounded-lg outline-none font-light focus:border-terracota">
                     </div>
-                    <div><label class="block text-sm font-medium text-carbon/70 mb-1.5">Habitaciones</label><input type="number" id="bedrooms" class="w-full px-4 py-3 bg-white border border-carbon/10 rounded-lg outline-none font-light focus:border-terracota"></div>
-                    <div><label class="block text-sm font-medium text-carbon/70 mb-1.5">Baños</label><input type="number" id="bathrooms" class="w-full px-4 py-3 bg-white border border-carbon/10 rounded-lg outline-none font-light focus:border-terracota"></div>
-                    <div><label class="block text-sm font-medium text-carbon/70 mb-1.5">Metros (m²)</label><input type="number" id="sqm" class="w-full px-4 py-3 bg-white border border-carbon/10 rounded-lg outline-none font-light focus:border-terracota"></div>
+                    <div><label class="block text-sm font-medium text-carbon/70 mb-1.5">Habitaciones</label><input type="number" id="bedrooms" min="0" placeholder="0" class="w-full px-4 py-3 bg-white border border-carbon/10 rounded-lg outline-none font-light focus:border-terracota"></div>
+                    <div><label class="block text-sm font-medium text-carbon/70 mb-1.5">Baños</label><input type="number" id="bathrooms" min="0" placeholder="0" class="w-full px-4 py-3 bg-white border border-carbon/10 rounded-lg outline-none font-light focus:border-terracota"></div>
+                    <div><label class="block text-sm font-medium text-carbon/70 mb-1.5">Metros (m²)</label><input type="number" id="sqm" min="0" placeholder="0" class="w-full px-4 py-3 bg-white border border-carbon/10 rounded-lg outline-none font-light focus:border-terracota"></div>
+                    <div><label class="block text-sm font-medium text-carbon/70 mb-1.5">Plantas</label><input type="number" id="floors" min="1" placeholder="1" class="w-full px-4 py-3 bg-white border border-carbon/10 rounded-lg outline-none font-light focus:border-terracota"></div>
+                </div>
+
+                <!-- NUEVOS CAMPOS: AMUEBLADO Y CAMAS -->
+                <div class="flex flex-col md:flex-row gap-6 items-center bg-white p-6 rounded-xl border border-carbon/5">
+                    <label class="flex items-center gap-3 cursor-pointer">
+                        <input type="checkbox" id="is-furnished" class="w-5 h-5 rounded text-terracota border-carbon/20 focus:ring-terracota">
+                        <span class="text-sm font-medium text-carbon">La casa se entrega amueblada</span>
+                    </label>
+                    <div class="w-px h-6 bg-carbon/10 hidden md:block"></div>
+                    <div class="flex items-center gap-3 w-full md:w-auto">
+                        <label class="text-sm font-medium text-carbon">Nº de camas:</label>
+                        <input type="number" id="beds" min="0" placeholder="0" class="w-24 px-4 py-2 bg-zahara border border-carbon/10 rounded-lg outline-none font-light focus:border-terracota">
+                    </div>
                 </div>
                 
-                <!-- AQUÍ ESTÁ DE VUELTA EL CAMPO DE GOOGLE MAPS PARA QUE EL CÓDIGO NO SE ROMPA -->
                 <div class="mb-2">
                     <label class="block text-sm font-medium text-carbon/70 mb-1.5">Enlace de Google Maps (Opcional)</label>
                     <input type="url" id="map-url" placeholder="Ej: https://maps.app.goo.gl/..." class="w-full px-4 py-3 bg-white border border-carbon/10 rounded-lg outline-none font-light focus:border-terracota">
@@ -170,6 +184,7 @@
                     <div><label class="block text-sm font-medium text-carbon/70 mb-1.5">Descripción</label><textarea id="description" rows="5" class="w-full px-4 py-3 bg-white border border-carbon/10 rounded-lg outline-none font-light resize-none focus:border-terracota"></textarea></div>
                     <div><label class="block text-sm font-medium text-carbon/70 mb-1.5">Datos Legales</label><textarea id="legal-info" rows="5" class="w-full px-4 py-3 bg-white border border-carbon/10 rounded-lg outline-none font-light resize-none focus:border-terracota"></textarea></div>
                 </div>
+                
                 <div class="bg-white p-6 rounded-xl border border-carbon/5">
                     <div class="flex justify-between items-center mb-4">
                         <div><h3 class="font-medium text-carbon">Fotos</h3><p class="text-xs font-light text-carbon/50">La primera será la portada.</p></div>
@@ -178,6 +193,7 @@
                     <input type="hidden" id="image-urls">
                     <div id="preview-images" class="flex gap-4 flex-wrap mt-4 min-h-[5rem] items-center"><span class="text-sm font-light text-carbon/40 italic">Aún no hay fotos...</span></div>
                 </div>
+                
                 <div class="flex flex-col md:flex-row gap-6 items-center bg-white p-6 rounded-xl border border-carbon/5">
                     <label class="flex items-center gap-3 cursor-pointer"><input type="checkbox" id="is-visible" checked class="w-5 h-5 rounded text-terracota border-carbon/20"><span class="text-sm font-medium text-carbon">Público en web</span></label>
                     <div class="w-px h-6 bg-carbon/10 hidden md:block"></div>
@@ -187,6 +203,7 @@
                         </select>
                     </div>
                 </div>
+                
                 <div class="pt-4 border-t border-carbon/5">
                     <button type="submit" id="submit-btn" class="w-full md:w-auto md:px-12 bg-salvia text-white font-medium py-4 rounded-lg tracking-wide hover:bg-[#6c7a69] transition-colors shadow-sm">Guardar Propiedad</button>
                 </div>
@@ -210,11 +227,45 @@
         </div>
     </div>
 
-    <!-- ========================================== -->
-    <!-- PLANTILLA DEL PDF CENTRADO Y PERFECTO -->
-    <!-- ========================================== -->
+    <!-- CONTENEDOR MAESTRO DEL PDF -->
+    <div id="pdf-container-wrapper" style="display: none; position: absolute; top: 0; left: 0; width: 100%; min-height: 100vh; background: #EAEAE6; z-index: 99999; justify-content: center; padding-top: 20px;">
+        <div id="pdf-template" style="width: 800px; height: 1131px; background: white; padding: 40px; box-sizing: border-box; font-family: 'Montserrat', sans-serif; position: relative;">
+            
+            <div style="border-bottom: 2px solid #2A2927; padding-bottom: 16px; margin-bottom: 24px; display: flex; justify-content: space-between; align-items: center;">
+                <h1 style="font-family: 'Playfair Display', serif; font-size: 30px; font-weight: bold; margin: 0; color: #2A2927;">Refugios del Sur</h1>
+                <span style="font-size: 14px; font-weight: 500; text-transform: uppercase; color: #6b7280;">Hoja de Visita</span>
+            </div>
+            
+            <div style="margin-bottom: 32px; background-color: #f9fafb; padding: 24px; border: 1px solid #e5e7eb; border-radius: 4px; color: #2A2927;">
+                <p style="margin: 0 0 8px 0; font-size: 16px;"><strong>Fecha y Hora:</strong> <span id="pdf-date" style="font-weight: 300;"></span></p>
+                <p style="margin: 0 0 8px 0; font-size: 16px;"><strong>Inmueble Visitado:</strong> <span id="pdf-property" style="font-weight: 300;"></span></p>
+                <p style="margin: 0 0 8px 0; font-size: 16px;"><strong>Nombre del Cliente:</strong> <span id="pdf-client" style="font-weight: 300;"></span></p>
+                <p style="margin: 0; font-size: 16px;"><strong>DNI / NIE:</strong> <span id="pdf-dni" style="font-weight: 300;"></span></p>
+            </div>
+            
+            <div style="font-size: 14px; text-align: justify; margin-bottom: 40px; line-height: 1.6; color: #2A2927;">
+                <strong style="font-size: 16px; margin-bottom: 8px; display: block;">Acuerdo de Visita y Reconocimiento de Honorarios:</strong>
+                El cliente reconoce haber visitado el inmueble indicado a través de la agencia <strong>Refugios del Sur</strong>. Se compromete expresamente a no realizar ninguna transacción (compra, alquiler, o trato directo con la propiedad) a espaldas de la agencia.<br><br>
+                En caso de formalizar una operación sobre dicho inmueble, de forma directa o indirecta (a través de familiares, socios o empresas vinculadas), el cliente reconoce y asume de forma irrevocable el pago de los honorarios profesionales correspondientes a la agencia inmobiliaria por los servicios prestados de intermediación.
+            </div>
+            
+            <div style="display: flex; justify-content: space-between; align-items: flex-end; position: absolute; bottom: 40px; left: 40px; right: 40px;">
+                <div style="width: 50%;">
+                    <p style="font-weight: bold; margin-bottom: 8px; color: #2A2927;">El Cliente (Firma):</p>
+                    <img id="pdf-signature" src="" style="height: 112px; border-bottom: 1px solid #2A2927; width: 80%; object-fit: contain;">
+                </div>
+                <div style="width: 50%; text-align: right;">
+                    <p style="font-size: 12px; color: #6b7280; font-style: italic; line-height: 1.2; margin: 0;">
+                        Documento generado digitalmente<br>
+                        por la plataforma administrativa de<br>
+                        <strong style="color: #2A2927;">Refugios del Sur</strong>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
-        // --- CONFIGURACIÓN SUPABASE Y CLOUDINARY ---
         var supabaseUrl = 'https://zqsoagqdypchtdtcudre.supabase.co'; 
         var supabaseAnonKey = 'sb_publishable_YUCsQxlUtRpWUiyb1EahFw_Q-o-0grz';
         var supabase = window.supabase.createClient(supabaseUrl, supabaseAnonKey);
@@ -233,9 +284,7 @@
             }
         });
 
-        // ==========================================
         // LOGIN
-        // ==========================================
         document.getElementById('login-form').addEventListener('submit', async (e) => {
             e.preventDefault();
             const email = document.getElementById('login-email').value;
@@ -268,9 +317,6 @@
             loadCatalog(); loadLeads(); loadDropdownProperties(); loadViewings(); setupRealtime();
         }
 
-        // ==========================================
-        // SISTEMA DE PESTAÑAS
-        // ==========================================
         function switchTab(tabId) {
             document.getElementById('tab-add').classList.add('hidden'); 
             document.getElementById('tab-catalog').classList.add('hidden');
@@ -297,9 +343,6 @@
             if (tabId === 'add' && !document.getElementById('property-id').value) resetPropertyForm();
         }
 
-        // ==========================================
-        // HOJAS DE VISITA
-        // ==========================================
         async function loadDropdownProperties() {
             const select = document.getElementById('visit-property');
             const { data } = await supabase.from('properties').select('id, title').order('title');
@@ -312,8 +355,8 @@
         document.getElementById('visit-form').addEventListener('submit', async (e) => {
             e.preventDefault();
             if (signaturePad.isEmpty()) { alert("⚠️ El cliente debe firmar el documento."); return; }
-            
             const btn = document.getElementById('btn-save-visit'); btn.innerText = "Guardando firma..."; btn.disabled = true;
+
             const propertyTitle = document.getElementById('visit-property').value;
             const clientName = document.getElementById('visit-client').value;
             const clientDni = document.getElementById('visit-dni').value;
@@ -341,53 +384,34 @@
             container.innerHTML = html;
         }
 
-        // GENERACIÓN DEL PDF
         window.downloadPDF = function(date, property, client, dni, signatureData) {
-            const element = document.createElement('div');
-            element.style.cssText = 'width: 800px; padding: 40px; background-color: white; color: black; position: absolute; left: 0; top: 0; z-index: -9999; box-sizing: border-box;';
+            document.getElementById('pdf-date').innerText = date;
+            document.getElementById('pdf-property').innerText = property;
+            document.getElementById('pdf-client').innerText = client;
+            document.getElementById('pdf-dni').innerText = dni;
+            document.getElementById('pdf-signature').src = signatureData;
+
+            const wrapper = document.getElementById('pdf-container-wrapper');
+            const template = document.getElementById('pdf-template');
             
-            element.innerHTML = `
-                <div style="border-bottom: 2px solid #2A2927; padding-bottom: 16px; margin-bottom: 24px; display: flex; justify-content: space-between; align-items: center;">
-                    <h1 style="font-family: 'Playfair Display', serif; font-size: 30px; font-weight: bold; margin: 0;">Refugios del Sur</h1>
-                    <span style="font-size: 14px; font-weight: 500; text-transform: uppercase; color: #6b7280;">Hoja de Visita</span>
-                </div>
-                <div style="margin-bottom: 32px; background-color: #f9fafb; padding: 24px; border: 1px solid #e5e7eb; border-radius: 4px;">
-                    <p style="margin: 0 0 8px 0; font-size: 16px;"><strong>Fecha y Hora:</strong> <span style="font-weight: 300;">${date}</span></p>
-                    <p style="margin: 0 0 8px 0; font-size: 16px;"><strong>Inmueble Visitado:</strong> <span style="font-weight: 300;">${property}</span></p>
-                    <p style="margin: 0 0 8px 0; font-size: 16px;"><strong>Nombre del Cliente:</strong> <span style="font-weight: 300;">${client}</span></p>
-                    <p style="margin: 0; font-size: 16px;"><strong>DNI / NIE:</strong> <span style="font-weight: 300;">${dni}</span></p>
-                </div>
-                <div style="font-size: 14px; text-align: justify; margin-bottom: 40px; line-height: 1.6;">
-                    <strong style="font-size: 16px; margin-bottom: 8px; display: block;">Acuerdo de Visita y Reconocimiento de Honorarios:</strong>
-                    El cliente reconoce haber visitado el inmueble indicado a través de la agencia <strong>Refugios del Sur</strong>. Se compromete expresamente a no realizar ninguna transacción (compra, alquiler, o trato directo con la propiedad) a espaldas de la agencia.<br><br>
-                    En caso de formalizar una operación sobre dicho inmueble, de forma directa o indirecta (a través de familiares, socios o empresas vinculadas), el cliente reconoce y asume de forma irrevocable el pago de los honorarios profesionales correspondientes a la agencia inmobiliaria por los servicios prestados de intermediación.
-                </div>
-                <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-top: 40px;">
-                    <div style="width: 50%;">
-                        <p style="font-weight: bold; margin-bottom: 8px;">El Cliente (Firma):</p>
-                        <img src="${signatureData}" style="height: 112px; border-bottom: 1px solid #2A2927; width: 80%; object-fit: contain;">
-                    </div>
-                    <div style="width: 50%; text-align: right;">
-                        <p style="font-size: 12px; color: #6b7280; font-style: italic; line-height: 1.2; margin: 0;">Documento generado digitalmente<br>por la plataforma administrativa de<br><strong>Refugios del Sur</strong></p>
-                    </div>
-                </div>
-            `;
-            document.body.appendChild(element);
+            const scrollPos = window.scrollY;
+            window.scrollTo(0, 0);
+            wrapper.style.display = 'flex';
 
-            const opt = {
-                margin:       0.4,
-                filename:     `Hoja_Visita_${client.replace(/\s+/g, '_')}.pdf`,
-                image:        { type: 'jpeg', quality: 0.98 },
-                html2canvas:  { scale: 2, windowWidth: 800 },
-                jsPDF:        { unit: 'in', format: 'a4', orientation: 'portrait' }
-            };
-
-            html2pdf().set(opt).from(element).save().then(() => { document.body.removeChild(element); });
+            setTimeout(() => {
+                const opt = {
+                    margin:       0,
+                    filename:     `Hoja_Visita_${client.replace(/\s+/g, '_')}.pdf`,
+                    image:        { type: 'jpeg', quality: 1 },
+                    html2canvas:  { scale: 2, scrollY: 0, scrollX: 0 },
+                    jsPDF:        { unit: 'px', format: [800, 1131], orientation: 'portrait' }
+                };
+                html2pdf().set(opt).from(template).save().then(() => {
+                    wrapper.style.display = 'none'; window.scrollTo(0, scrollPos);
+                });
+            }, 300);
         }
 
-        // ==========================================
-        // PROPIEDADES Y REALTIME
-        // ==========================================
         function setupRealtime() {
             supabase.channel('schema-db-changes')
                 .on('postgres_changes', { event: '*', schema: 'public', table: 'properties' }, () => { if (!document.getElementById('tab-catalog').classList.contains('hidden')) loadCatalog(); })
@@ -406,13 +430,34 @@
             e.preventDefault(); const btn = document.getElementById('submit-btn'); btn.innerText = 'Guardando...'; btn.disabled = true;
             try {
                 const idString = document.getElementById('property-id').value;
-                const data = { title: document.getElementById('title').value, price: parseFloat(document.getElementById('price').value) || 0, location: document.getElementById('location').value, bedrooms: parseInt(document.getElementById('bedrooms').value) || 0, bathrooms: parseInt(document.getElementById('bathrooms').value) || 0, sqm: parseFloat(document.getElementById('sqm').value) || 0, description: document.getElementById('description').value, legal_info: document.getElementById('legal-info').value, image_urls: document.getElementById('image-urls').value, map_url: document.getElementById('map-url').value, is_visible: document.getElementById('is-visible').checked, status: document.getElementById('status').value };
+                const data = { 
+                    title: document.getElementById('title').value, price: parseFloat(document.getElementById('price').value) || 0, 
+                    location: document.getElementById('location').value, bedrooms: parseInt(document.getElementById('bedrooms').value) || 0, 
+                    bathrooms: parseInt(document.getElementById('bathrooms').value) || 0, sqm: parseFloat(document.getElementById('sqm').value) || 0, 
+                    floors: parseInt(document.getElementById('floors').value) || 1, is_furnished: document.getElementById('is-furnished').checked,
+                    beds: parseInt(document.getElementById('beds').value) || 0,
+                    description: document.getElementById('description').value, legal_info: document.getElementById('legal-info').value, 
+                    image_urls: document.getElementById('image-urls').value, map_url: document.getElementById('map-url').value, 
+                    is_visible: document.getElementById('is-visible').checked, status: document.getElementById('status').value 
+                };
                 if (idString) await supabase.from('properties').update(data).eq('id', parseInt(idString)); else await supabase.from('properties').insert([data]);
                 btn.innerText = '¡Guardado!'; btn.classList.replace('bg-salvia', 'bg-[#7e8d7b]'); setTimeout(() => { resetPropertyForm(); switchTab('catalog'); btn.innerText = 'Guardar Propiedad'; btn.disabled = false; }, 1200);
             } catch (err) { alert('Error: ' + err.message); btn.innerText = 'Guardar Propiedad'; btn.disabled = false; }
         });
 
-        window.editProperty = async function(id) { const { data: p } = await supabase.from('properties').select('*').eq('id', parseInt(id)).single(); document.getElementById('property-id').value = p.id; document.getElementById('title').value = p.title; document.getElementById('price').value = p.price; document.getElementById('location').value = p.location; document.getElementById('bedrooms').value = p.bedrooms||''; document.getElementById('bathrooms').value = p.bathrooms||''; document.getElementById('sqm').value = p.sqm||''; document.getElementById('description').value = p.description||''; document.getElementById('legal-info').value = p.legal_info||''; document.getElementById('image-urls').value = p.image_urls||''; document.getElementById('map-url').value = p.map_url||''; document.getElementById('is-visible').checked = p.is_visible; document.getElementById('status').value = p.status||'Disponible'; renderImagePreviews(); document.getElementById('form-title').innerText = 'Editar Propiedad'; switchTab('add'); };
+        window.editProperty = async function(id) { 
+            const { data: p } = await supabase.from('properties').select('*').eq('id', parseInt(id)).single(); 
+            document.getElementById('property-id').value = p.id; document.getElementById('title').value = p.title; 
+            document.getElementById('price').value = p.price; document.getElementById('location').value = p.location; 
+            document.getElementById('bedrooms').value = p.bedrooms||''; document.getElementById('bathrooms').value = p.bathrooms||''; 
+            document.getElementById('sqm').value = p.sqm||''; document.getElementById('floors').value = p.floors||1; 
+            document.getElementById('is-furnished').checked = p.is_furnished||false; document.getElementById('beds').value = p.beds||''; 
+            document.getElementById('description').value = p.description||''; document.getElementById('legal-info').value = p.legal_info||''; 
+            document.getElementById('image-urls').value = p.image_urls||''; document.getElementById('map-url').value = p.map_url||''; 
+            document.getElementById('is-visible').checked = p.is_visible; document.getElementById('status').value = p.status||'Disponible'; 
+            renderImagePreviews(); document.getElementById('form-title').innerText = 'Editar Propiedad'; switchTab('add'); 
+        };
+        
         window.deleteProperty = async function(id) { if (confirm('¿Eliminar?')) { await supabase.from('properties').delete().eq('id', parseInt(id)); loadCatalog(); } };
 
         async function loadCatalog() {
