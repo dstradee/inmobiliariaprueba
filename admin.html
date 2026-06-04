@@ -39,7 +39,7 @@
         canvas#signature-pad { touch-action: none; }
     </style>
 </head>
-<body class="bg-fondo min-h-screen p-4 md:p-8 font-sans text-carbon antialiased relative">
+<body class="bg-fondo min-h-screen p-4 md:p-8 font-sans text-carbon antialiased relative z-0">
 
     <!-- SECCIÓN DE LOGIN -->
     <div id="login-section" class="max-w-md mx-auto bg-zahara p-10 rounded-2xl shadow-lg border border-carbon/5 mt-20">
@@ -158,6 +158,15 @@
                     <div><label class="block text-sm font-medium text-carbon/70 mb-1.5">Baños</label><input type="number" id="bathrooms" class="w-full px-4 py-3 bg-white border border-carbon/10 rounded-lg outline-none font-light focus:border-terracota"></div>
                     <div><label class="block text-sm font-medium text-carbon/70 mb-1.5">Metros (m²)</label><input type="number" id="sqm" class="w-full px-4 py-3 bg-white border border-carbon/10 rounded-lg outline-none font-light focus:border-terracota"></div>
                 </div>
+                
+                <!-- NUEVO CAMPO: GOOGLE MAPS -->
+                <div class="grid grid-cols-1 mb-2">
+                    <div>
+                        <label class="block text-sm font-medium text-carbon/70 mb-1.5">Enlace de Google Maps (Opcional)</label>
+                        <input type="url" id="map-url" placeholder="Ej: https://maps.app.goo.gl/..." class="w-full px-4 py-3 bg-white border border-carbon/10 rounded-lg outline-none font-light focus:border-terracota">
+                    </div>
+                </div>
+
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div><label class="block text-sm font-medium text-carbon/70 mb-1.5">Descripción</label><textarea id="description" rows="5" class="w-full px-4 py-3 bg-white border border-carbon/10 rounded-lg outline-none font-light resize-none focus:border-terracota"></textarea></div>
                     <div><label class="block text-sm font-medium text-carbon/70 mb-1.5">Datos Legales</label><textarea id="legal-info" rows="5" class="w-full px-4 py-3 bg-white border border-carbon/10 rounded-lg outline-none font-light resize-none focus:border-terracota"></textarea></div>
@@ -202,11 +211,7 @@
         </div>
     </div>
 
-    <!-- ========================================== -->
-    <!-- CONTENEDOR MAESTRO DEL PDF                 -->
-    <!-- No usa clases de Tailwind que lo oculten   -->
-    <!-- Se posiciona exacto a un A4 real (800x1131)-->
-    <!-- ========================================== -->
+    <!-- CONTENEDOR MAESTRO DEL PDF -->
     <div id="pdf-container-wrapper" style="display: none; position: absolute; top: 0; left: 0; width: 100%; min-height: 100vh; background: #EAEAE6; z-index: 99999; justify-content: center; padding-top: 20px;">
         <div id="pdf-template" style="width: 800px; height: 1131px; background: white; padding: 40px; box-sizing: border-box; font-family: 'Montserrat', sans-serif; position: relative;">
             
@@ -228,7 +233,6 @@
                 En caso de formalizar una operación sobre dicho inmueble, de forma directa o indirecta (a través de familiares, socios o empresas vinculadas), el cliente reconoce y asume de forma irrevocable el pago de los honorarios profesionales correspondientes a la agencia inmobiliaria por los servicios prestados de intermediación.
             </div>
             
-            <!-- Posicionado absolutamente abajo para que nunca se suba o baje -->
             <div style="display: flex; justify-content: space-between; align-items: flex-end; position: absolute; bottom: 40px; left: 40px; right: 40px;">
                 <div style="width: 50%;">
                     <p style="font-weight: bold; margin-bottom: 8px; color: #2A2927;">El Cliente (Firma):</p>
@@ -246,7 +250,6 @@
     </div>
 
     <script>
-        // --- CONFIGURACIÓN SUPABASE Y CLOUDINARY ---
         var supabaseUrl = 'https://zqsoagqdypchtdtcudre.supabase.co'; 
         var supabaseAnonKey = 'sb_publishable_YUCsQxlUtRpWUiyb1EahFw_Q-o-0grz';
         var supabase = window.supabase.createClient(supabaseUrl, supabaseAnonKey);
@@ -258,7 +261,6 @@
 
         let signaturePad;
 
-        // INICIALIZAR LIBRERÍA DE FIRMA AL CARGAR
         document.addEventListener("DOMContentLoaded", function() {
             const canvas = document.getElementById('signature-pad');
             if (canvas && typeof SignaturePad !== 'undefined') {
@@ -266,9 +268,7 @@
             }
         });
 
-        // ==========================================
         // LOGIN
-        // ==========================================
         document.getElementById('login-form').addEventListener('submit', async (e) => {
             e.preventDefault();
             const email = document.getElementById('login-email').value;
@@ -298,16 +298,9 @@
         });
 
         function initAdmin() {
-            loadCatalog();
-            loadLeads();
-            loadDropdownProperties();
-            loadViewings();
-            setupRealtime();
+            loadCatalog(); loadLeads(); loadDropdownProperties(); loadViewings(); setupRealtime();
         }
 
-        // ==========================================
-        // SISTEMA DE PESTAÑAS
-        // ==========================================
         function switchTab(tabId) {
             document.getElementById('tab-add').classList.add('hidden'); 
             document.getElementById('tab-catalog').classList.add('hidden');
@@ -321,14 +314,11 @@
             
             if(tabId === 'visits') {
                 document.getElementById('btn-tab-visits').className = 'font-medium text-terracota border-b-2 border-terracota pb-1 focus:outline-none transition-colors flex items-center gap-2';
-                
                 const canvas = document.getElementById('signature-pad');
                 if (canvas && signaturePad) {
                     const ratio = Math.max(window.devicePixelRatio || 1, 1);
-                    canvas.width = canvas.offsetWidth * ratio;
-                    canvas.height = canvas.offsetHeight * ratio;
-                    canvas.getContext("2d").scale(ratio, ratio);
-                    signaturePad.clear();
+                    canvas.width = canvas.offsetWidth * ratio; canvas.height = canvas.offsetHeight * ratio;
+                    canvas.getContext("2d").scale(ratio, ratio); signaturePad.clear();
                 }
             } else {
                 document.getElementById(`btn-tab-${tabId}`).className = 'font-medium text-carbon border-b-2 border-carbon pb-1 focus:outline-none transition-colors'; 
@@ -337,9 +327,6 @@
             if (tabId === 'add' && !document.getElementById('property-id').value) resetPropertyForm();
         }
 
-        // ==========================================
-        // HOJAS DE VISITA Y PDF PERFECTO
-        // ==========================================
         async function loadDropdownProperties() {
             const select = document.getElementById('visit-property');
             const { data } = await supabase.from('properties').select('id, title').order('title');
@@ -352,9 +339,7 @@
         document.getElementById('visit-form').addEventListener('submit', async (e) => {
             e.preventDefault();
             if (signaturePad.isEmpty()) { alert("⚠️ El cliente debe firmar el documento."); return; }
-            
-            const btn = document.getElementById('btn-save-visit');
-            btn.innerText = "Guardando firma..."; btn.disabled = true;
+            const btn = document.getElementById('btn-save-visit'); btn.innerText = "Guardando firma..."; btn.disabled = true;
 
             const propertyTitle = document.getElementById('visit-property').value;
             const clientName = document.getElementById('visit-client').value;
@@ -362,18 +347,10 @@
             const signatureBase64 = signaturePad.toDataURL(); 
 
             try {
-                const { error } = await supabase.from('viewings').insert([{
-                    property_title: propertyTitle, client_name: clientName,
-                    client_dni: clientDni.toUpperCase(), signature_base64: signatureBase64
-                }]);
-
+                const { error } = await supabase.from('viewings').insert([{ property_title: propertyTitle, client_name: clientName, client_dni: clientDni.toUpperCase(), signature_base64: signatureBase64 }]);
                 if(error) throw error;
-                
-                document.getElementById('visit-form').reset();
-                signaturePad.clear();
-                alert("✅ Hoja de visita guardada y firmada legalmente.");
-                loadViewings();
-
+                document.getElementById('visit-form').reset(); signaturePad.clear();
+                alert("✅ Hoja de visita guardada y firmada legalmente."); loadViewings();
             } catch (err) { alert("Error al guardar: " + err.message); }
             btn.innerText = "Guardar y Finalizar Visita"; btn.disabled = false;
         });
@@ -381,31 +358,17 @@
         async function loadViewings() {
             const container = document.getElementById('visits-history');
             const { data } = await supabase.from('viewings').select('*').order('created_at', { ascending: false });
-            
             if (!data || data.length === 0) { container.innerHTML = '<p class="text-sm font-light text-carbon/60">No hay hojas de visita firmadas aún.</p>'; return; }
-
             let html = '';
             data.forEach(v => {
                 const date = new Date(v.created_at).toLocaleString('es-ES', { dateStyle: 'medium', timeStyle: 'short' });
                 const args = `'${date}', '${v.property_title.replace(/'/g, "\\'")}', '${v.client_name.replace(/'/g, "\\'")}', '${v.client_dni}', '${v.signature_base64}'`;
-                
-                html += `
-                    <div class="bg-white p-4 rounded-xl border border-carbon/5 flex justify-between items-center shadow-sm">
-                        <div>
-                            <p class="font-medium text-carbon text-sm">${v.client_name} <span class="text-carbon/50 font-light text-xs ml-2">(${v.client_dni})</span></p>
-                            <p class="text-xs text-carbon/70 truncate max-w-[200px] md:max-w-[300px]">🏡 ${v.property_title}</p>
-                            <p class="text-[10px] text-terracota mt-1">${date}</p>
-                        </div>
-                        <button onclick="downloadPDF(${args})" class="bg-carbon/5 hover:bg-carbon/10 text-carbon p-2 rounded-lg transition-colors" title="Descargar PDF">📄 PDF</button>
-                    </div>
-                `;
+                html += `<div class="bg-white p-4 rounded-xl border border-carbon/5 flex justify-between items-center shadow-sm"><div><p class="font-medium text-carbon text-sm">${v.client_name} <span class="text-carbon/50 font-light text-xs ml-2">(${v.client_dni})</span></p><p class="text-xs text-carbon/70 truncate max-w-[200px] md:max-w-[300px]">🏡 ${v.property_title}</p><p class="text-[10px] text-terracota mt-1">${date}</p></div><button onclick="downloadPDF(${args})" class="bg-carbon/5 hover:bg-carbon/10 text-carbon p-2 rounded-lg transition-colors" title="Descargar PDF">📄 PDF</button></div>`;
             });
             container.innerHTML = html;
         }
 
-        // LA SOLUCIÓN DEL PDF BLINDADA
         window.downloadPDF = function(date, property, client, dni, signatureData) {
-            
             document.getElementById('pdf-date').innerText = date;
             document.getElementById('pdf-property').innerText = property;
             document.getElementById('pdf-client').innerText = client;
@@ -415,14 +378,10 @@
             const wrapper = document.getElementById('pdf-container-wrapper');
             const template = document.getElementById('pdf-template');
             
-            // 1. Guardamos la posición actual de tu scroll para no perderte en la web
             const scrollPos = window.scrollY;
-            
-            // 2. Llevamos el navegador a la parte de arriba del todo y mostramos el PDF gigante
             window.scrollTo(0, 0);
             wrapper.style.display = 'flex';
 
-            // 3. Le damos 300 milisegundos de respiro al navegador para que dibuje todo bien
             setTimeout(() => {
                 const opt = {
                     margin:       0,
@@ -431,19 +390,13 @@
                     html2canvas:  { scale: 2, scrollY: 0, scrollX: 0 },
                     jsPDF:        { unit: 'px', format: [800, 1131], orientation: 'portrait' }
                 };
-
                 html2pdf().set(opt).from(template).save().then(() => {
-                    // 4. Cuando acaba de descargar, escondemos el PDF y te devolvemos a donde estabas
-                    wrapper.style.display = 'none';
-                    window.scrollTo(0, scrollPos);
+                    wrapper.style.display = 'none'; window.scrollTo(0, scrollPos);
                 });
             }, 300);
         }
 
         // ==========================================
-        // PROPIEDADES, CATALOGO, REALTIME
-        // ==========================================
-        
         function setupRealtime() {
             supabase.channel('schema-db-changes')
                 .on('postgres_changes', { event: '*', schema: 'public', table: 'properties' }, () => { if (!document.getElementById('tab-catalog').classList.contains('hidden')) loadCatalog(); })
@@ -456,19 +409,19 @@
         function renderImagePreviews() { const input = document.getElementById('image-urls'); const container = document.getElementById('preview-images'); container.innerHTML = ''; if (!input.value) { container.innerHTML = '<span class="text-sm font-light text-carbon/40 italic">Aún no hay fotos...</span>'; return; } input.value.split(',').forEach((url, i) => { if(url.trim()==='') return; container.innerHTML += `<div class="relative inline-block"><img src="${url}" class="h-24 w-24 object-cover rounded-lg border border-carbon/10"><button type="button" onclick="removeImage(${i})" class="absolute -top-2 -right-2 bg-zahara text-carbon border border-carbon/10 rounded-full w-6 h-6 text-xs hover:bg-carbon hover:text-zahara transition-colors">&times;</button></div>`; }); }
         window.removeImage = function(i) { const input = document.getElementById('image-urls'); let urls = input.value.split(','); urls.splice(i, 1); input.value = urls.join(','); renderImagePreviews(); };
 
-        function resetPropertyForm() { document.getElementById('property-form').reset(); document.getElementById('property-id').value = ''; document.getElementById('image-urls').value = ''; document.getElementById('form-title').innerText = 'Añadir Nueva Propiedad'; document.getElementById('is-visible').checked = true; document.getElementById('status').value = 'Disponible'; renderImagePreviews(); }
+        function resetPropertyForm() { document.getElementById('property-form').reset(); document.getElementById('property-id').value = ''; document.getElementById('image-urls').value = ''; document.getElementById('form-title').innerText = 'Añadir Nueva Propiedad'; document.getElementById('map-url').value = ''; document.getElementById('is-visible').checked = true; document.getElementById('status').value = 'Disponible'; renderImagePreviews(); }
 
         document.getElementById('property-form').addEventListener('submit', async (e) => {
             e.preventDefault(); const btn = document.getElementById('submit-btn'); btn.innerText = 'Guardando...'; btn.disabled = true;
             try {
                 const idString = document.getElementById('property-id').value;
-                const data = { title: document.getElementById('title').value, price: parseFloat(document.getElementById('price').value) || 0, location: document.getElementById('location').value, bedrooms: parseInt(document.getElementById('bedrooms').value) || 0, bathrooms: parseInt(document.getElementById('bathrooms').value) || 0, sqm: parseFloat(document.getElementById('sqm').value) || 0, description: document.getElementById('description').value, legal_info: document.getElementById('legal-info').value, image_urls: document.getElementById('image-urls').value, is_visible: document.getElementById('is-visible').checked, status: document.getElementById('status').value };
+                const data = { title: document.getElementById('title').value, price: parseFloat(document.getElementById('price').value) || 0, location: document.getElementById('location').value, bedrooms: parseInt(document.getElementById('bedrooms').value) || 0, bathrooms: parseInt(document.getElementById('bathrooms').value) || 0, sqm: parseFloat(document.getElementById('sqm').value) || 0, description: document.getElementById('description').value, legal_info: document.getElementById('legal-info').value, image_urls: document.getElementById('image-urls').value, map_url: document.getElementById('map-url').value, is_visible: document.getElementById('is-visible').checked, status: document.getElementById('status').value };
                 if (idString) await supabase.from('properties').update(data).eq('id', parseInt(idString)); else await supabase.from('properties').insert([data]);
                 btn.innerText = '¡Guardado!'; btn.classList.replace('bg-salvia', 'bg-[#7e8d7b]'); setTimeout(() => { resetPropertyForm(); switchTab('catalog'); btn.innerText = 'Guardar Propiedad'; btn.disabled = false; }, 1200);
             } catch (err) { alert('Error: ' + err.message); btn.innerText = 'Guardar Propiedad'; btn.disabled = false; }
         });
 
-        window.editProperty = async function(id) { const { data: p } = await supabase.from('properties').select('*').eq('id', parseInt(id)).single(); document.getElementById('property-id').value = p.id; document.getElementById('title').value = p.title; document.getElementById('price').value = p.price; document.getElementById('location').value = p.location; document.getElementById('bedrooms').value = p.bedrooms||''; document.getElementById('bathrooms').value = p.bathrooms||''; document.getElementById('sqm').value = p.sqm||''; document.getElementById('description').value = p.description||''; document.getElementById('legal-info').value = p.legal_info||''; document.getElementById('image-urls').value = p.image_urls||''; document.getElementById('is-visible').checked = p.is_visible; document.getElementById('status').value = p.status||'Disponible'; renderImagePreviews(); document.getElementById('form-title').innerText = 'Editar Propiedad'; switchTab('add'); };
+        window.editProperty = async function(id) { const { data: p } = await supabase.from('properties').select('*').eq('id', parseInt(id)).single(); document.getElementById('property-id').value = p.id; document.getElementById('title').value = p.title; document.getElementById('price').value = p.price; document.getElementById('location').value = p.location; document.getElementById('bedrooms').value = p.bedrooms||''; document.getElementById('bathrooms').value = p.bathrooms||''; document.getElementById('sqm').value = p.sqm||''; document.getElementById('description').value = p.description||''; document.getElementById('legal-info').value = p.legal_info||''; document.getElementById('image-urls').value = p.image_urls||''; document.getElementById('map-url').value = p.map_url||''; document.getElementById('is-visible').checked = p.is_visible; document.getElementById('status').value = p.status||'Disponible'; renderImagePreviews(); document.getElementById('form-title').innerText = 'Editar Propiedad'; switchTab('add'); };
         window.deleteProperty = async function(id) { if (confirm('¿Eliminar?')) { await supabase.from('properties').delete().eq('id', parseInt(id)); loadCatalog(); } };
 
         async function loadCatalog() {
