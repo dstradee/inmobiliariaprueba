@@ -37,15 +37,22 @@
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
     </style>
 </head>
-<body class="bg-zahara min-h-screen font-sans text-carbon antialiased selection:bg-terracota selection:text-white">
+<body class="bg-zahara min-h-screen font-sans text-carbon antialiased selection:bg-terracota selection:text-white flex flex-col">
 
     <header class="bg-zahara/80 backdrop-blur-md sticky top-0 z-40 border-b border-carbon/5">
         <div class="max-w-7xl mx-auto px-6 py-5 flex justify-between items-center">
             <h1 class="text-2xl md:text-3xl font-serif font-semibold tracking-wide text-carbon">Refugios del Sur</h1>
-            <button onclick="toggleFavorites()" class="text-carbon hover:text-terracota transition-colors focus:outline-none relative p-2">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
-                <span id="fav-badge" class="absolute top-0 right-0 bg-terracota text-white text-[10px] font-medium w-4 h-4 flex items-center justify-center rounded-full hidden">0</span>
-            </button>
+            <div class="flex items-center gap-4 md:gap-6">
+                <!-- Botón Vender Casa (Cabecera) -->
+                <button onclick="openSellForm()" class="hidden md:flex text-xs font-semibold uppercase tracking-widest text-terracota border border-terracota/30 hover:border-terracota px-5 py-2.5 rounded-full transition-colors focus:outline-none">
+                    Vender Casa
+                </button>
+                <!-- Botón Favoritos -->
+                <button onclick="toggleFavorites()" class="text-carbon hover:text-terracota transition-colors focus:outline-none relative p-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
+                    <span id="fav-badge" class="absolute top-0 right-0 bg-terracota text-white text-[10px] font-medium w-4 h-4 flex items-center justify-center rounded-full hidden">0</span>
+                </button>
+            </div>
         </div>
     </header>
 
@@ -54,19 +61,14 @@
         <p class="font-light text-carbon/70 max-w-2xl mx-auto text-lg md:text-xl">Selección exclusiva de propiedades diseñadas para respirar, vivir despacio y sentir la brisa del mar.</p>
     </section>
 
-    <!-- BARRA BÚSQUEDA FLOTANTE (ESTILO PIÍLDORA) -->
+    <!-- BARRA BÚSQUEDA FLOTANTE -->
     <div class="max-w-4xl mx-auto px-6 -mt-16 md:-mt-12 relative z-30 mb-8 md:mb-12">
         <div class="bg-white/90 backdrop-blur-xl p-2 rounded-3xl md:rounded-full shadow-float border border-carbon/5 flex flex-col md:flex-row items-center gap-2 transition-all">
-            
-            <!-- Input Texto (Lugar / Ubicación) -->
             <div class="flex-1 w-full flex items-center px-6 py-3 md:py-2">
                 <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-terracota mr-3 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
                 <input type="text" id="search-text" placeholder="¿Dónde quieres vivir? Ej: Zahara..." class="w-full bg-transparent outline-none text-carbon placeholder:text-carbon/40 font-light" onkeyup="filterProperties()">
             </div>
-            
             <div class="hidden md:block w-px h-8 bg-carbon/10"></div>
-            
-            <!-- Select Precio -->
             <div class="flex-1 w-full flex items-center px-6 py-3 md:py-2 border-t border-carbon/5 md:border-none">
                 <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-terracota mr-3 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
                 <select id="search-price" class="w-full bg-transparent outline-none text-carbon font-light appearance-none cursor-pointer" onchange="filterProperties()">
@@ -77,19 +79,35 @@
                     <option value="5000000">Hasta 5.000.000 €</option>
                 </select>
             </div>
-
-            <!-- Botón Buscar -->
             <button onclick="filterProperties()" class="w-full md:w-auto px-8 py-3.5 md:py-3 bg-carbon text-zahara rounded-2xl md:rounded-full font-medium tracking-wide hover:bg-terracota transition-colors shadow-sm focus:outline-none">
                 Buscar
             </button>
         </div>
     </div>
 
-    <main class="max-w-7xl mx-auto px-6 pb-12">
+    <!-- MAIN GRID -->
+    <main class="max-w-7xl mx-auto px-6 pb-12 flex-1 w-full">
         <div id="property-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
             <p class="col-span-full text-center text-carbon/50 mt-10 font-light" id="loading-msg">Cargando propiedades...</p>
         </div>
+
+        <!-- BANNER ¿QUIERES VENDER? -->
+        <div class="mt-16 bg-carbon/5 rounded-3xl p-8 md:p-12 text-center border border-carbon/10">
+            <h3 class="text-2xl md:text-3xl font-serif text-carbon mb-3">¿Pensando en vender tu propiedad?</h3>
+            <p class="font-light text-carbon/70 mb-6 text-sm md:text-base max-w-xl mx-auto">Gestionamos la venta de tu casa con la discreción y exclusividad que merece. Encontramos al comprador ideal.</p>
+            <button onclick="openSellForm()" class="bg-carbon text-zahara px-8 py-3.5 rounded-full font-medium tracking-wide hover:bg-carbon/80 transition-colors shadow-sm focus:outline-none">
+                Solicitar valoración gratuita
+            </button>
+        </div>
     </main>
+
+    <!-- FOOTER DISEÑADO POR BOKALIA -->
+    <footer class="w-full py-6 text-center mt-auto border-t border-carbon/5">
+        <div class="inline-flex items-center gap-1.5 text-[11px] text-carbon/40 tracking-widest uppercase">
+            <span>Diseñado por</span>
+            <a href="https://bokalia.vercel.app/" target="_blank" class="font-bold hover:text-carbon transition-colors focus:outline-none">Bokalia</a>
+        </div>
+    </footer>
 
     <!-- MODAL CASA -->
     <div id="property-modal" class="fixed inset-0 z-50 hidden bg-carbon/40 backdrop-blur-sm flex items-center justify-center p-4 md:p-8 opacity-0 transition-opacity duration-500">
@@ -110,24 +128,14 @@
                 </div>
             </div>
 
-            <div class="w-full md:w-2/5 p-8 md:p-12 flex flex-col overflow-y-auto">
+            <div class="w-full md:w-2/5 p-6 md:p-12 flex flex-col overflow-y-auto">
                 <span class="text-salvia text-sm tracking-widest uppercase font-medium mb-2" id="modal-location">Ubicación</span>
                 <h2 class="text-3xl md:text-4xl font-serif text-carbon mb-2" id="modal-title">Nombre Casa</h2>
-                <p class="text-2xl font-light text-carbon/80 mb-8" id="modal-price">0 €</p>
+                <p class="text-2xl font-light text-carbon/80 mb-6" id="modal-price">0 €</p>
                 
-                <div class="flex gap-6 mb-8 border-y border-carbon/10 py-4">
-                    <div class="text-center">
-                        <span class="block text-xl font-serif text-carbon" id="modal-beds">0</span>
-                        <span class="text-xs text-carbon/60 uppercase tracking-wider">Hab.</span>
-                    </div>
-                    <div class="text-center border-l border-carbon/10 pl-6">
-                        <span class="block text-xl font-serif text-carbon" id="modal-baths">0</span>
-                        <span class="text-xs text-carbon/60 uppercase tracking-wider">Baños</span>
-                    </div>
-                    <div class="text-center border-l border-carbon/10 pl-6">
-                        <span class="block text-xl font-serif text-carbon"><span id="modal-sqm">0</span></span>
-                        <span class="text-xs text-carbon/60 uppercase tracking-wider">m²</span>
-                    </div>
+                <!-- CARACTERÍSTICAS AMPLIADAS -->
+                <div class="flex flex-wrap gap-x-6 gap-y-4 mb-8 border-y border-carbon/10 py-4" id="modal-stats">
+                    <!-- JS inyecta esto -->
                 </div>
 
                 <p class="text-carbon/70 font-light text-sm md:text-base mb-6 leading-relaxed whitespace-pre-line" id="modal-description"></p>
@@ -137,17 +145,16 @@
                     <p class="text-xs font-light text-carbon/80 whitespace-pre-line" id="modal-legal"></p>
                 </div>
 
-                <!-- Botón de Google Maps -->
                 <a id="modal-map-link" href="#" target="_blank" class="hidden items-center justify-center gap-2 mb-10 w-full py-3 bg-white border border-carbon/20 rounded-lg text-sm font-medium text-carbon hover:border-terracota hover:text-terracota transition-colors">
                     <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
                     Ver ubicación exacta en Google Maps
                 </a>
                 
-                <div class="mt-auto flex gap-4">
-                    <button onclick="addToFavorites()" id="btn-add-fav" class="flex-1 bg-zahara border border-carbon text-carbon py-4 rounded-lg font-medium tracking-wide hover:bg-carbon hover:text-zahara transition-all duration-300 focus:outline-none">
+                <div class="mt-auto flex gap-3 md:gap-4 flex-col lg:flex-row">
+                    <button onclick="addToFavorites()" id="btn-add-fav" class="w-full lg:flex-1 bg-zahara border border-carbon text-carbon py-3.5 rounded-lg font-medium tracking-wide hover:bg-carbon hover:text-zahara transition-all duration-300 focus:outline-none">
                         Guardar Favorito
                     </button>
-                    <button onclick="openLeadForm()" class="flex-1 bg-terracota text-white py-4 rounded-lg font-medium tracking-wide hover:bg-[#d0a48a] transition-colors shadow-sm focus:outline-none">
+                    <button onclick="openLeadForm()" class="w-full lg:flex-1 bg-terracota text-white py-3.5 rounded-lg font-medium tracking-wide hover:bg-[#d0a48a] transition-colors shadow-sm focus:outline-none">
                         Solicitar Visita
                     </button>
                 </div>
@@ -167,7 +174,7 @@
         <div id="favorites-list" class="flex-1 overflow-y-auto p-8 space-y-6"></div>
 
         <div id="lead-form-container" class="flex-1 overflow-y-auto p-8 hidden">
-            <p class="text-sm font-light text-carbon/70 mb-6">Déjanos tus datos y un asesor se pondrá en contacto contigo para organizar una visita a <strong id="lead-property-name" class="font-medium text-carbon">la propiedad</strong>.</p>
+            <p id="lead-form-desc" class="text-sm font-light text-carbon/70 mb-6">Déjanos tus datos y un asesor se pondrá en contacto contigo para organizar una visita a <strong id="lead-property-name" class="font-medium text-carbon">la propiedad</strong>.</p>
             
             <form id="lead-form" class="space-y-4">
                 <input type="hidden" id="lead-property-id">
@@ -187,7 +194,6 @@
     <div id="side-overlay" onclick="toggleFavorites()" class="fixed inset-0 bg-carbon/20 backdrop-blur-sm z-[55] hidden opacity-0 transition-opacity duration-500"></div>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    
     <script>
         if (typeof window.supabase === 'undefined') {
             document.getElementById('property-grid').innerHTML = '<p class="col-span-full text-center text-red-500 mt-10 font-bold">Error: No se ha podido cargar Supabase.</p>';
@@ -205,24 +211,18 @@
             let currentCarouselIndex = 0;
             let favorites = [];
             
-            try {
-                const favs = localStorage.getItem('zahara_favs');
-                if(favs) favorites = JSON.parse(favs);
-            } catch (error) { favorites = []; }
+            try { const favs = localStorage.getItem('zahara_favs'); if(favs) favorites = JSON.parse(favs); } catch (e) { favorites = []; }
 
             const formatPrice = (price) => new Intl.NumberFormat('es-ES').format(price) + ' €';
 
-            // FUNCIÓN DE BÚSQUEDA / FILTRO
             window.filterProperties = function() {
                 const locText = document.getElementById('search-text').value.toLowerCase();
                 const maxPrice = document.getElementById('search-price').value;
-
                 const filtered = properties.filter(p => {
                     const matchText = p.location.toLowerCase().includes(locText) || p.title.toLowerCase().includes(locText);
                     const matchPrice = maxPrice === "" || p.price <= parseInt(maxPrice);
                     return matchText && matchPrice;
                 });
-                
                 renderProperties(filtered);
             };
 
@@ -272,39 +272,38 @@
                 document.getElementById('modal-title').innerText = currentProperty.title;
                 document.getElementById('modal-location').innerText = currentProperty.location;
                 document.getElementById('modal-price').innerText = formatPrice(currentProperty.price);
-                document.getElementById('modal-beds').innerText = currentProperty.bedrooms || '-';
-                document.getElementById('modal-baths').innerText = currentProperty.bathrooms || '-';
-                document.getElementById('modal-sqm').innerText = currentProperty.sqm || '-';
                 document.getElementById('modal-description').innerText = currentProperty.description || 'Sin descripción detallada.';
                 document.getElementById('modal-legal').innerText = currentProperty.legal_info || 'Consultar con el asesor.';
                 
-                // Mostrar Google Maps si existe
-                const mapBtn = document.getElementById('modal-map-link');
-                if(currentProperty.map_url) {
-                    mapBtn.href = currentProperty.map_url;
-                    mapBtn.classList.remove('hidden');
-                    mapBtn.classList.add('flex');
+                // Nuevas estadísticas (Amueblado, camas, plantas...)
+                let statsHtml = '';
+                statsHtml += `<div class="text-center pr-6 border-r border-carbon/10 last:border-0"><span class="block text-xl md:text-2xl font-serif text-carbon">${currentProperty.bedrooms || 0}</span><span class="text-[10px] text-carbon/60 uppercase tracking-wider">Hab.</span></div>`;
+                statsHtml += `<div class="text-center pr-6 border-r border-carbon/10 last:border-0"><span class="block text-xl md:text-2xl font-serif text-carbon">${currentProperty.bathrooms || 0}</span><span class="text-[10px] text-carbon/60 uppercase tracking-wider">Baños</span></div>`;
+                statsHtml += `<div class="text-center pr-6 border-r border-carbon/10 last:border-0"><span class="block text-xl md:text-2xl font-serif text-carbon">${currentProperty.sqm || 0}</span><span class="text-[10px] text-carbon/60 uppercase tracking-wider">m²</span></div>`;
+                statsHtml += `<div class="text-center pr-6 border-r border-carbon/10 last:border-0"><span class="block text-xl md:text-2xl font-serif text-carbon">${currentProperty.floors || 1}</span><span class="text-[10px] text-carbon/60 uppercase tracking-wider">Plantas</span></div>`;
+                
+                if(currentProperty.is_furnished) {
+                    statsHtml += `<div class="text-center pr-6 border-r border-carbon/10 last:border-0"><span class="block text-xl md:text-2xl font-serif text-salvia">Sí</span><span class="text-[10px] text-carbon/60 uppercase tracking-wider">Amueblado</span></div>`;
+                    statsHtml += `<div class="text-center pr-6 border-r border-carbon/10 last:border-0"><span class="block text-xl md:text-2xl font-serif text-carbon">${currentProperty.beds || 0}</span><span class="text-[10px] text-carbon/60 uppercase tracking-wider">Camas</span></div>`;
                 } else {
-                    mapBtn.classList.add('hidden');
-                    mapBtn.classList.remove('flex');
+                    statsHtml += `<div class="text-center pr-6 border-r border-carbon/10 last:border-0"><span class="block text-xl md:text-2xl font-serif text-carbon/40">No</span><span class="text-[10px] text-carbon/60 uppercase tracking-wider">Amueblado</span></div>`;
                 }
+                document.getElementById('modal-stats').innerHTML = statsHtml;
+
+                const mapBtn = document.getElementById('modal-map-link');
+                if(currentProperty.map_url) { mapBtn.href = currentProperty.map_url; mapBtn.classList.remove('hidden'); mapBtn.classList.add('flex'); } 
+                else { mapBtn.classList.add('hidden'); mapBtn.classList.remove('flex'); }
 
                 currentCarouselImages = currentProperty.image_urls ? currentProperty.image_urls.split(',').map(u => u.trim()).filter(u => u !== "") : [];
-                currentCarouselIndex = 0;
-                renderCarouselImage();
-                updateFavButtonState();
+                currentCarouselIndex = 0; renderCarouselImage(); updateFavButtonState();
 
-                const modal = document.getElementById('property-modal');
-                const content = document.getElementById('modal-content');
-                modal.classList.remove('hidden');
-                setTimeout(() => { modal.classList.remove('opacity-0'); content.classList.remove('scale-95'); }, 10);
+                const modal = document.getElementById('property-modal'); const content = document.getElementById('modal-content');
+                modal.classList.remove('hidden'); setTimeout(() => { modal.classList.remove('opacity-0'); content.classList.remove('scale-95'); }, 10);
             }
 
             function closeModal() {
-                const modal = document.getElementById('property-modal');
-                const content = document.getElementById('modal-content');
-                modal.classList.add('opacity-0'); content.classList.add('scale-95');
-                setTimeout(() => { modal.classList.add('hidden'); }, 500);
+                const modal = document.getElementById('property-modal'); const content = document.getElementById('modal-content');
+                modal.classList.add('opacity-0'); content.classList.add('scale-95'); setTimeout(() => { modal.classList.add('hidden'); }, 500);
             }
             document.getElementById('property-modal').addEventListener('click', function(e) { if (e.target === this) closeModal(); });
 
@@ -313,127 +312,89 @@
                 const exists = favorites.find(f => f.id === currentProperty.id);
                 if (exists) favorites = favorites.filter(f => f.id !== currentProperty.id);
                 else favorites.push({ id: currentProperty.id, title: currentProperty.title, price: currentProperty.price, location: currentProperty.location, image: currentProperty.image_urls ? currentProperty.image_urls.split(',')[0] : null });
-                localStorage.setItem('zahara_favs', JSON.stringify(favorites));
-                updateFavButtonState(); updateFavBadge(); renderFavoritesList();
+                localStorage.setItem('zahara_favs', JSON.stringify(favorites)); updateFavButtonState(); updateFavBadge(); renderFavoritesList();
             }
 
             function updateFavButtonState() {
-                if(!currentProperty) return;
-                const btn = document.getElementById('btn-add-fav');
-                if(favorites.find(f => f.id === currentProperty.id)) {
-                    btn.innerText = "Quitar Favorito"; btn.classList.add('bg-carbon', 'text-zahara'); btn.classList.remove('bg-zahara', 'text-carbon');
-                } else {
-                    btn.innerText = "Guardar Favorito"; btn.classList.remove('bg-carbon', 'text-zahara'); btn.classList.add('bg-zahara', 'text-carbon');
-                }
+                if(!currentProperty) return; const btn = document.getElementById('btn-add-fav');
+                if(favorites.find(f => f.id === currentProperty.id)) { btn.innerText = "Quitar Favorito"; btn.classList.add('bg-carbon', 'text-zahara'); btn.classList.remove('bg-zahara', 'text-carbon'); } 
+                else { btn.innerText = "Guardar Favorito"; btn.classList.remove('bg-carbon', 'text-zahara'); btn.classList.add('bg-zahara', 'text-carbon'); }
             }
 
             function updateFavBadge() {
                 const badge = document.getElementById('fav-badge');
-                if (favorites.length > 0) { badge.innerText = favorites.length; badge.classList.remove('hidden'); } 
-                else { badge.classList.add('hidden'); }
+                if (favorites.length > 0) { badge.innerText = favorites.length; badge.classList.remove('hidden'); } else { badge.classList.add('hidden'); }
             }
 
             function renderFavoritesList() {
-                const container = document.getElementById('favorites-list');
-                container.innerHTML = '';
+                const container = document.getElementById('favorites-list'); container.innerHTML = '';
                 if (favorites.length === 0) { container.innerHTML = '<p class="text-carbon/50 font-light text-center mt-10">No has guardado ninguna propiedad todavía.</p>'; return; }
                 favorites.forEach((fav) => {
                     const img = fav.image ? `<img src="${fav.image}" class="w-20 h-20 object-cover rounded-lg">` : `<div class="w-20 h-20 bg-carbon/5 rounded-lg"></div>`;
-                    container.innerHTML += `
-                        <div class="flex gap-4 items-center bg-white p-3 rounded-xl border border-carbon/5 shadow-sm">
-                            ${img}
-                            <div class="flex-1">
-                                <span class="text-[10px] uppercase text-salvia tracking-widest block mb-1">${fav.location}</span>
-                                <h4 class="font-serif text-carbon text-sm leading-tight mb-1">${fav.title}</h4>
-                                <span class="font-light text-carbon/80 text-sm block">${formatPrice(fav.price)}</span>
-                            </div>
-                            <button onclick="removeFavorite(${fav.id})" class="text-carbon/40 hover:text-terracota transition p-2 focus:outline-none">✕</button>
-                        </div>`;
+                    container.innerHTML += `<div class="flex gap-4 items-center bg-white p-3 rounded-xl border border-carbon/5 shadow-sm">${img}<div class="flex-1"><span class="text-[10px] uppercase text-salvia tracking-widest block mb-1">${fav.location}</span><h4 class="font-serif text-carbon text-sm leading-tight mb-1">${fav.title}</h4><span class="font-light text-carbon/80 text-sm block">${formatPrice(fav.price)}</span></div><button onclick="removeFavorite(${fav.id})" class="text-carbon/40 hover:text-terracota transition p-2 focus:outline-none">✕</button></div>`;
                 });
             }
 
-            function removeFavorite(id) {
+            window.removeFavorite = function(id) {
                 favorites = favorites.filter(f => f.id !== id); localStorage.setItem('zahara_favs', JSON.stringify(favorites));
-                updateFavBadge(); renderFavoritesList();
-                if(currentProperty && currentProperty.id === id) updateFavButtonState();
+                updateFavBadge(); renderFavoritesList(); if(currentProperty && currentProperty.id === id) updateFavButtonState();
             }
 
             window.toggleFavorites = function() {
                 const panel = document.getElementById('side-panel'); const overlay = document.getElementById('side-overlay');
                 if (panel.classList.contains('translate-x-full')) {
-                    document.getElementById('panel-title').innerText = "Tus Favoritos";
-                    document.getElementById('favorites-list').classList.remove('hidden');
-                    document.getElementById('lead-form-container').classList.add('hidden');
-                    renderFavoritesList();
-                    overlay.classList.remove('hidden'); setTimeout(() => overlay.classList.remove('opacity-0'), 10);
-                    panel.classList.remove('translate-x-full');
+                    document.getElementById('panel-title').innerText = "Tus Favoritos"; document.getElementById('favorites-list').classList.remove('hidden'); document.getElementById('lead-form-container').classList.add('hidden');
+                    renderFavoritesList(); overlay.classList.remove('hidden'); setTimeout(() => overlay.classList.remove('opacity-0'), 10); panel.classList.remove('translate-x-full');
                 } else {
-                    panel.classList.add('translate-x-full'); overlay.classList.add('opacity-0');
-                    setTimeout(() => overlay.classList.add('hidden'), 500);
+                    panel.classList.add('translate-x-full'); overlay.classList.add('opacity-0'); setTimeout(() => overlay.classList.add('hidden'), 500);
                 }
             }
 
-            function openLeadForm() {
-                if(!currentProperty) return;
-                closeModal();
-                document.getElementById('panel-title').innerText = "Solicitar Visita";
-                document.getElementById('lead-property-id').value = currentProperty.id;
-                document.getElementById('lead-property-name').innerText = currentProperty.title;
-                document.getElementById('favorites-list').classList.add('hidden');
-                document.getElementById('lead-form-container').classList.remove('hidden');
-                document.getElementById('lead-msg').classList.add('hidden');
+            window.openLeadForm = function() {
+                if(!currentProperty) return; closeModal();
+                document.getElementById('panel-title').innerText = "Solicitar Visita"; document.getElementById('lead-property-id').value = currentProperty.id;
+                document.getElementById('lead-form-desc').innerHTML = `Déjanos tus datos y un asesor se pondrá en contacto contigo para organizar una visita a <strong id="lead-property-name" class="font-medium text-carbon">${currentProperty.title}</strong>.`;
+                document.getElementById('favorites-list').classList.add('hidden'); document.getElementById('lead-form-container').classList.remove('hidden'); document.getElementById('lead-msg').classList.add('hidden');
+                
                 const panel = document.getElementById('side-panel'); const overlay = document.getElementById('side-overlay');
-                if (panel.classList.contains('translate-x-full')) {
-                    overlay.classList.remove('hidden'); setTimeout(() => overlay.classList.remove('opacity-0'), 10);
-                    panel.classList.remove('translate-x-full');
-                }
+                if (panel.classList.contains('translate-x-full')) { overlay.classList.remove('hidden'); setTimeout(() => overlay.classList.remove('opacity-0'), 10); panel.classList.remove('translate-x-full'); }
+            }
+
+            window.openSellForm = function() {
+                closeModal();
+                document.getElementById('panel-title').innerText = "Vender Inmueble"; document.getElementById('lead-property-id').value = "vender"; 
+                document.getElementById('lead-form-desc').innerHTML = "Déjanos tus datos y un asesor de Refugios del Sur se pondrá en contacto contigo para gestionar la venta de <strong id='lead-property-name' class='font-medium text-carbon'>tu propiedad</strong>.";
+                document.getElementById('favorites-list').classList.add('hidden'); document.getElementById('lead-form-container').classList.remove('hidden'); document.getElementById('lead-msg').classList.add('hidden');
+                
+                const panel = document.getElementById('side-panel'); const overlay = document.getElementById('side-overlay');
+                if (panel.classList.contains('translate-x-full')) { overlay.classList.remove('hidden'); setTimeout(() => overlay.classList.remove('opacity-0'), 10); panel.classList.remove('translate-x-full'); }
             }
 
             document.getElementById('lead-form').addEventListener('submit', async (e) => {
-                e.preventDefault();
-                const btn = document.getElementById('btn-submit-lead'); const msg = document.getElementById('lead-msg');
+                e.preventDefault(); const btn = document.getElementById('btn-submit-lead'); const msg = document.getElementById('lead-msg');
                 btn.disabled = true; btn.innerText = "Enviando..."; msg.classList.add('hidden');
+                
+                const rawPropId = document.getElementById('lead-property-id').value; const isSelling = rawPropId === 'vender';
+                const propId = isSelling ? null : parseInt(rawPropId); const propName = isSelling ? '🏠 QUIERE VENDER SU CASA' : document.getElementById('lead-property-name').innerText;
+
                 try {
-                    const { error } = await supabase.from('leads').insert([{
-                        property_id: parseInt(document.getElementById('lead-property-id').value),
-                        property_title: document.getElementById('lead-property-name').innerText,
-                        customer_name: document.getElementById('lead-name').value,
-                        customer_email: document.getElementById('lead-email').value,
-                        customer_phone: document.getElementById('lead-phone').value,
-                        message: document.getElementById('lead-message').value
-                    }]);
+                    const { error } = await supabase.from('leads').insert([{ property_id: propId, property_title: propName, customer_name: document.getElementById('lead-name').value, customer_email: document.getElementById('lead-email').value, customer_phone: document.getElementById('lead-phone').value, message: document.getElementById('lead-message').value }]);
                     if (error) throw error;
-                    const telegramText = `🏡 ¡NUEVA SOLICITUD DE VISITA!\n\nPropiedad: ${document.getElementById('lead-property-name').innerText}\n👤 Cliente: ${document.getElementById('lead-name').value}\n📞 Teléfono: ${document.getElementById('lead-phone').value}\n📧 Email: ${document.getElementById('lead-email').value}\n💬 Mensaje: ${document.getElementById('lead-message').value || '-'}`;
+                    const telegramText = isSelling ? `📣 *NUEVA SOLICITUD DE VENTA*\n\n👤 Cliente: ${document.getElementById('lead-name').value}\n📞 Teléfono: ${document.getElementById('lead-phone').value}\n📧 Email: ${document.getElementById('lead-email').value}\n💬 Mensaje: ${document.getElementById('lead-message').value || '-'}` : `🏡 ¡NUEVA SOLICITUD DE VISITA!\n\nPropiedad: ${propName}\n👤 Cliente: ${document.getElementById('lead-name').value}\n📞 Teléfono: ${document.getElementById('lead-phone').value}\n📧 Email: ${document.getElementById('lead-email').value}\n💬 Mensaje: ${document.getElementById('lead-message').value || '-'}`;
                     await Promise.all(TELEGRAM_CHAT_IDS.map(id => fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ chat_id: id, text: telegramText }) })));
-                    document.getElementById('lead-form').reset();
-                    msg.innerText = "Solicitud enviada con éxito. Te contactaremos pronto.";
-                    msg.className = "text-center font-medium mt-4 p-4 rounded-lg bg-salvia/10 text-salvia text-sm block";
-                    btn.classList.add('hidden');
-                    setTimeout(() => toggleFavorites(), 3000);
-                } catch (err) {
-                    msg.innerText = "Hubo un error. Por favor, intenta de nuevo.";
-                    msg.className = "text-center font-medium mt-4 p-4 rounded-lg bg-red-50 text-red-600 text-sm block";
-                    btn.disabled = false; btn.innerText = "Enviar Solicitud";
-                }
+                    
+                    document.getElementById('lead-form').reset(); msg.innerText = "Solicitud enviada con éxito. Te contactaremos pronto."; msg.className = "text-center font-medium mt-4 p-4 rounded-lg bg-salvia/10 text-salvia text-sm block"; btn.classList.add('hidden'); setTimeout(() => toggleFavorites(), 3000);
+                } catch (err) { msg.innerText = "Hubo un error. Por favor, intenta de nuevo."; msg.className = "text-center font-medium mt-4 p-4 rounded-lg bg-red-50 text-red-600 text-sm block"; btn.disabled = false; btn.innerText = "Enviar Solicitud"; }
             });
 
             async function fetchProperties() {
                 try {
-                    const { data, error } = await supabase
-                        .from('properties')
-                        .select('*')
-                        .eq('is_visible', true)
-                        .order('created_at', { ascending: false });
-
-                    if (!error && data) {
-                        properties = data;
-                        filterProperties(); // Usamos el filtro para renderizar (por si hay una búsqueda activa)
-                    }
+                    const { data, error } = await supabase.from('properties').select('*').eq('is_visible', true).order('created_at', { ascending: false });
+                    if (!error && data) { properties = data; filterProperties(); }
                 } catch(error) { console.error(error); }
             }
 
-            fetchProperties(); 
-            updateFavBadge();
+            fetchProperties(); updateFavBadge();
             supabase.channel('public:properties').on('postgres_changes', { event: '*', schema: 'public', table: 'properties' }, fetchProperties).subscribe();
         }
     </script>
