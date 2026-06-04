@@ -56,6 +56,7 @@
     <main class="max-w-7xl mx-auto px-6 py-8">
         <div id="property-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
             <!-- Casas se cargan aquí -->
+            <p class="col-span-full text-center text-carbon/50 mt-10 font-light" id="loading-msg">Cargando propiedades...</p>
         </div>
     </main>
 
@@ -179,7 +180,7 @@
                         <div class="w-full aspect-[4/3] rounded-xl overflow-hidden mb-4 relative shadow-soft">
                             <img src="${firstImage}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
                             <div class="absolute inset-0 bg-carbon/10 group-hover:bg-transparent transition-colors duration-500"></div>
-                            ${prop.status !== 'Disponible' ? `<div class="absolute top-4 left-4 bg-carbon text-zahara text-xs px-3 py-1 rounded-full font-medium tracking-wider uppercase">${prop.status}</div>` : ''}
+                            ${prop.status !== 'Disponible' ? `<div class="absolute top-4 left-4 bg-carbon text-zahara text-xs px-3 py-1 rounded-full font-medium tracking-wider uppercase shadow-md">${prop.status}</div>` : ''}
                         </div>
                         <span class="text-salvia text-xs tracking-widest uppercase font-medium mb-1">${prop.location}</span>
                         <h3 class="text-lg font-serif text-carbon mb-1">${prop.title}</h3>
@@ -346,8 +347,22 @@
         });
 
         async function fetchProperties() {
-            const { data, error } = await supabase.from('properties').select('*').eq('is_visible', true).order('created_at', { ascending: false });
-            if (!error && data) { properties = data; renderProperties(properties); }
+            const grid = document.getElementById('property-grid');
+            try {
+                const { data, error } = await supabase
+                    .from('properties')
+                    .select('*')
+                    .eq('is_visible', true)
+                    .order('created_at', { ascending: false });
+
+                if (error) throw error;
+                
+                properties = data;
+                renderProperties(properties);
+            } catch(error) {
+                grid.innerHTML = `<p class="col-span-full text-center text-red-500 mt-10 font-light">Error de conexión: Por favor, asegúrate de haber ejecutado el código SQL en Supabase para habilitar los permisos.</p>`;
+                console.error(error);
+            }
         }
 
         document.addEventListener('DOMContentLoaded', () => {
