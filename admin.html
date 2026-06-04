@@ -39,7 +39,7 @@
         canvas#signature-pad { touch-action: none; }
     </style>
 </head>
-<body class="bg-fondo min-h-screen p-4 md:p-8 font-sans text-carbon antialiased relative">
+<body class="bg-fondo min-h-screen p-4 md:p-8 font-sans text-carbon antialiased relative z-0">
 
     <!-- SECCIÓN DE LOGIN -->
     <div id="login-section" class="max-w-md mx-auto bg-zahara p-10 rounded-2xl shadow-lg border border-carbon/5 mt-20">
@@ -202,49 +202,6 @@
         </div>
     </div>
 
-    <!-- ========================================== -->
-    <!-- PLANTILLA OCULTA BLINDADA CON ESTILOS INLINE PARA EL PDF -->
-    <!-- Esto asegura que no se rompa nunca al generar el PDF   -->
-    <!-- ========================================== -->
-    <div id="pdf-template" class="hidden">
-        <!-- El ancho de 800px es el tamaño estándar de la foto para el folio -->
-        <div style="width: 800px; padding: 40px; box-sizing: border-box; font-family: 'Montserrat', sans-serif; background: white; color: #2A2927;">
-            
-            <div style="border-bottom: 2px solid #2A2927; padding-bottom: 16px; margin-bottom: 24px; display: flex; justify-content: space-between; align-items: center;">
-                <h1 style="font-family: 'Playfair Display', serif; font-size: 30px; font-weight: bold; margin: 0;">Refugios del Sur</h1>
-                <span style="font-size: 14px; font-weight: 500; text-transform: uppercase; color: #6b7280;">Hoja de Visita</span>
-            </div>
-            
-            <div style="margin-bottom: 32px; background-color: #f9fafb; padding: 24px; border: 1px solid #e5e7eb; border-radius: 4px;">
-                <p style="margin: 0 0 8px 0;"><strong>Fecha y Hora:</strong> <span id="pdf-date" style="font-weight: 300;"></span></p>
-                <p style="margin: 0 0 8px 0;"><strong>Inmueble Visitado:</strong> <span id="pdf-property" style="font-weight: 300;"></span></p>
-                <p style="margin: 0 0 8px 0;"><strong>Nombre del Cliente:</strong> <span id="pdf-client" style="font-weight: 300;"></span></p>
-                <p style="margin: 0;"><strong>DNI / NIE:</strong> <span id="pdf-dni" style="font-weight: 300;"></span></p>
-            </div>
-            
-            <div style="font-size: 14px; text-align: justify; margin-bottom: 40px; line-height: 1.6;">
-                <strong style="font-size: 16px; margin-bottom: 8px; display: block;">Acuerdo de Visita y Reconocimiento de Honorarios:</strong>
-                El cliente reconoce haber visitado el inmueble indicado a través de la agencia <strong>Refugios del Sur</strong>. Se compromete expresamente a no realizar ninguna transacción (compra, alquiler, o trato directo con la propiedad) a espaldas de la agencia.<br><br>
-                En caso de formalizar una operación sobre dicho inmueble, de forma directa o indirecta (a través de familiares, socios o empresas vinculadas), el cliente reconoce y asume de forma irrevocable el pago de los honorarios profesionales correspondientes a la agencia inmobiliaria por los servicios prestados de intermediación.
-            </div>
-            
-            <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-top: 40px;">
-                <div style="width: 50%;">
-                    <p style="font-weight: bold; margin-bottom: 8px;">El Cliente (Firma):</p>
-                    <img id="pdf-signature" src="" style="height: 112px; border-bottom: 1px solid #2A2927; width: 80%; object-fit: contain;">
-                </div>
-                <div style="width: 50%; text-align: right;">
-                    <p style="font-size: 12px; color: #6b7280; font-style: italic; line-height: 1.2; margin: 0;">
-                        Documento generado digitalmente<br>
-                        por la plataforma administrativa de<br>
-                        <strong>Refugios del Sur</strong>
-                    </p>
-                </div>
-            </div>
-            
-        </div>
-    </div>
-
     <script>
         // --- CONFIGURACIÓN SUPABASE Y CLOUDINARY ---
         var supabaseUrl = 'https://zqsoagqdypchtdtcudre.supabase.co'; 
@@ -404,41 +361,62 @@
         }
 
         window.downloadPDF = function(date, property, client, dni, signatureData) {
-            // Rellenar datos
-            document.getElementById('pdf-date').innerText = date;
-            document.getElementById('pdf-property').innerText = property;
-            document.getElementById('pdf-client').innerText = client;
-            document.getElementById('pdf-dni').innerText = dni;
-            document.getElementById('pdf-signature').src = signatureData;
-
-            // EL TRUCO MAESTRO: En vez de intentar fotografiar un elemento escondido, 
-            // creamos un clon temporal, lo ponemos en la coordenada 0,0 invisiblemente, 
-            // le tomamos la foto y lo destruimos. ¡Infalible!
-            const originalElement = document.getElementById('pdf-template');
-            const clone = originalElement.cloneNode(true);
+            // SOLUCIÓN A PRUEBA DE BOMBAS: Creamos el documento al vuelo en JavaScript
+            // con estilos en línea fijos (800px). Así es 100% inmune a CSS, móviles y Tailwind.
             
-            clone.style.display = "block";
-            clone.style.position = "absolute";
-            clone.style.top = "0px";
-            clone.style.left = "0px";
-            clone.style.zIndex = "-9999";
+            const element = document.createElement('div');
+            // Lo anclamos en la esquina superior izquierda pero oculto con z-index.
+            element.style.cssText = 'width: 800px; padding: 40px; background-color: white; color: black; position: absolute; left: 0; top: 0; z-index: -9999; box-sizing: border-box;';
             
-            document.body.appendChild(clone);
+            element.innerHTML = `
+                <div style="border-bottom: 2px solid #2A2927; padding-bottom: 16px; margin-bottom: 24px; display: flex; justify-content: space-between; align-items: center;">
+                    <h1 style="font-family: 'Playfair Display', serif; font-size: 30px; font-weight: bold; margin: 0;">Refugios del Sur</h1>
+                    <span style="font-size: 14px; font-weight: 500; text-transform: uppercase; color: #6b7280;">Hoja de Visita</span>
+                </div>
+                
+                <div style="margin-bottom: 32px; background-color: #f9fafb; padding: 24px; border: 1px solid #e5e7eb; border-radius: 4px;">
+                    <p style="margin: 0 0 8px 0; font-size: 16px;"><strong>Fecha y Hora:</strong> <span style="font-weight: 300;">${date}</span></p>
+                    <p style="margin: 0 0 8px 0; font-size: 16px;"><strong>Inmueble Visitado:</strong> <span style="font-weight: 300;">${property}</span></p>
+                    <p style="margin: 0 0 8px 0; font-size: 16px;"><strong>Nombre del Cliente:</strong> <span style="font-weight: 300;">${client}</span></p>
+                    <p style="margin: 0; font-size: 16px;"><strong>DNI / NIE:</strong> <span style="font-weight: 300;">${dni}</span></p>
+                </div>
+                
+                <div style="font-size: 14px; text-align: justify; margin-bottom: 40px; line-height: 1.6;">
+                    <strong style="font-size: 16px; margin-bottom: 8px; display: block;">Acuerdo de Visita y Reconocimiento de Honorarios:</strong>
+                    El cliente reconoce haber visitado el inmueble indicado a través de la agencia <strong>Refugios del Sur</strong>. Se compromete expresamente a no realizar ninguna transacción (compra, alquiler, o trato directo con la propiedad) a espaldas de la agencia.<br><br>
+                    En caso de formalizar una operación sobre dicho inmueble, de forma directa o indirecta (a través de familiares, socios o empresas vinculadas), el cliente reconoce y asume de forma irrevocable el pago de los honorarios profesionales correspondientes a la agencia inmobiliaria por los servicios prestados de intermediación.
+                </div>
+                
+                <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-top: 40px;">
+                    <div style="width: 50%;">
+                        <p style="font-weight: bold; margin-bottom: 8px;">El Cliente (Firma):</p>
+                        <img src="${signatureData}" style="height: 112px; border-bottom: 1px solid #2A2927; width: 80%; object-fit: contain;">
+                    </div>
+                    <div style="width: 50%; text-align: right;">
+                        <p style="font-size: 12px; color: #6b7280; font-style: italic; line-height: 1.2; margin: 0;">
+                            Documento generado digitalmente<br>
+                            por la plataforma administrativa de<br>
+                            <strong>Refugios del Sur</strong>
+                        </p>
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(element);
 
             const opt = {
-                margin:       0.5,
+                margin:       0.4,
                 filename:     `Hoja_Visita_${client.replace(/\s+/g, '_')}.pdf`,
                 image:        { type: 'jpeg', quality: 0.98 },
                 html2canvas:  { 
-                    scale: 2, 
-                    width: 800,
-                    windowWidth: 800
+                    scale: 2,
+                    windowWidth: 800 // Bloquea la resolución a 800px para que la cámara no haga zoom raro
                 },
                 jsPDF:        { unit: 'in', format: 'a4', orientation: 'portrait' }
             };
 
-            html2pdf().set(opt).from(clone).save().then(() => {
-                document.body.removeChild(clone); // Limpiamos el clon
+            html2pdf().set(opt).from(element).save().then(() => {
+                document.body.removeChild(element); // Una vez sacada la foto, lo borramos de la web
             });
         }
 
