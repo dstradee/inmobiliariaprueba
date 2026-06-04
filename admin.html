@@ -39,7 +39,7 @@
         canvas#signature-pad { touch-action: none; }
     </style>
 </head>
-<body class="bg-fondo min-h-screen p-4 md:p-8 font-sans text-carbon antialiased">
+<body class="bg-fondo min-h-screen p-4 md:p-8 font-sans text-carbon antialiased relative">
 
     <!-- SECCIÓN DE LOGIN -->
     <div id="login-section" class="max-w-md mx-auto bg-zahara p-10 rounded-2xl shadow-lg border border-carbon/5 mt-20">
@@ -202,38 +202,41 @@
         </div>
     </div>
 
-    <!-- MOLDE DEL PDF CORREGIDO: Ancho fijo, fuera de la pantalla, inamovible por CSS -->
-    <div id="pdf-template" class="bg-white p-10 text-black" style="display: none; width: 750px; position: absolute; top: -9999px; left: -9999px;">
-        <div class="border-b-2 border-black pb-4 mb-6 flex justify-between items-center">
-            <h1 class="text-3xl font-serif font-bold tracking-wide">Refugios del Sur</h1>
-            <span class="text-sm font-medium tracking-widest uppercase text-gray-500">Hoja de Visita</span>
-        </div>
-        
-        <div class="mb-8 bg-gray-50 p-6 rounded border border-gray-200">
-            <p class="mb-2"><strong>Fecha y Hora:</strong> <span id="pdf-date" class="font-light"></span></p>
-            <p class="mb-2"><strong>Inmueble Visitado:</strong> <span id="pdf-property" class="font-light"></span></p>
-            <p class="mb-2"><strong>Nombre del Cliente:</strong> <span id="pdf-client" class="font-light"></span></p>
-            <p class="mb-0"><strong>DNI / NIE:</strong> <span id="pdf-dni" class="font-light"></span></p>
-        </div>
-        
-        <div class="text-sm text-justify mb-10 leading-relaxed">
-            <strong class="text-base mb-2 block">Acuerdo de Visita y Reconocimiento de Honorarios:</strong>
-            El cliente reconoce haber visitado el inmueble indicado a través de la agencia <strong>Refugios del Sur</strong>. Se compromete expresamente a no realizar ninguna transacción (compra, alquiler, o trato directo con la propiedad) a espaldas de la agencia.<br><br>
-            En caso de formalizar una operación sobre dicho inmueble, de forma directa o indirecta (a través de familiares, socios o empresas vinculadas), el cliente reconoce y asume de forma irrevocable el pago de los honorarios profesionales correspondientes a la agencia inmobiliaria por los servicios prestados de intermediación.
-        </div>
-        
-        <div class="flex justify-between items-end">
-            <div class="w-1/2">
-                <p class="font-bold mb-2">El Cliente (Firma):</p>
-                <img id="pdf-signature" src="" class="h-28 border-b border-black w-4/5 object-contain">
+    <!-- ========================================== -->
+    <!-- CONTENEDOR INVISIBLE PARA EL PDF PERFECTO  -->
+    <!-- ========================================== -->
+    <div style="position: absolute; left: -9999px; top: 0; width: 800px;">
+        <div id="pdf-template" class="bg-white p-10 text-black w-[800px]">
+            <div class="border-b-2 border-black pb-4 mb-6 flex justify-between items-center">
+                <h1 class="text-3xl font-serif font-bold tracking-wide">Refugios del Sur</h1>
+                <span class="text-sm font-medium tracking-widest uppercase text-gray-500">Hoja de Visita</span>
             </div>
-            <div class="w-1/2 text-right">
-                <!-- Se han añadido saltos de línea para que nunca se corte horizontalmente -->
-                <p class="text-xs text-gray-500 italic leading-tight">
-                    Documento generado digitalmente<br>
-                    por la plataforma administrativa de<br>
-                    <strong>Refugios del Sur</strong>
-                </p>
+            
+            <div class="mb-8 bg-gray-50 p-6 rounded border border-gray-200">
+                <p class="mb-2"><strong>Fecha y Hora:</strong> <span id="pdf-date" class="font-light"></span></p>
+                <p class="mb-2"><strong>Inmueble Visitado:</strong> <span id="pdf-property" class="font-light"></span></p>
+                <p class="mb-2"><strong>Nombre del Cliente:</strong> <span id="pdf-client" class="font-light"></span></p>
+                <p class="mb-0"><strong>DNI / NIE:</strong> <span id="pdf-dni" class="font-light"></span></p>
+            </div>
+            
+            <div class="text-sm text-justify mb-10 leading-relaxed">
+                <strong class="text-base mb-2 block">Acuerdo de Visita y Reconocimiento de Honorarios:</strong>
+                El cliente reconoce haber visitado el inmueble indicado a través de la agencia <strong>Refugios del Sur</strong>. Se compromete expresamente a no realizar ninguna transacción (compra, alquiler, o trato directo con la propiedad) a espaldas de la agencia.<br><br>
+                En caso de formalizar una operación sobre dicho inmueble, de forma directa o indirecta (a través de familiares, socios o empresas vinculadas), el cliente reconoce y asume de forma irrevocable el pago de los honorarios profesionales correspondientes a la agencia inmobiliaria por los servicios prestados de intermediación.
+            </div>
+            
+            <div class="flex justify-between items-end">
+                <div class="w-1/2">
+                    <p class="font-bold mb-2">El Cliente (Firma):</p>
+                    <img id="pdf-signature" src="" class="h-28 border-b border-black w-4/5 object-contain">
+                </div>
+                <div class="w-1/2 text-right">
+                    <p class="text-xs text-gray-500 italic leading-tight">
+                        Documento generado digitalmente<br>
+                        por la plataforma administrativa de<br>
+                        <strong>Refugios del Sur</strong>
+                    </p>
+                </div>
             </div>
         </div>
     </div>
@@ -260,7 +263,7 @@
         });
 
         // ==========================================
-        // LOGIN (EXACTO A TU PRIMER CÓDIGO)
+        // LOGIN 
         // ==========================================
         document.getElementById('login-form').addEventListener('submit', async (e) => {
             e.preventDefault();
@@ -331,7 +334,7 @@
         }
 
         // ==========================================
-        // HOJAS DE VISITA Y PDF (CORREGIDO)
+        // HOJAS DE VISITA Y PDF PERFECTO
         // ==========================================
         async function loadDropdownProperties() {
             const select = document.getElementById('visit-property');
@@ -397,6 +400,7 @@
         }
 
         window.downloadPDF = function(date, property, client, dni, signatureData) {
+            // Rellenar datos
             document.getElementById('pdf-date').innerText = date;
             document.getElementById('pdf-property').innerText = property;
             document.getElementById('pdf-client').innerText = client;
@@ -404,22 +408,17 @@
             document.getElementById('pdf-signature').src = signatureData;
 
             const element = document.getElementById('pdf-template');
-            element.style.display = 'block'; // Lo mostramos para hacerle la captura (fuera de la pantalla)
 
+            // Configuramos html2pdf sin tener que mostrar y ocultar el div (ya que siempre está rendered)
             const opt = {
-                margin: 0.4, // Margen ajustado a 0.4 pulgadas (antes 1, que comía espacio)
+                margin: 0.5,
                 filename: `Hoja_Visita_${client.replace(/\s+/g, '_')}.pdf`,
                 image: { type: 'jpeg', quality: 0.98 },
-                html2canvas: { 
-                    scale: 2, 
-                    windowWidth: 800 // Evita que los móviles recorten el documento
-                },
+                html2canvas: { scale: 2 },
                 jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }
             };
 
-            html2pdf().set(opt).from(element).save().then(() => { 
-                element.style.display = 'none'; // Lo volvemos a ocultar
-            });
+            html2pdf().set(opt).from(element).save();
         }
 
         // ==========================================
