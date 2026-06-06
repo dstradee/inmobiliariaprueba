@@ -59,26 +59,91 @@
         <p class="font-light text-carbon/70 max-w-2xl mx-auto text-lg md:text-xl">Selección exclusiva de propiedades diseñadas para respirar, vivir despacio y sentir la brisa del mar.</p>
     </section>
 
-    <!-- BARRA BÚSQUEDA -->
-    <div class="max-w-4xl mx-auto px-6 -mt-16 md:-mt-12 relative z-30 mb-8 md:mb-12">
+    <!-- BARRA BÚSQUEDA Y FILTROS -->
+    <div class="max-w-6xl mx-auto px-6 -mt-16 md:-mt-12 relative z-30 mb-12">
         <div class="bg-white/90 backdrop-blur-xl p-2 rounded-3xl md:rounded-full shadow-float border border-carbon/5 flex flex-col md:flex-row items-center gap-2 transition-all">
-            <div class="flex-1 w-full flex items-center px-6 py-3 md:py-2">
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-terracota mr-3 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
-                <input type="text" id="search-text" placeholder="¿Dónde quieres vivir? Ej: Zahara..." class="w-full bg-transparent outline-none text-carbon placeholder:text-carbon/40 font-light" onkeyup="filterProperties()">
-            </div>
-            <div class="hidden md:block w-px h-8 bg-carbon/10"></div>
-            <div class="flex-1 w-full flex items-center px-6 py-3 md:py-2 border-t border-carbon/5 md:border-none">
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-terracota mr-3 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-                <select id="search-price" class="w-full bg-transparent outline-none text-carbon font-light appearance-none cursor-pointer" onchange="filterProperties()">
-                    <option value="">Precio máximo</option>
-                    <option value="500000">Hasta 500.000 €</option>
-                    <option value="1000000">Hasta 1.000.000 €</option>
-                    <option value="2000000">Hasta 2.000.000 €</option>
-                    <option value="5000000">Hasta 5.000.000 €</option>
+            
+            <!-- Operación: Comprar / Alquilar -->
+            <div class="w-full flex items-center px-4 py-3 md:py-2">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-terracota mr-2 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
+                <select id="search-transaction" class="w-full bg-transparent outline-none text-carbon font-medium text-sm appearance-none cursor-pointer" onchange="filterProperties()">
+                    <option value="">Comprar o Alquilar</option>
+                    <option value="Venta">Comprar</option>
+                    <option value="Alquiler">Alquilar</option>
                 </select>
             </div>
+
+            <div class="hidden md:block w-px h-8 bg-carbon/10"></div>
+
+            <!-- Ubicación -->
+            <div class="w-full flex items-center px-4 py-3 md:py-2 border-t border-carbon/5 md:border-none">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-terracota mr-2 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
+                <input type="text" id="search-text" placeholder="Zahara, Atlanterra..." class="w-full bg-transparent outline-none text-carbon placeholder:text-carbon/40 font-light text-sm" onkeyup="filterProperties()">
+            </div>
+            
+            <div class="hidden md:block w-px h-8 bg-carbon/10"></div>
+            
+            <!-- Tipo de Inmueble -->
+            <div class="w-full flex items-center px-4 py-3 md:py-2 border-t border-carbon/5 md:border-none">
+                <select id="search-type" class="w-full bg-transparent outline-none text-carbon font-light text-sm appearance-none cursor-pointer" onchange="filterProperties()">
+                    <option value="">Tipo inmueble</option>
+                    <option value="Piso">Piso</option>
+                    <option value="Chalet">Chalet / Villa</option>
+                    <option value="Ático">Ático</option>
+                    <option value="Dúplex">Dúplex</option>
+                    <option value="Estudio">Estudio</option>
+                    <option value="Terreno">Terreno</option>
+                </select>
+            </div>
+
+            <div class="hidden md:block w-px h-8 bg-carbon/10"></div>
+            
+            <!-- Habitaciones -->
+            <div class="w-full flex items-center px-4 py-3 md:py-2 border-t border-carbon/5 md:border-none">
+                <select id="search-beds" class="w-full bg-transparent outline-none text-carbon font-light text-sm appearance-none cursor-pointer" onchange="filterProperties()">
+                    <option value="">Habitaciones</option>
+                    <option value="1">1+ Habitaciones</option>
+                    <option value="2">2+ Habitaciones</option>
+                    <option value="3">3+ Habitaciones</option>
+                    <option value="4">4+ Habitaciones</option>
+                </select>
+            </div>
+
+            <!-- Botón Buscar -->
             <button onclick="filterProperties()" class="w-full md:w-auto px-8 py-3.5 md:py-3 bg-carbon text-zahara rounded-2xl md:rounded-full font-medium tracking-wide hover:bg-terracota transition-colors shadow-sm focus:outline-none">
                 Buscar
+            </button>
+        </div>
+
+        <!-- ETIQUETAS EXTRA (FILTROS) -->
+        <div class="mt-4 flex flex-wrap justify-center items-center gap-2" id="filter-tags">
+            <label class="cursor-pointer">
+                <input type="checkbox" value="has_pool" class="peer hidden filter-checkbox" onchange="filterProperties()">
+                <span class="px-4 py-1.5 rounded-full text-[11px] font-medium uppercase tracking-wider border border-carbon/10 text-carbon/60 bg-white/50 backdrop-blur-sm peer-checked:bg-terracota peer-checked:text-white peer-checked:border-terracota transition-all shadow-sm">Piscina</span>
+            </label>
+            <label class="cursor-pointer">
+                <input type="checkbox" value="has_terrace" class="peer hidden filter-checkbox" onchange="filterProperties()">
+                <span class="px-4 py-1.5 rounded-full text-[11px] font-medium uppercase tracking-wider border border-carbon/10 text-carbon/60 bg-white/50 backdrop-blur-sm peer-checked:bg-terracota peer-checked:text-white peer-checked:border-terracota transition-all shadow-sm">Terraza</span>
+            </label>
+            <label class="cursor-pointer">
+                <input type="checkbox" value="has_garage" class="peer hidden filter-checkbox" onchange="filterProperties()">
+                <span class="px-4 py-1.5 rounded-full text-[11px] font-medium uppercase tracking-wider border border-carbon/10 text-carbon/60 bg-white/50 backdrop-blur-sm peer-checked:bg-terracota peer-checked:text-white peer-checked:border-terracota transition-all shadow-sm">Garaje</span>
+            </label>
+            <label class="cursor-pointer">
+                <input type="checkbox" value="has_ac" class="peer hidden filter-checkbox" onchange="filterProperties()">
+                <span class="px-4 py-1.5 rounded-full text-[11px] font-medium uppercase tracking-wider border border-carbon/10 text-carbon/60 bg-white/50 backdrop-blur-sm peer-checked:bg-terracota peer-checked:text-white peer-checked:border-terracota transition-all shadow-sm">Aire Acond.</span>
+            </label>
+            <label class="cursor-pointer">
+                <input type="checkbox" value="has_elevator" class="peer hidden filter-checkbox" onchange="filterProperties()">
+                <span class="px-4 py-1.5 rounded-full text-[11px] font-medium uppercase tracking-wider border border-carbon/10 text-carbon/60 bg-white/50 backdrop-blur-sm peer-checked:bg-terracota peer-checked:text-white peer-checked:border-terracota transition-all shadow-sm">Ascensor</span>
+            </label>
+            <label class="cursor-pointer">
+                <input type="checkbox" value="is_furnished" class="peer hidden filter-checkbox" onchange="filterProperties()">
+                <span class="px-4 py-1.5 rounded-full text-[11px] font-medium uppercase tracking-wider border border-carbon/10 text-carbon/60 bg-white/50 backdrop-blur-sm peer-checked:bg-terracota peer-checked:text-white peer-checked:border-terracota transition-all shadow-sm">Amueblado</span>
+            </label>
+            
+            <button id="btn-clear-filters" onclick="clearFilters()" class="hidden px-3 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-wider text-red-400 hover:text-red-600 transition-colors focus:outline-none">
+                ✕ Limpiar filtros
             </button>
         </div>
     </div>
@@ -89,10 +154,10 @@
             <p class="col-span-full text-center text-carbon/50 mt-10 font-light" id="loading-msg">Cargando propiedades...</p>
         </div>
 
-        <!-- BANNER ¿QUIERES VENDER? -->
+        <!-- BANNER ¿QUIERES VENDER/ALQUILAR? -->
         <div class="mt-16 bg-carbon/5 rounded-3xl p-8 md:p-12 text-center border border-carbon/10">
-            <h3 class="text-2xl md:text-3xl font-serif text-carbon mb-3">¿Pensando en vender tu propiedad?</h3>
-            <p class="font-light text-carbon/70 mb-6 text-sm md:text-base max-w-xl mx-auto">Gestionamos la venta de tu casa con la discreción y exclusividad que merece. Encontramos al comprador ideal.</p>
+            <h3 class="text-2xl md:text-3xl font-serif text-carbon mb-3">¿Pensando en vender o alquilar tu propiedad?</h3>
+            <p class="font-light text-carbon/70 mb-6 text-sm md:text-base max-w-xl mx-auto">Gestionamos la venta y el alquiler de tu casa con la discreción y exclusividad que merece. Encontramos al candidato ideal.</p>
             <button onclick="openSellForm()" class="bg-carbon text-zahara px-8 py-3.5 rounded-full font-medium tracking-wide hover:bg-carbon/80 transition-colors shadow-sm focus:outline-none">
                 Solicitar valoración gratuita
             </button>
@@ -123,23 +188,21 @@
             </div>
 
             <div class="w-full md:w-2/5 p-6 md:p-12 flex flex-col overflow-y-auto">
-                <div class="flex items-center gap-3 mb-1">
-                    <span class="text-salvia text-sm tracking-widest uppercase font-medium" id="modal-location">Ubicación</span>
-                    <span class="bg-carbon/5 text-carbon px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider" id="modal-property-type">Piso</span>
+                <div class="flex items-center gap-2 mb-1" id="modal-badges">
+                    <!-- Badges JS -->
                 </div>
                 <h2 class="text-3xl md:text-4xl font-serif text-carbon mb-1" id="modal-title">Nombre Casa</h2>
                 <p class="text-xs text-carbon/50 mb-4 font-light italic" id="modal-year">Construido en --</p>
                 <p class="text-2xl font-light text-carbon/80 mb-6" id="modal-price">0 €</p>
                 
                 <div class="flex flex-wrap gap-x-6 gap-y-4 mb-4 border-t border-carbon/10 pt-4" id="modal-stats"></div>
-                
-                <!-- Extras / Equipamiento -->
+                <div id="modal-rental-info" class="mb-4 bg-terracota/10 p-3 rounded-lg hidden"></div> <!-- INFO ALQUILER -->
                 <div id="modal-extras" class="flex flex-wrap gap-2 mb-8 pb-4 border-b border-carbon/10"></div>
 
                 <p class="text-carbon/70 font-light text-sm md:text-base mb-6 leading-relaxed whitespace-pre-line" id="modal-description"></p>
                 
                 <div class="bg-carbon/5 p-4 rounded-lg mb-6">
-                    <h4 class="text-xs font-bold uppercase tracking-wider text-carbon/60 mb-2">Información Legal</h4>
+                    <h4 class="text-xs font-bold uppercase tracking-wider text-carbon/60 mb-2">Información Legal y Administrativa</h4>
                     <p class="text-xs font-light text-carbon/80 whitespace-pre-line" id="modal-legal"></p>
                 </div>
 
@@ -152,7 +215,7 @@
                     <button onclick="addToFavorites()" id="btn-add-fav" class="w-full lg:flex-1 bg-zahara border border-carbon text-carbon py-3.5 rounded-lg font-medium tracking-wide hover:bg-carbon hover:text-zahara transition-all duration-300 focus:outline-none">
                         Guardar Favorito
                     </button>
-                    <button onclick="openLeadForm()" class="w-full lg:flex-1 bg-terracota text-white py-3.5 rounded-lg font-medium tracking-wide hover:bg-[#d0a48a] transition-colors shadow-sm focus:outline-none">
+                    <button onclick="openLeadForm()" id="btn-request" class="w-full lg:flex-1 bg-terracota text-white py-3.5 rounded-lg font-medium tracking-wide hover:bg-[#d0a48a] transition-colors shadow-sm focus:outline-none">
                         Solicitar Visita
                     </button>
                 </div>
@@ -176,11 +239,10 @@
             
             <form id="lead-form" class="space-y-4">
                 <input type="hidden" id="lead-property-id">
-                <input type="text" id="lead-name" required placeholder="Nombre completo" class="w-full px-4 py-3 bg-white border border-carbon/10 rounded-lg focus:border-terracota outline-none text-sm font-light">
-                <input type="email" id="lead-email" required placeholder="Correo electrónico" class="w-full px-4 py-3 bg-white border border-carbon/10 rounded-lg focus:border-terracota outline-none text-sm font-light">
-                <input type="tel" id="lead-phone" required placeholder="Teléfono" class="w-full px-4 py-3 bg-white border border-carbon/10 rounded-lg focus:border-terracota outline-none text-sm font-light">
+                <input type="text" id="lead-name" required placeholder="Nombre completo *" class="w-full px-4 py-3 bg-white border border-carbon/10 rounded-lg focus:border-terracota outline-none text-sm font-light">
+                <input type="email" id="lead-email" required placeholder="Correo electrónico *" class="w-full px-4 py-3 bg-white border border-carbon/10 rounded-lg focus:border-terracota outline-none text-sm font-light">
+                <input type="tel" id="lead-phone" required placeholder="Teléfono *" class="w-full px-4 py-3 bg-white border border-carbon/10 rounded-lg focus:border-terracota outline-none text-sm font-light">
                 
-                <!-- NUEVO: Selector de fecha de visita -->
                 <div>
                     <label class="block text-xs font-medium text-carbon/70 mb-1">Día y Hora preferida (Opcional)</label>
                     <input type="datetime-local" id="lead-date" class="w-full px-4 py-3 bg-white border border-carbon/10 rounded-lg focus:border-terracota outline-none text-sm font-light text-carbon">
@@ -188,7 +250,14 @@
 
                 <textarea id="lead-message" rows="3" placeholder="Mensaje adicional..." class="w-full px-4 py-3 bg-white border border-carbon/10 rounded-lg focus:border-terracota outline-none text-sm font-light resize-none"></textarea>
                 
-                <button type="submit" id="btn-submit-lead" class="w-full bg-salvia text-white py-4 rounded-lg font-medium tracking-wide hover:bg-[#6c7a69] transition-colors shadow-sm mt-4 focus:outline-none">
+                <div class="flex items-start gap-3 mt-4 bg-carbon/5 p-4 rounded-lg border border-carbon/10">
+                    <input type="checkbox" id="legal-consent" required class="mt-0.5 w-4 h-4 text-terracota border-carbon/20 rounded focus:ring-terracota cursor-pointer shrink-0">
+                    <label for="legal-consent" class="text-xs text-carbon/70 font-light leading-tight">
+                        Al enviar mis datos acepto el <button type="button" onclick="openLegalModal()" class="font-medium text-carbon underline hover:text-terracota focus:outline-none transition-colors">Aviso Legal y la Política de Privacidad</button>.
+                    </label>
+                </div>
+
+                <button type="submit" id="btn-submit-lead" class="w-full bg-salvia text-white py-4 rounded-lg font-medium tracking-wide hover:bg-[#6c7a69] transition-colors shadow-sm mt-2 focus:outline-none">
                     Enviar Solicitud
                 </button>
             </form>
@@ -198,10 +267,36 @@
     
     <div id="side-overlay" onclick="toggleFavorites()" class="fixed inset-0 bg-carbon/20 backdrop-blur-sm z-[55] hidden opacity-0 transition-opacity duration-500"></div>
 
+    <!-- MODAL AVISO LEGAL Y PRIVACIDAD -->
+    <div id="legal-modal" class="fixed inset-0 z-[70] hidden bg-carbon/60 backdrop-blur-sm flex items-center justify-center p-4 md:p-8 opacity-0 transition-opacity duration-500">
+        <div class="bg-zahara rounded-2xl shadow-soft w-full max-w-4xl max-h-[90vh] overflow-hidden flex flex-col relative transform scale-95 transition-transform duration-500" id="legal-modal-content">
+            <button onclick="closeLegalModal()" class="absolute top-4 right-4 z-20 bg-zahara/80 hover:bg-zahara rounded-full p-2 text-carbon shadow-sm backdrop-blur-md transition-all focus:outline-none border border-carbon/10">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+            </button>
+            <div class="p-8 md:p-12 overflow-y-auto">
+                <h2 class="text-3xl font-serif text-carbon mb-8 border-b border-carbon/10 pb-4">Aviso Legal y Política de Privacidad</h2>
+                <div class="text-sm font-light text-carbon/80 space-y-6 leading-relaxed text-justify">
+                    <p>Con la finalidad de dar cumplimiento al artículo 10 de la Ley 34/2002 de Servicios de la Sociedad de la Información y Comercio Electrónico, informamos al usuario de nuestros datos:</p>
+                    <ul class="bg-carbon/5 p-4 rounded-lg list-none space-y-2">
+                        <li><strong>Razón Social:</strong> Pablo Estrade Alonso</li>
+                        <li><strong>DNI:</strong> 32910523F</li>
+                        <li><strong>Domicilio Social:</strong> Jerez de la Frontera (Cádiz)</li>
+                    </ul>
+                    <h3 class="text-lg font-medium text-carbon pt-4">Objeto</h3>
+                    <p>El prestador, responsable del sitio web, pone a disposición de los usuarios el presente documento con el que pretende dar cumplimiento a las obligaciones dispuestas en la Ley 34/2002, de Servicios de la Sociedad de la Información y del Comercio Electrónico (LSSI-CE).</p>
+                    <h3 class="text-lg font-medium text-carbon pt-4">Responsabilidad y Propiedad</h3>
+                    <p>El prestador se exime de cualquier tipo de responsabilidad derivada de la información publicada en su sitio web, siempre que esta información haya sido manipulada o introducida por un tercero ajeno al mismo. Los diseños, logotipos, texto y/o gráficos son propiedad del prestador.</p>
+                    <h3 class="text-lg font-medium text-carbon pt-4">Ley Aplicable y Jurisdicción</h3>
+                    <p>Para la resolución de todas las controversias, será de aplicación la legislación española, siendo competentes los Juzgados y Tribunales de la localidad de <strong>Jerez de la Frontera</strong>.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
         if (typeof window.supabase === 'undefined') {
-            document.getElementById('property-grid').innerHTML = '<p class="col-span-full text-center text-red-500 mt-10 font-bold">Error: No se ha podido cargar Supabase.</p>';
+            document.getElementById('property-grid').innerHTML = '<p class="col-span-full text-center text-red-500 mt-10 font-bold">Error de conexión a la base de datos.</p>';
         } else {
             const supabaseUrl = 'https://zqsoagqdypchtdtcudre.supabase.co'; 
             const supabaseAnonKey = 'sb_publishable_YUCsQxlUtRpWUiyb1EahFw_Q-o-0grz';
@@ -213,17 +308,47 @@
             let properties = []; let currentProperty = null; let currentCarouselImages = []; let currentCarouselIndex = 0; let favorites = [];
             try { const favs = localStorage.getItem('zahara_favs'); if(favs) favorites = JSON.parse(favs); } catch (error) { favorites = []; }
 
-            const formatPrice = (price) => new Intl.NumberFormat('es-ES').format(price) + ' €';
+            // FORMATEADOR DE PRECIOS ADAPTADO A ALQUILER Y VENTA
+            const formatPrice = (price, transaction, period) => {
+                let formatted = new Intl.NumberFormat('es-ES').format(price) + ' €';
+                if(transaction === 'Alquiler') {
+                    if(period === 'Mensual') formatted += ' / mes';
+                    else if(period === 'Semanal') formatted += ' / sem';
+                    else if(period === 'Diario') formatted += ' / noche';
+                }
+                return formatted;
+            };
 
             window.filterProperties = function() {
                 const locText = document.getElementById('search-text').value.toLowerCase();
-                const maxPrice = document.getElementById('search-price').value;
+                const transaction = document.getElementById('search-transaction').value;
+                const propertyType = document.getElementById('search-type').value;
+                const minBeds = document.getElementById('search-beds').value;
+                const activeTags = Array.from(document.querySelectorAll('.filter-checkbox:checked')).map(cb => cb.value);
+
+                const btnClear = document.getElementById('btn-clear-filters');
+                if(locText || transaction || propertyType || minBeds || activeTags.length > 0) btnClear.classList.remove('hidden');
+                else btnClear.classList.add('hidden');
+
                 const filtered = properties.filter(p => {
                     const matchText = p.location.toLowerCase().includes(locText) || p.title.toLowerCase().includes(locText);
-                    const matchPrice = maxPrice === "" || p.price <= parseInt(maxPrice);
-                    return matchText && matchPrice;
+                    const matchTrans = transaction === "" || p.transaction_type === transaction;
+                    const matchType = propertyType === "" || p.property_type === propertyType;
+                    const matchBeds = minBeds === "" || p.bedrooms >= parseInt(minBeds);
+                    const matchTags = activeTags.every(tag => p[tag] === true);
+
+                    return matchText && matchTrans && matchType && matchBeds && matchTags;
                 });
                 renderProperties(filtered);
+            };
+
+            window.clearFilters = function() {
+                document.getElementById('search-text').value = "";
+                document.getElementById('search-transaction').value = "";
+                document.getElementById('search-type').value = "";
+                document.getElementById('search-beds').value = "";
+                document.querySelectorAll('.filter-checkbox').forEach(cb => cb.checked = false);
+                filterProperties();
             };
 
             function renderProperties(data) {
@@ -231,19 +356,22 @@
                 if (!data || data.length === 0) { grid.innerHTML = `<p class="col-span-full text-center text-carbon/50 mt-10 font-medium text-lg">No encontramos propiedades con esos filtros.</p>`; return; }
                 data.forEach(prop => {
                     const firstImage = prop.image_urls ? prop.image_urls.split(',')[0].trim() : 'https://via.placeholder.com/600x400?text=Sin+Imagen';
+                    const transactionBadge = prop.transaction_type === 'Alquiler' ? `<span class="absolute top-4 right-4 bg-terracota text-white text-xs px-3 py-1 rounded-full font-bold uppercase shadow-md">Alquiler</span>` : '';
+                    
                     grid.innerHTML += `
                         <div class="group cursor-pointer flex flex-col" onclick="openModal(${prop.id})">
                             <div class="w-full aspect-[4/3] rounded-xl overflow-hidden mb-4 relative shadow-soft">
                                 <img src="${firstImage}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
                                 <div class="absolute inset-0 bg-carbon/10 group-hover:bg-transparent transition-colors duration-500"></div>
                                 ${prop.status !== 'Disponible' ? `<div class="absolute top-4 left-4 bg-carbon text-zahara text-xs px-3 py-1 rounded-full font-medium tracking-wider uppercase shadow-md">${prop.status}</div>` : ''}
+                                ${transactionBadge}
                             </div>
                             <div class="flex items-center gap-2 mb-1">
                                 <span class="text-salvia text-xs tracking-widest uppercase font-medium">${prop.location}</span>
                                 <span class="text-[9px] bg-carbon/5 text-carbon px-1.5 py-0.5 rounded font-bold uppercase">${prop.property_type || 'Inmueble'}</span>
                             </div>
                             <h3 class="text-lg font-serif text-carbon mb-1">${prop.title}</h3>
-                            <p class="text-carbon/70 font-light">${formatPrice(prop.price)}</p>
+                            <p class="text-carbon/70 font-light">${formatPrice(prop.price, prop.transaction_type, prop.rental_period)}</p>
                         </div>
                     `;
                 });
@@ -263,37 +391,59 @@
                 
                 document.getElementById('modal-title').innerText = currentProperty.title;
                 document.getElementById('modal-location').innerText = currentProperty.location;
-                document.getElementById('modal-price').innerText = formatPrice(currentProperty.price);
+                document.getElementById('modal-price').innerText = formatPrice(currentProperty.price, currentProperty.transaction_type, currentProperty.rental_period);
                 document.getElementById('modal-property-type').innerText = currentProperty.property_type || 'Inmueble';
                 document.getElementById('modal-year').innerText = currentProperty.year_built ? `Construido en ${currentProperty.year_built}` : '';
                 document.getElementById('modal-description').innerText = currentProperty.description || 'Sin descripción detallada.';
                 document.getElementById('modal-legal').innerText = currentProperty.legal_info || 'Consultar con el asesor.';
                 
-                let statsHtml = '';
-                statsHtml += `<div class="text-center pr-6 border-r border-carbon/10 last:border-0"><span class="block text-xl font-serif text-carbon">${currentProperty.bedrooms || 0}</span><span class="text-[10px] text-carbon/60 uppercase tracking-wider">Hab.</span></div>`;
-                statsHtml += `<div class="text-center pr-6 border-r border-carbon/10 last:border-0"><span class="block text-xl font-serif text-carbon">${currentProperty.bathrooms || 0}</span><span class="text-[10px] text-carbon/60 uppercase tracking-wider">Baños</span></div>`;
-                statsHtml += `<div class="text-center pr-6 border-r border-carbon/10 last:border-0"><span class="block text-xl font-serif text-carbon">${currentProperty.sqm || 0}</span><span class="text-[10px] text-carbon/60 uppercase tracking-wider">m²</span></div>`;
-                statsHtml += `<div class="text-center pr-6 border-r border-carbon/10 last:border-0"><span class="block text-xl font-serif text-carbon">${currentProperty.floors || 1}</span><span class="text-[10px] text-carbon/60 uppercase tracking-wider">Plantas</span></div>`;
-                
+                // Badges en título
+                let badgesHtml = `<span class="text-salvia text-sm tracking-widest uppercase font-medium">${currentProperty.location}</span>`;
+                badgesHtml += `<span class="bg-carbon/5 text-carbon px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider">${currentProperty.property_type || 'Inmueble'}</span>`;
+                if(currentProperty.transaction_type === 'Alquiler') badgesHtml += `<span class="bg-terracota/20 text-terracota px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider">Alquiler</span>`;
+                document.getElementById('modal-badges').innerHTML = badgesHtml;
+
+                // Estadísticas
+                let statsHtml = `<div class="text-center pr-6 border-r border-carbon/10 last:border-0"><span class="block text-xl md:text-2xl font-serif text-carbon">${currentProperty.bedrooms || 0}</span><span class="text-[10px] text-carbon/60 uppercase tracking-wider">Hab.</span></div>`;
+                statsHtml += `<div class="text-center pr-6 border-r border-carbon/10 last:border-0"><span class="block text-xl md:text-2xl font-serif text-carbon">${currentProperty.bathrooms || 0}</span><span class="text-[10px] text-carbon/60 uppercase tracking-wider">Baños</span></div>`;
+                statsHtml += `<div class="text-center pr-6 border-r border-carbon/10 last:border-0"><span class="block text-xl md:text-2xl font-serif text-carbon">${currentProperty.sqm || 0}</span><span class="text-[10px] text-carbon/60 uppercase tracking-wider">m²</span></div>`;
+                statsHtml += `<div class="text-center pr-6 border-r border-carbon/10 last:border-0"><span class="block text-xl md:text-2xl font-serif text-carbon">${currentProperty.floors || 1}</span><span class="text-[10px] text-carbon/60 uppercase tracking-wider">Plantas</span></div>`;
                 if(currentProperty.is_furnished) {
-                    statsHtml += `<div class="text-center pr-6 border-r border-carbon/10 last:border-0"><span class="block text-xl font-serif text-salvia">Sí</span><span class="text-[10px] text-carbon/60 uppercase tracking-wider">Amueblado</span></div>`;
-                    statsHtml += `<div class="text-center pr-6 border-r border-carbon/10 last:border-0"><span class="block text-xl font-serif text-carbon">${currentProperty.beds || 0}</span><span class="text-[10px] text-carbon/60 uppercase tracking-wider">Camas</span></div>`;
+                    statsHtml += `<div class="text-center pr-6 border-r border-carbon/10 last:border-0"><span class="block text-xl md:text-2xl font-serif text-salvia">Sí</span><span class="text-[10px] text-carbon/60 uppercase tracking-wider">Amueblado</span></div>`;
+                    statsHtml += `<div class="text-center pr-6 border-r border-carbon/10 last:border-0"><span class="block text-xl md:text-2xl font-serif text-carbon">${currentProperty.beds || 0}</span><span class="text-[10px] text-carbon/60 uppercase tracking-wider">Camas</span></div>`;
                 }
                 document.getElementById('modal-stats').innerHTML = statsHtml;
 
-                // EXTRAS (Pisicina, Garaje...)
+                // Info extra si es Alquiler (Fianza y Disponibilidad)
+                const rentalDiv = document.getElementById('modal-rental-info');
+                if(currentProperty.transaction_type === 'Alquiler') {
+                    let rHtml = `<div class="flex flex-col md:flex-row gap-4 justify-between items-center text-sm font-medium text-carbon/80">`;
+                    rHtml += `<span><strong>Fianza / Depósito:</strong> ${currentProperty.deposit > 0 ? new Intl.NumberFormat('es-ES').format(currentProperty.deposit) + ' €' : 'Consultar'}</span>`;
+                    if(currentProperty.available_from) {
+                        const dateD = new Date(currentProperty.available_from).toLocaleDateString('es-ES', { month: 'long', year: 'numeric', day: 'numeric' });
+                        rHtml += `<span><strong>Disponible desde:</strong> ${dateD}</span>`;
+                    } else { rHtml += `<span><strong>Disponibilidad:</strong> Inmediata</span>`; }
+                    rHtml += `</div>`;
+                    rentalDiv.innerHTML = rHtml; rentalDiv.classList.remove('hidden');
+                } else { rentalDiv.classList.add('hidden'); }
+
+                // Extras
                 let extrasHtml = '';
                 if(currentProperty.has_elevator) extrasHtml += `<span class="bg-carbon/5 text-carbon px-3 py-1.5 rounded-lg text-[11px] font-medium uppercase tracking-wider border border-carbon/10">Ascensor</span>`;
                 if(currentProperty.has_pool) extrasHtml += `<span class="bg-carbon/5 text-carbon px-3 py-1.5 rounded-lg text-[11px] font-medium uppercase tracking-wider border border-carbon/10">Piscina</span>`;
                 if(currentProperty.has_terrace) extrasHtml += `<span class="bg-carbon/5 text-carbon px-3 py-1.5 rounded-lg text-[11px] font-medium uppercase tracking-wider border border-carbon/10">Terraza</span>`;
                 if(currentProperty.has_garage) extrasHtml += `<span class="bg-carbon/5 text-carbon px-3 py-1.5 rounded-lg text-[11px] font-medium uppercase tracking-wider border border-carbon/10">Garaje</span>`;
                 if(currentProperty.has_heating) extrasHtml += `<span class="bg-carbon/5 text-carbon px-3 py-1.5 rounded-lg text-[11px] font-medium uppercase tracking-wider border border-carbon/10">Calefacción</span>`;
-                if(currentProperty.has_ac) extrasHtml += `<span class="bg-carbon/5 text-carbon px-3 py-1.5 rounded-lg text-[11px] font-medium uppercase tracking-wider border border-carbon/10">Aire Acondicionado</span>`;
+                if(currentProperty.has_ac) extrasHtml += `<span class="bg-carbon/5 text-carbon px-3 py-1.5 rounded-lg text-[11px] font-medium uppercase tracking-wider border border-carbon/10">Aire Acond.</span>`;
                 document.getElementById('modal-extras').innerHTML = extrasHtml;
 
                 const mapBtn = document.getElementById('modal-map-link');
                 if(currentProperty.map_url) { mapBtn.href = currentProperty.map_url; mapBtn.classList.remove('hidden'); mapBtn.classList.add('flex'); } 
                 else { mapBtn.classList.add('hidden'); mapBtn.classList.remove('flex'); }
+
+                // Cambiar texto de botón si es alquiler
+                const reqBtn = document.getElementById('btn-request');
+                reqBtn.innerText = currentProperty.transaction_type === 'Alquiler' ? 'Solicitar Alquiler / Info' : 'Solicitar Visita';
 
                 currentCarouselImages = currentProperty.image_urls ? currentProperty.image_urls.split(',').map(u => u.trim()).filter(u => u !== "") : [];
                 currentCarouselIndex = 0; renderCarouselImage(); updateFavButtonState();
@@ -308,10 +458,20 @@
             }
             document.getElementById('property-modal').addEventListener('click', function(e) { if (e.target === this) closeModal(); });
 
+            window.openLegalModal = function() {
+                const modal = document.getElementById('legal-modal'); const content = document.getElementById('legal-modal-content');
+                modal.classList.remove('hidden'); setTimeout(() => { modal.classList.remove('opacity-0'); content.classList.remove('scale-95'); }, 10);
+            }
+            window.closeLegalModal = function() {
+                const modal = document.getElementById('legal-modal'); const content = document.getElementById('legal-modal-content');
+                modal.classList.add('opacity-0'); content.classList.add('scale-95'); setTimeout(() => { modal.classList.add('hidden'); }, 500);
+            }
+            document.getElementById('legal-modal').addEventListener('click', function(e) { if (e.target === this) closeLegalModal(); });
+
             function addToFavorites() {
                 if (!currentProperty) return; const exists = favorites.find(f => f.id === currentProperty.id);
                 if (exists) favorites = favorites.filter(f => f.id !== currentProperty.id);
-                else favorites.push({ id: currentProperty.id, title: currentProperty.title, price: currentProperty.price, location: currentProperty.location, image: currentProperty.image_urls ? currentProperty.image_urls.split(',')[0] : null });
+                else favorites.push({ id: currentProperty.id, title: currentProperty.title, price: currentProperty.price, location: currentProperty.location, image: currentProperty.image_urls ? currentProperty.image_urls.split(',')[0] : null, transaction: currentProperty.transaction_type, period: currentProperty.rental_period });
                 localStorage.setItem('zahara_favs', JSON.stringify(favorites)); updateFavButtonState(); updateFavBadge(); renderFavoritesList();
             }
 
@@ -331,7 +491,7 @@
                 if (favorites.length === 0) { container.innerHTML = '<p class="text-carbon/50 font-light text-center mt-10">No has guardado ninguna propiedad todavía.</p>'; return; }
                 favorites.forEach((fav) => {
                     const img = fav.image ? `<img src="${fav.image}" class="w-20 h-20 object-cover rounded-lg">` : `<div class="w-20 h-20 bg-carbon/5 rounded-lg"></div>`;
-                    container.innerHTML += `<div class="flex gap-4 items-center bg-white p-3 rounded-xl border border-carbon/5 shadow-sm">${img}<div class="flex-1"><span class="text-[10px] uppercase text-salvia tracking-widest block mb-1">${fav.location}</span><h4 class="font-serif text-carbon text-sm leading-tight mb-1">${fav.title}</h4><span class="font-light text-carbon/80 text-sm block">${formatPrice(fav.price)}</span></div><button onclick="removeFavorite(${fav.id})" class="text-carbon/40 hover:text-terracota transition p-2 focus:outline-none">✕</button></div>`;
+                    container.innerHTML += `<div class="flex gap-4 items-center bg-white p-3 rounded-xl border border-carbon/5 shadow-sm">${img}<div class="flex-1"><span class="text-[10px] uppercase text-salvia tracking-widest block mb-1">${fav.location}</span><h4 class="font-serif text-carbon text-sm leading-tight mb-1">${fav.title}</h4><span class="font-light text-carbon/80 text-sm block">${formatPrice(fav.price, fav.transaction, fav.period)}</span></div><button onclick="removeFavorite(${fav.id})" class="text-carbon/40 hover:text-terracota transition p-2 focus:outline-none">✕</button></div>`;
                 });
             }
 
@@ -352,8 +512,9 @@
 
             window.openLeadForm = function() {
                 if(!currentProperty) return; closeModal();
-                document.getElementById('panel-title').innerText = "Solicitar Visita"; document.getElementById('lead-property-id').value = currentProperty.id;
-                document.getElementById('lead-form-desc').innerHTML = `Déjanos tus datos y un asesor se pondrá en contacto contigo para organizar una visita a <strong id="lead-property-name" class="font-medium text-carbon">${currentProperty.title}</strong>.`;
+                document.getElementById('panel-title').innerText = currentProperty.transaction_type === 'Alquiler' ? "Solicitar Alquiler" : "Solicitar Visita"; 
+                document.getElementById('lead-property-id').value = currentProperty.id;
+                document.getElementById('lead-form-desc').innerHTML = `Déjanos tus datos y un asesor se pondrá en contacto contigo respecto a <strong id="lead-property-name" class="font-medium text-carbon">${currentProperty.title}</strong>.`;
                 document.getElementById('favorites-list').classList.add('hidden'); document.getElementById('lead-form-container').classList.remove('hidden'); document.getElementById('lead-msg').classList.add('hidden');
                 
                 const panel = document.getElementById('side-panel'); const overlay = document.getElementById('side-overlay');
@@ -362,8 +523,8 @@
 
             window.openSellForm = function() {
                 closeModal();
-                document.getElementById('panel-title').innerText = "Vender Inmueble"; document.getElementById('lead-property-id').value = "vender"; 
-                document.getElementById('lead-form-desc').innerHTML = "Déjanos tus datos y un asesor se pondrá en contacto contigo para gestionar la venta de <strong id='lead-property-name' class='font-medium text-carbon'>tu propiedad</strong>.";
+                document.getElementById('panel-title').innerText = "Vender / Alquilar Inmueble"; document.getElementById('lead-property-id').value = "vender"; 
+                document.getElementById('lead-form-desc').innerHTML = "Déjanos tus datos y un asesor de Refugios del Sur se pondrá en contacto contigo para gestionar tu inmueble: <strong id='lead-property-name' class='font-medium text-carbon'>Quiero que me informen</strong>.";
                 document.getElementById('favorites-list').classList.add('hidden'); document.getElementById('lead-form-container').classList.remove('hidden'); document.getElementById('lead-msg').classList.add('hidden');
                 
                 const panel = document.getElementById('side-panel'); const overlay = document.getElementById('side-overlay');
@@ -375,21 +536,17 @@
                 btn.disabled = true; btn.innerText = "Enviando..."; msg.classList.add('hidden');
                 
                 const rawPropId = document.getElementById('lead-property-id').value; const isSelling = rawPropId === 'vender';
-                const propId = isSelling ? null : parseInt(rawPropId); const propName = isSelling ? '🏠 QUIERE VENDER SU CASA' : document.getElementById('lead-property-name').innerText;
+                const propId = isSelling ? null : parseInt(rawPropId); const propName = isSelling ? '🏠 GESTIÓN DE PROPIEDAD (Venta/Alquiler)' : document.getElementById('lead-property-name').innerText;
                 const reqDate = document.getElementById('lead-date').value;
 
                 try {
                     const { error } = await supabase.from('leads').insert([{ property_id: propId, property_title: propName, customer_name: document.getElementById('lead-name').value, customer_email: document.getElementById('lead-email').value, customer_phone: document.getElementById('lead-phone').value, requested_date: reqDate, message: document.getElementById('lead-message').value }]);
                     if (error) throw error;
 
-                    // Formatear fecha para Telegram si la hay
                     let fechaTexto = "Sin fecha preferida";
-                    if(reqDate) {
-                        const dateObj = new Date(reqDate);
-                        fechaTexto = dateObj.toLocaleString('es-ES', { dateStyle: 'long', timeStyle: 'short' });
-                    }
+                    if(reqDate) { const dateObj = new Date(reqDate); fechaTexto = dateObj.toLocaleString('es-ES', { dateStyle: 'long', timeStyle: 'short' }); }
 
-                    const telegramText = isSelling ? `📣 *NUEVA SOLICITUD DE VENTA*\n\n👤 Cliente: ${document.getElementById('lead-name').value}\n📞 Teléfono: ${document.getElementById('lead-phone').value}\n📧 Email: ${document.getElementById('lead-email').value}\n🗓 Fecha tasación: ${fechaTexto}\n💬 Mensaje: ${document.getElementById('lead-message').value || '-'}` : `🏡 ¡NUEVA SOLICITUD DE VISITA!\n\nPropiedad: ${propName}\n👤 Cliente: ${document.getElementById('lead-name').value}\n📞 Teléfono: ${document.getElementById('lead-phone').value}\n📧 Email: ${document.getElementById('lead-email').value}\n🗓 Fecha deseada: ${fechaTexto}\n💬 Mensaje: ${document.getElementById('lead-message').value || '-'}`;
+                    const telegramText = isSelling ? `📣 *NUEVA SOLICITUD DE GESTIÓN (Venta/Alquiler)*\n\n👤 Cliente: ${document.getElementById('lead-name').value}\n📞 Teléfono: ${document.getElementById('lead-phone').value}\n📧 Email: ${document.getElementById('lead-email').value}\n🗓 Fecha cita: ${fechaTexto}\n💬 Mensaje: ${document.getElementById('lead-message').value || '-'}` : `🏡 ¡NUEVA SOLICITUD DE INFORMACIÓN/VISITA!\n\nPropiedad: ${propName}\n👤 Cliente: ${document.getElementById('lead-name').value}\n📞 Teléfono: ${document.getElementById('lead-phone').value}\n📧 Email: ${document.getElementById('lead-email').value}\n🗓 Fecha deseada: ${fechaTexto}\n💬 Mensaje: ${document.getElementById('lead-message').value || '-'}`;
                     await Promise.all(TELEGRAM_CHAT_IDS.map(id => fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ chat_id: id, text: telegramText }) })));
                     
                     document.getElementById('lead-form').reset(); msg.innerText = "Solicitud enviada con éxito. Te contactaremos pronto."; msg.className = "text-center font-medium mt-4 p-4 rounded-lg bg-salvia/10 text-salvia text-sm block"; btn.classList.add('hidden'); setTimeout(() => toggleFavorites(), 3000);
