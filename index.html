@@ -61,22 +61,11 @@
 
     <!-- BARRA BÚSQUEDA Y FILTROS -->
     <div class="max-w-6xl mx-auto px-6 -mt-16 md:-mt-12 relative z-30 mb-12">
+        <!-- Buscador Principal Múltiple -->
         <div class="bg-white/90 backdrop-blur-xl p-2 rounded-3xl md:rounded-full shadow-float border border-carbon/5 flex flex-col md:flex-row items-center gap-2 transition-all">
             
-            <!-- Operación: Comprar / Alquilar -->
-            <div class="w-full flex items-center px-4 py-3 md:py-2">
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-terracota mr-2 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
-                <select id="search-transaction" class="w-full bg-transparent outline-none text-carbon font-medium text-sm appearance-none cursor-pointer" onchange="filterProperties()">
-                    <option value="">Comprar o Alquilar</option>
-                    <option value="Venta">Comprar</option>
-                    <option value="Alquiler">Alquilar</option>
-                </select>
-            </div>
-
-            <div class="hidden md:block w-px h-8 bg-carbon/10"></div>
-
             <!-- Ubicación -->
-            <div class="w-full flex items-center px-4 py-3 md:py-2 border-t border-carbon/5 md:border-none">
+            <div class="w-full flex items-center px-4 py-3 md:py-2">
                 <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-terracota mr-2 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
                 <input type="text" id="search-text" placeholder="Zahara, Atlanterra..." class="w-full bg-transparent outline-none text-carbon placeholder:text-carbon/40 font-light text-sm" onkeyup="filterProperties()">
             </div>
@@ -85,6 +74,7 @@
             
             <!-- Tipo de Inmueble -->
             <div class="w-full flex items-center px-4 py-3 md:py-2 border-t border-carbon/5 md:border-none">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-terracota mr-2 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" /></svg>
                 <select id="search-type" class="w-full bg-transparent outline-none text-carbon font-light text-sm appearance-none cursor-pointer" onchange="filterProperties()">
                     <option value="">Tipo inmueble</option>
                     <option value="Piso">Piso</option>
@@ -100,12 +90,27 @@
             
             <!-- Habitaciones -->
             <div class="w-full flex items-center px-4 py-3 md:py-2 border-t border-carbon/5 md:border-none">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-terracota mr-2 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" /></svg>
                 <select id="search-beds" class="w-full bg-transparent outline-none text-carbon font-light text-sm appearance-none cursor-pointer" onchange="filterProperties()">
                     <option value="">Habitaciones</option>
                     <option value="1">1+ Habitaciones</option>
                     <option value="2">2+ Habitaciones</option>
                     <option value="3">3+ Habitaciones</option>
                     <option value="4">4+ Habitaciones</option>
+                </select>
+            </div>
+
+            <div class="hidden md:block w-px h-8 bg-carbon/10"></div>
+            
+            <!-- Select Precio -->
+            <div class="w-full flex items-center px-4 py-3 md:py-2 border-t border-carbon/5 md:border-none">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-terracota mr-2 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                <select id="search-price" class="w-full bg-transparent outline-none text-carbon font-light text-sm appearance-none cursor-pointer" onchange="filterProperties()">
+                    <option value="">Precio máximo</option>
+                    <option value="500000">Hasta 500k €</option>
+                    <option value="1000000">Hasta 1M €</option>
+                    <option value="2000000">Hasta 2M €</option>
+                    <option value="5000000">Hasta 5M €</option>
                 </select>
             </div>
 
@@ -154,10 +159,10 @@
             <p class="col-span-full text-center text-carbon/50 mt-10 font-light" id="loading-msg">Cargando propiedades...</p>
         </div>
 
-        <!-- BANNER ¿QUIERES VENDER/ALQUILAR? -->
+        <!-- BANNER ¿QUIERES VENDER? -->
         <div class="mt-16 bg-carbon/5 rounded-3xl p-8 md:p-12 text-center border border-carbon/10">
-            <h3 class="text-2xl md:text-3xl font-serif text-carbon mb-3">¿Pensando en vender o alquilar tu propiedad?</h3>
-            <p class="font-light text-carbon/70 mb-6 text-sm md:text-base max-w-xl mx-auto">Gestionamos la venta y el alquiler de tu casa con la discreción y exclusividad que merece. Encontramos al candidato ideal.</p>
+            <h3 class="text-2xl md:text-3xl font-serif text-carbon mb-3">¿Pensando en vender tu propiedad?</h3>
+            <p class="font-light text-carbon/70 mb-6 text-sm md:text-base max-w-xl mx-auto">Gestionamos la venta de tu casa con la discreción y exclusividad que merece. Encontramos al comprador ideal.</p>
             <button onclick="openSellForm()" class="bg-carbon text-zahara px-8 py-3.5 rounded-full font-medium tracking-wide hover:bg-carbon/80 transition-colors shadow-sm focus:outline-none">
                 Solicitar valoración gratuita
             </button>
@@ -188,25 +193,26 @@
             </div>
 
             <div class="w-full md:w-2/5 p-6 md:p-12 flex flex-col overflow-y-auto">
-                <div class="flex items-center gap-2 mb-1" id="modal-badges">
-                    <!-- Badges JS -->
+                <div class="flex items-center gap-3 mb-1" id="modal-badges">
+                    <!-- Badges (Localización + Pin, Tipo Inmueble, Alquiler/Venta) inyectados por JS -->
                 </div>
                 <h2 class="text-3xl md:text-4xl font-serif text-carbon mb-1" id="modal-title">Nombre Casa</h2>
                 <p class="text-xs text-carbon/50 mb-4 font-light italic" id="modal-year">Construido en --</p>
                 <p class="text-2xl font-light text-carbon/80 mb-6" id="modal-price">0 €</p>
                 
                 <div class="flex flex-wrap gap-x-6 gap-y-4 mb-4 border-t border-carbon/10 pt-4" id="modal-stats"></div>
-                <div id="modal-rental-info" class="mb-4 bg-terracota/10 p-3 rounded-lg hidden"></div> <!-- INFO ALQUILER -->
+                <div id="modal-rental-info" class="mb-4 bg-terracota/10 p-3 rounded-lg hidden"></div>
                 <div id="modal-extras" class="flex flex-wrap gap-2 mb-8 pb-4 border-b border-carbon/10"></div>
 
                 <p class="text-carbon/70 font-light text-sm md:text-base mb-6 leading-relaxed whitespace-pre-line" id="modal-description"></p>
                 
                 <div class="bg-carbon/5 p-4 rounded-lg mb-6">
-                    <h4 class="text-xs font-bold uppercase tracking-wider text-carbon/60 mb-2">Información Legal y Administrativa</h4>
+                    <h4 class="text-xs font-bold uppercase tracking-wider text-carbon/60 mb-2">Información Legal</h4>
                     <p class="text-xs font-light text-carbon/80 whitespace-pre-line" id="modal-legal"></p>
                 </div>
 
                 <a id="modal-map-link" href="#" target="_blank" class="hidden items-center justify-center gap-2 mb-10 w-full py-3 bg-white border border-carbon/20 rounded-lg text-sm font-medium text-carbon hover:border-terracota hover:text-terracota transition-colors">
+                    <!-- Icono Pin de Google Maps -->
                     <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
                     Ver ubicación en Google Maps
                 </a>
@@ -223,7 +229,7 @@
         </div>
     </div>
 
-    <!-- PANEL LATERAL -->
+    <!-- PANEL LATERAL (FAVORITOS Y CONTACTO) -->
     <div id="side-panel" class="fixed inset-y-0 right-0 z-[60] w-full max-w-md bg-zahara shadow-2xl transform translate-x-full transition-transform duration-500 flex flex-col">
         <div class="px-8 py-6 border-b border-carbon/10 flex justify-between items-center">
             <h2 class="text-xl font-serif text-carbon" id="panel-title">Tus Favoritos</h2>
@@ -250,6 +256,7 @@
 
                 <textarea id="lead-message" rows="3" placeholder="Mensaje adicional..." class="w-full px-4 py-3 bg-white border border-carbon/10 rounded-lg focus:border-terracota outline-none text-sm font-light resize-none"></textarea>
                 
+                <!-- CASILLA AVISO LEGAL -->
                 <div class="flex items-start gap-3 mt-4 bg-carbon/5 p-4 rounded-lg border border-carbon/10">
                     <input type="checkbox" id="legal-consent" required class="mt-0.5 w-4 h-4 text-terracota border-carbon/20 rounded focus:ring-terracota cursor-pointer shrink-0">
                     <label for="legal-consent" class="text-xs text-carbon/70 font-light leading-tight">
@@ -308,7 +315,6 @@
             let properties = []; let currentProperty = null; let currentCarouselImages = []; let currentCarouselIndex = 0; let favorites = [];
             try { const favs = localStorage.getItem('zahara_favs'); if(favs) favorites = JSON.parse(favs); } catch (error) { favorites = []; }
 
-            // FORMATEADOR DE PRECIOS ADAPTADO A ALQUILER Y VENTA
             const formatPrice = (price, transaction, period) => {
                 let formatted = new Intl.NumberFormat('es-ES').format(price) + ' €';
                 if(transaction === 'Alquiler') {
@@ -319,91 +325,60 @@
                 return formatted;
             };
 
+            // FUNCIONES PÚBLICAS (Para que los botones de HTML las encuentren siempre)
             window.filterProperties = function() {
                 const locText = document.getElementById('search-text').value.toLowerCase();
-                const transaction = document.getElementById('search-transaction').value;
                 const propertyType = document.getElementById('search-type').value;
                 const minBeds = document.getElementById('search-beds').value;
+                const maxPrice = document.getElementById('search-price').value;
                 const activeTags = Array.from(document.querySelectorAll('.filter-checkbox:checked')).map(cb => cb.value);
 
                 const btnClear = document.getElementById('btn-clear-filters');
-                if(locText || transaction || propertyType || minBeds || activeTags.length > 0) btnClear.classList.remove('hidden');
+                if(locText || propertyType || minBeds || maxPrice || activeTags.length > 0) btnClear.classList.remove('hidden');
                 else btnClear.classList.add('hidden');
 
                 const filtered = properties.filter(p => {
                     const matchText = p.location.toLowerCase().includes(locText) || p.title.toLowerCase().includes(locText);
-                    const matchTrans = transaction === "" || p.transaction_type === transaction;
                     const matchType = propertyType === "" || p.property_type === propertyType;
                     const matchBeds = minBeds === "" || p.bedrooms >= parseInt(minBeds);
+                    const matchPrice = maxPrice === "" || p.price <= parseInt(maxPrice);
                     const matchTags = activeTags.every(tag => p[tag] === true);
 
-                    return matchText && matchTrans && matchType && matchBeds && matchTags;
+                    return matchText && matchType && matchBeds && matchPrice && matchTags;
                 });
                 renderProperties(filtered);
             };
 
             window.clearFilters = function() {
                 document.getElementById('search-text').value = "";
-                document.getElementById('search-transaction').value = "";
                 document.getElementById('search-type').value = "";
                 document.getElementById('search-beds').value = "";
+                document.getElementById('search-price').value = "";
                 document.querySelectorAll('.filter-checkbox').forEach(cb => cb.checked = false);
                 filterProperties();
             };
 
-            function renderProperties(data) {
-                const grid = document.getElementById('property-grid'); grid.innerHTML = ''; 
-                if (!data || data.length === 0) { grid.innerHTML = `<p class="col-span-full text-center text-carbon/50 mt-10 font-medium text-lg">No encontramos propiedades con esos filtros.</p>`; return; }
-                data.forEach(prop => {
-                    const firstImage = prop.image_urls ? prop.image_urls.split(',')[0].trim() : 'https://via.placeholder.com/600x400?text=Sin+Imagen';
-                    const transactionBadge = prop.transaction_type === 'Alquiler' ? `<span class="absolute top-4 right-4 bg-terracota text-white text-xs px-3 py-1 rounded-full font-bold uppercase shadow-md">Alquiler</span>` : '';
-                    
-                    grid.innerHTML += `
-                        <div class="group cursor-pointer flex flex-col" onclick="openModal(${prop.id})">
-                            <div class="w-full aspect-[4/3] rounded-xl overflow-hidden mb-4 relative shadow-soft">
-                                <img src="${firstImage}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
-                                <div class="absolute inset-0 bg-carbon/10 group-hover:bg-transparent transition-colors duration-500"></div>
-                                ${prop.status !== 'Disponible' ? `<div class="absolute top-4 left-4 bg-carbon text-zahara text-xs px-3 py-1 rounded-full font-medium tracking-wider uppercase shadow-md">${prop.status}</div>` : ''}
-                                ${transactionBadge}
-                            </div>
-                            <div class="flex items-center gap-2 mb-1">
-                                <span class="text-salvia text-xs tracking-widest uppercase font-medium">${prop.location}</span>
-                                <span class="text-[9px] bg-carbon/5 text-carbon px-1.5 py-0.5 rounded font-bold uppercase">${prop.property_type || 'Inmueble'}</span>
-                            </div>
-                            <h3 class="text-lg font-serif text-carbon mb-1">${prop.title}</h3>
-                            <p class="text-carbon/70 font-light">${formatPrice(prop.price, prop.transaction_type, prop.rental_period)}</p>
-                        </div>
-                    `;
-                });
-            }
-
-            function renderCarouselImage() {
-                const container = document.getElementById('modal-image-container'); const arrows = document.getElementById('carousel-arrows');
-                if (currentCarouselImages.length === 0) { container.innerHTML = `<div class="w-full h-full flex items-center justify-center bg-carbon/5">Sin fotos</div>`; arrows.classList.add('hidden'); return; }
-                container.innerHTML = `<img src="${currentCarouselImages[currentCarouselIndex]}" class="w-full h-full object-cover absolute inset-0 transition-opacity duration-300">`;
-                currentCarouselImages.length > 1 ? arrows.classList.remove('hidden') : arrows.classList.add('hidden');
-            }
-            function nextImage(e) { e.stopPropagation(); currentCarouselIndex = (currentCarouselIndex + 1) % currentCarouselImages.length; renderCarouselImage(); }
-            function prevImage(e) { e.stopPropagation(); currentCarouselIndex = (currentCarouselIndex - 1 + currentCarouselImages.length) % currentCarouselImages.length; renderCarouselImage(); }
-
-            function openModal(id) {
+            window.openModal = function(id) {
                 currentProperty = properties.find(p => p.id === id); if (!currentProperty) return;
                 
                 document.getElementById('modal-title').innerText = currentProperty.title;
-                document.getElementById('modal-location').innerText = currentProperty.location;
                 document.getElementById('modal-price').innerText = formatPrice(currentProperty.price, currentProperty.transaction_type, currentProperty.rental_period);
-                document.getElementById('modal-property-type').innerText = currentProperty.property_type || 'Inmueble';
                 document.getElementById('modal-year').innerText = currentProperty.year_built ? `Construido en ${currentProperty.year_built}` : '';
                 document.getElementById('modal-description').innerText = currentProperty.description || 'Sin descripción detallada.';
                 document.getElementById('modal-legal').innerText = currentProperty.legal_info || 'Consultar con el asesor.';
                 
-                // Badges en título
-                let badgesHtml = `<span class="text-salvia text-sm tracking-widest uppercase font-medium">${currentProperty.location}</span>`;
+                // Badges en título (CON ICONO PIN Y ESTILOS ELEGANTES)
+                let badgesHtml = `
+                    <div class="flex items-center text-salvia mr-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 mr-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" /><path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
+                        <span class="text-sm tracking-widest uppercase font-medium">${currentProperty.location}</span>
+                    </div>
+                `;
                 badgesHtml += `<span class="bg-carbon/5 text-carbon px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider">${currentProperty.property_type || 'Inmueble'}</span>`;
-                if(currentProperty.transaction_type === 'Alquiler') badgesHtml += `<span class="bg-terracota/20 text-terracota px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider">Alquiler</span>`;
+                if(currentProperty.transaction_type === 'Alquiler') badgesHtml += `<span class="bg-terracota/20 text-terracota px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider ml-2">Alquiler</span>`;
                 document.getElementById('modal-badges').innerHTML = badgesHtml;
 
-                // Estadísticas
+                // Estadísticas dinámicas
                 let statsHtml = `<div class="text-center pr-6 border-r border-carbon/10 last:border-0"><span class="block text-xl md:text-2xl font-serif text-carbon">${currentProperty.bedrooms || 0}</span><span class="text-[10px] text-carbon/60 uppercase tracking-wider">Hab.</span></div>`;
                 statsHtml += `<div class="text-center pr-6 border-r border-carbon/10 last:border-0"><span class="block text-xl md:text-2xl font-serif text-carbon">${currentProperty.bathrooms || 0}</span><span class="text-[10px] text-carbon/60 uppercase tracking-wider">Baños</span></div>`;
                 statsHtml += `<div class="text-center pr-6 border-r border-carbon/10 last:border-0"><span class="block text-xl md:text-2xl font-serif text-carbon">${currentProperty.sqm || 0}</span><span class="text-[10px] text-carbon/60 uppercase tracking-wider">m²</span></div>`;
@@ -414,7 +389,7 @@
                 }
                 document.getElementById('modal-stats').innerHTML = statsHtml;
 
-                // Info extra si es Alquiler (Fianza y Disponibilidad)
+                // Info extra si es Alquiler
                 const rentalDiv = document.getElementById('modal-rental-info');
                 if(currentProperty.transaction_type === 'Alquiler') {
                     let rHtml = `<div class="flex flex-col md:flex-row gap-4 justify-between items-center text-sm font-medium text-carbon/80">`;
@@ -441,77 +416,96 @@
                 if(currentProperty.map_url) { mapBtn.href = currentProperty.map_url; mapBtn.classList.remove('hidden'); mapBtn.classList.add('flex'); } 
                 else { mapBtn.classList.add('hidden'); mapBtn.classList.remove('flex'); }
 
-                // Cambiar texto de botón si es alquiler
                 const reqBtn = document.getElementById('btn-request');
                 reqBtn.innerText = currentProperty.transaction_type === 'Alquiler' ? 'Solicitar Alquiler / Info' : 'Solicitar Visita';
 
                 currentCarouselImages = currentProperty.image_urls ? currentProperty.image_urls.split(',').map(u => u.trim()).filter(u => u !== "") : [];
-                currentCarouselIndex = 0; renderCarouselImage(); updateFavButtonState();
+                currentCarouselIndex = 0; window.renderCarouselImage(); window.updateFavButtonState();
 
                 const modal = document.getElementById('property-modal'); const content = document.getElementById('modal-content');
                 modal.classList.remove('hidden'); setTimeout(() => { modal.classList.remove('opacity-0'); content.classList.remove('scale-95'); }, 10);
-            }
+            };
 
-            function closeModal() {
+            window.closeModal = function() {
                 const modal = document.getElementById('property-modal'); const content = document.getElementById('modal-content');
                 modal.classList.add('opacity-0'); content.classList.add('scale-95'); setTimeout(() => { modal.classList.add('hidden'); }, 500);
-            }
-            document.getElementById('property-modal').addEventListener('click', function(e) { if (e.target === this) closeModal(); });
+            };
+
+            window.nextImage = function(e) { e.stopPropagation(); currentCarouselIndex = (currentCarouselIndex + 1) % currentCarouselImages.length; window.renderCarouselImage(); };
+            window.prevImage = function(e) { e.stopPropagation(); currentCarouselIndex = (currentCarouselIndex - 1 + currentCarouselImages.length) % currentCarouselImages.length; window.renderCarouselImage(); };
+
+            window.renderCarouselImage = function() {
+                const container = document.getElementById('modal-image-container'); const arrows = document.getElementById('carousel-arrows');
+                if (currentCarouselImages.length === 0) { container.innerHTML = `<div class="w-full h-full flex items-center justify-center bg-carbon/5">Sin fotos</div>`; arrows.classList.add('hidden'); return; }
+                container.innerHTML = `<img src="${currentCarouselImages[currentCarouselIndex]}" class="w-full h-full object-cover absolute inset-0 transition-opacity duration-300">`;
+                currentCarouselImages.length > 1 ? arrows.classList.remove('hidden') : arrows.classList.add('hidden');
+            };
 
             window.openLegalModal = function() {
                 const modal = document.getElementById('legal-modal'); const content = document.getElementById('legal-modal-content');
                 modal.classList.remove('hidden'); setTimeout(() => { modal.classList.remove('opacity-0'); content.classList.remove('scale-95'); }, 10);
-            }
+            };
             window.closeLegalModal = function() {
                 const modal = document.getElementById('legal-modal'); const content = document.getElementById('legal-modal-content');
                 modal.classList.add('opacity-0'); content.classList.add('scale-95'); setTimeout(() => { modal.classList.add('hidden'); }, 500);
-            }
-            document.getElementById('legal-modal').addEventListener('click', function(e) { if (e.target === this) closeLegalModal(); });
+            };
 
-            function addToFavorites() {
+            window.addToFavorites = function() {
                 if (!currentProperty) return; const exists = favorites.find(f => f.id === currentProperty.id);
                 if (exists) favorites = favorites.filter(f => f.id !== currentProperty.id);
-                else favorites.push({ id: currentProperty.id, title: currentProperty.title, price: currentProperty.price, location: currentProperty.location, image: currentProperty.image_urls ? currentProperty.image_urls.split(',')[0] : null, transaction: currentProperty.transaction_type, period: currentProperty.rental_period });
-                localStorage.setItem('zahara_favs', JSON.stringify(favorites)); updateFavButtonState(); updateFavBadge(); renderFavoritesList();
-            }
+                else favorites.push({ id: currentProperty.id, title: currentProperty.title, price: currentProperty.price, location: currentProperty.location, property_type: currentProperty.property_type, image: currentProperty.image_urls ? currentProperty.image_urls.split(',')[0] : null, transaction: currentProperty.transaction_type, period: currentProperty.rental_period });
+                localStorage.setItem('zahara_favs', JSON.stringify(favorites)); window.updateFavButtonState(); window.updateFavBadge(); window.renderFavoritesList();
+            };
 
-            function updateFavButtonState() {
+            window.updateFavButtonState = function() {
                 if(!currentProperty) return; const btn = document.getElementById('btn-add-fav');
                 if(favorites.find(f => f.id === currentProperty.id)) { btn.innerText = "Quitar Favorito"; btn.classList.add('bg-carbon', 'text-zahara'); btn.classList.remove('bg-zahara', 'text-carbon'); } 
                 else { btn.innerText = "Guardar Favorito"; btn.classList.remove('bg-carbon', 'text-zahara'); btn.classList.add('bg-zahara', 'text-carbon'); }
-            }
+            };
 
-            function updateFavBadge() {
+            window.updateFavBadge = function() {
                 const badge = document.getElementById('fav-badge');
                 if (favorites.length > 0) { badge.innerText = favorites.length; badge.classList.remove('hidden'); } else { badge.classList.add('hidden'); }
-            }
+            };
 
-            function renderFavoritesList() {
+            window.renderFavoritesList = function() {
                 const container = document.getElementById('favorites-list'); container.innerHTML = '';
                 if (favorites.length === 0) { container.innerHTML = '<p class="text-carbon/50 font-light text-center mt-10">No has guardado ninguna propiedad todavía.</p>'; return; }
                 favorites.forEach((fav) => {
                     const img = fav.image ? `<img src="${fav.image}" class="w-20 h-20 object-cover rounded-lg">` : `<div class="w-20 h-20 bg-carbon/5 rounded-lg"></div>`;
-                    container.innerHTML += `<div class="flex gap-4 items-center bg-white p-3 rounded-xl border border-carbon/5 shadow-sm">${img}<div class="flex-1"><span class="text-[10px] uppercase text-salvia tracking-widest block mb-1">${fav.location}</span><h4 class="font-serif text-carbon text-sm leading-tight mb-1">${fav.title}</h4><span class="font-light text-carbon/80 text-sm block">${formatPrice(fav.price, fav.transaction, fav.period)}</span></div><button onclick="removeFavorite(${fav.id})" class="text-carbon/40 hover:text-terracota transition p-2 focus:outline-none">✕</button></div>`;
+                    container.innerHTML += `
+                        <div class="flex gap-4 items-center bg-white p-3 rounded-xl border border-carbon/5 shadow-sm">
+                            ${img}
+                            <div class="flex-1">
+                                <div class="flex items-center gap-1.5 mb-1 text-salvia">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" /><path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
+                                    <span class="text-[10px] uppercase tracking-widest font-medium">${fav.location}</span>
+                                </div>
+                                <h4 class="font-serif text-carbon text-sm leading-tight mb-1">${fav.title}</h4>
+                                <span class="font-light text-carbon/80 text-sm block">${formatPrice(fav.price, fav.transaction, fav.period)}</span>
+                            </div>
+                            <button onclick="removeFavorite(${fav.id})" class="text-carbon/40 hover:text-terracota transition p-2 focus:outline-none">✕</button>
+                        </div>`;
                 });
-            }
+            };
 
             window.removeFavorite = function(id) {
                 favorites = favorites.filter(f => f.id !== id); localStorage.setItem('zahara_favs', JSON.stringify(favorites));
-                updateFavBadge(); renderFavoritesList(); if(currentProperty && currentProperty.id === id) updateFavButtonState();
-            }
+                window.updateFavBadge(); window.renderFavoritesList(); if(currentProperty && currentProperty.id === id) window.updateFavButtonState();
+            };
 
             window.toggleFavorites = function() {
                 const panel = document.getElementById('side-panel'); const overlay = document.getElementById('side-overlay');
                 if (panel.classList.contains('translate-x-full')) {
                     document.getElementById('panel-title').innerText = "Tus Favoritos"; document.getElementById('favorites-list').classList.remove('hidden'); document.getElementById('lead-form-container').classList.add('hidden');
-                    renderFavoritesList(); overlay.classList.remove('hidden'); setTimeout(() => overlay.classList.remove('opacity-0'), 10); panel.classList.remove('translate-x-full');
+                    window.renderFavoritesList(); overlay.classList.remove('hidden'); setTimeout(() => overlay.classList.remove('opacity-0'), 10); panel.classList.remove('translate-x-full');
                 } else {
                     panel.classList.add('translate-x-full'); overlay.classList.add('opacity-0'); setTimeout(() => overlay.classList.add('hidden'), 500);
                 }
-            }
+            };
 
             window.openLeadForm = function() {
-                if(!currentProperty) return; closeModal();
+                if(!currentProperty) return; window.closeModal();
                 document.getElementById('panel-title').innerText = currentProperty.transaction_type === 'Alquiler' ? "Solicitar Alquiler" : "Solicitar Visita"; 
                 document.getElementById('lead-property-id').value = currentProperty.id;
                 document.getElementById('lead-form-desc').innerHTML = `Déjanos tus datos y un asesor se pondrá en contacto contigo respecto a <strong id="lead-property-name" class="font-medium text-carbon">${currentProperty.title}</strong>.`;
@@ -519,17 +513,51 @@
                 
                 const panel = document.getElementById('side-panel'); const overlay = document.getElementById('side-overlay');
                 if (panel.classList.contains('translate-x-full')) { overlay.classList.remove('hidden'); setTimeout(() => overlay.classList.remove('opacity-0'), 10); panel.classList.remove('translate-x-full'); }
-            }
+            };
 
             window.openSellForm = function() {
-                closeModal();
+                window.closeModal();
                 document.getElementById('panel-title').innerText = "Vender / Alquilar Inmueble"; document.getElementById('lead-property-id').value = "vender"; 
                 document.getElementById('lead-form-desc').innerHTML = "Déjanos tus datos y un asesor de Refugios del Sur se pondrá en contacto contigo para gestionar tu inmueble: <strong id='lead-property-name' class='font-medium text-carbon'>Quiero que me informen</strong>.";
                 document.getElementById('favorites-list').classList.add('hidden'); document.getElementById('lead-form-container').classList.remove('hidden'); document.getElementById('lead-msg').classList.add('hidden');
                 
                 const panel = document.getElementById('side-panel'); const overlay = document.getElementById('side-overlay');
                 if (panel.classList.contains('translate-x-full')) { overlay.classList.remove('hidden'); setTimeout(() => overlay.classList.remove('opacity-0'), 10); panel.classList.remove('translate-x-full'); }
+            };
+
+            // RENDERIZADO INICIAL DE LAS TARJETAS (Público, para que lo vea HTML)
+            window.renderProperties = function(data) {
+                const grid = document.getElementById('property-grid'); grid.innerHTML = ''; 
+                if (!data || data.length === 0) { grid.innerHTML = `<p class="col-span-full text-center text-carbon/50 mt-10 font-medium text-lg">No encontramos propiedades con esos filtros.</p>`; return; }
+                data.forEach(prop => {
+                    const firstImage = prop.image_urls ? prop.image_urls.split(',')[0].trim() : 'https://via.placeholder.com/600x400?text=Sin+Imagen';
+                    const transactionBadge = prop.transaction_type === 'Alquiler' ? `<span class="absolute top-4 right-4 bg-terracota text-white text-xs px-3 py-1 rounded-full font-bold uppercase shadow-md">Alquiler</span>` : '';
+                    
+                    grid.innerHTML += `
+                        <div class="group cursor-pointer flex flex-col" onclick="openModal(${prop.id})">
+                            <div class="w-full aspect-[4/3] rounded-xl overflow-hidden mb-4 relative shadow-soft">
+                                <img src="${firstImage}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+                                <div class="absolute inset-0 bg-carbon/10 group-hover:bg-transparent transition-colors duration-500"></div>
+                                ${prop.status !== 'Disponible' ? `<div class="absolute top-4 left-4 bg-carbon text-zahara text-xs px-3 py-1 rounded-full font-medium tracking-wider uppercase shadow-md">${prop.status}</div>` : ''}
+                                ${transactionBadge}
+                            </div>
+                            <div class="flex items-center justify-between mb-1">
+                                <div class="flex items-center text-salvia">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" /><path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
+                                    <span class="text-[11px] tracking-widest uppercase font-medium">${prop.location}</span>
+                                </div>
+                                <span class="text-[9px] bg-carbon/5 text-carbon px-1.5 py-0.5 rounded font-bold uppercase">${prop.property_type || 'Inmueble'}</span>
+                            </div>
+                            <h3 class="text-lg font-serif text-carbon mb-1">${prop.title}</h3>
+                            <p class="text-carbon/70 font-light">${formatPrice(prop.price, prop.transaction_type, prop.rental_period)}</p>
+                        </div>
+                    `;
+                });
             }
+
+            // LISTENERS Y CÓDIGO INTERNO
+            document.getElementById('property-modal').addEventListener('click', function(e) { if (e.target === this) window.closeModal(); });
+            document.getElementById('legal-modal').addEventListener('click', function(e) { if (e.target === this) window.closeLegalModal(); });
 
             document.getElementById('lead-form').addEventListener('submit', async (e) => {
                 e.preventDefault(); const btn = document.getElementById('btn-submit-lead'); const msg = document.getElementById('lead-msg');
@@ -549,18 +577,18 @@
                     const telegramText = isSelling ? `📣 *NUEVA SOLICITUD DE GESTIÓN (Venta/Alquiler)*\n\n👤 Cliente: ${document.getElementById('lead-name').value}\n📞 Teléfono: ${document.getElementById('lead-phone').value}\n📧 Email: ${document.getElementById('lead-email').value}\n🗓 Fecha cita: ${fechaTexto}\n💬 Mensaje: ${document.getElementById('lead-message').value || '-'}` : `🏡 ¡NUEVA SOLICITUD DE INFORMACIÓN/VISITA!\n\nPropiedad: ${propName}\n👤 Cliente: ${document.getElementById('lead-name').value}\n📞 Teléfono: ${document.getElementById('lead-phone').value}\n📧 Email: ${document.getElementById('lead-email').value}\n🗓 Fecha deseada: ${fechaTexto}\n💬 Mensaje: ${document.getElementById('lead-message').value || '-'}`;
                     await Promise.all(TELEGRAM_CHAT_IDS.map(id => fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ chat_id: id, text: telegramText }) })));
                     
-                    document.getElementById('lead-form').reset(); msg.innerText = "Solicitud enviada con éxito. Te contactaremos pronto."; msg.className = "text-center font-medium mt-4 p-4 rounded-lg bg-salvia/10 text-salvia text-sm block"; btn.classList.add('hidden'); setTimeout(() => toggleFavorites(), 3000);
+                    document.getElementById('lead-form').reset(); msg.innerText = "Solicitud enviada con éxito. Te contactaremos pronto."; msg.className = "text-center font-medium mt-4 p-4 rounded-lg bg-salvia/10 text-salvia text-sm block"; btn.classList.add('hidden'); setTimeout(() => window.toggleFavorites(), 3000);
                 } catch (err) { msg.innerText = "Hubo un error. Por favor, intenta de nuevo."; msg.className = "text-center font-medium mt-4 p-4 rounded-lg bg-red-50 text-red-600 text-sm block"; btn.disabled = false; btn.innerText = "Enviar Solicitud"; }
             });
 
             async function fetchProperties() {
                 try {
                     const { data, error } = await supabase.from('properties').select('*').eq('is_visible', true).order('created_at', { ascending: false });
-                    if (!error && data) { properties = data; filterProperties(); }
+                    if (!error && data) { properties = data; window.filterProperties(); }
                 } catch(error) { console.error(error); }
             }
 
-            fetchProperties(); updateFavBadge();
+            fetchProperties(); window.updateFavBadge();
             supabase.channel('public:properties').on('postgres_changes', { event: '*', schema: 'public', table: 'properties' }, fetchProperties).subscribe();
         }
     </script>
