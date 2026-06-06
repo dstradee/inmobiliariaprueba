@@ -132,51 +132,74 @@
         </div>
 
         <!-- ========================================== -->
-        <!-- PESTAÑA: PROPIEDAD Y TODAS SUS CARACTERÍSTICAS -->
+        <!-- PESTAÑA: PROPIEDAD -->
         <!-- ========================================== -->
         <div id="tab-add" class="bg-zahara p-8 md:p-12 rounded-2xl shadow-sm border border-carbon/5">
             <h1 class="text-3xl font-serif text-carbon mb-8" id="form-title">Añadir Nueva Propiedad</h1>
             <form id="property-form" class="space-y-8">
                 <input type="hidden" id="property-id">
                 
-                <!-- Básico -->
-                <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+                <!-- VENTA O ALQUILER (Selector Maestro) -->
+                <div class="bg-terracota/10 p-6 rounded-xl border border-terracota/20 mb-8">
+                    <label class="block text-sm font-bold text-carbon mb-2 uppercase tracking-wider">¿Qué tipo de operación es? *</label>
+                    <select id="transaction-type" onchange="toggleRentalFields()" required class="w-full md:w-1/3 px-4 py-3 bg-white border border-carbon/10 rounded-lg outline-none font-medium focus:border-terracota cursor-pointer">
+                        <option value="Venta" selected>Es una Venta</option>
+                        <option value="Alquiler">Es un Alquiler</option>
+                    </select>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                     <div class="col-span-1 md:col-span-2">
                         <label class="block text-sm font-medium text-carbon/70 mb-1.5">Título / Referencia *</label>
                         <input type="text" id="title" required class="w-full px-4 py-3 bg-white border border-carbon/10 rounded-lg outline-none font-light focus:border-terracota">
                     </div>
                     <div>
-                        <label class="block text-sm font-medium text-carbon/70 mb-1.5">Precio (€) *</label>
+                        <label class="block text-sm font-medium text-carbon/70 mb-1.5" id="label-price">Precio de Venta (€) *</label>
                         <input type="number" id="price" required class="w-full px-4 py-3 bg-white border border-carbon/10 rounded-lg outline-none font-light focus:border-terracota">
                     </div>
+                </div>
+
+                <!-- CONTENEDOR OCULTO PARA ALQUILERES -->
+                <div id="rental-fields" class="hidden grid-cols-1 md:grid-cols-3 gap-6 bg-carbon/5 p-6 rounded-xl border border-carbon/10 mb-6">
                     <div>
+                        <label class="block text-sm font-medium text-carbon/70 mb-1.5">Periodo de cobro</label>
+                        <select id="rental-period" class="w-full px-4 py-3 bg-white border border-carbon/10 rounded-lg outline-none font-light focus:border-terracota cursor-pointer">
+                            <option value="Mensual">Mensual (Mes a mes)</option>
+                            <option value="Semanal">Semanal</option>
+                            <option value="Diario">Diario (Vacacional)</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-carbon/70 mb-1.5">Fianza exigida (€)</label>
+                        <input type="number" id="deposit" placeholder="Ej: 1500" class="w-full px-4 py-3 bg-white border border-carbon/10 rounded-lg outline-none font-light focus:border-terracota">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-carbon/70 mb-1.5">Disponible desde</label>
+                        <input type="date" id="available-from" class="w-full px-4 py-3 bg-white border border-carbon/10 rounded-lg outline-none font-light focus:border-terracota">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 md:grid-cols-5 gap-6">
+                    <div class="col-span-2 md:col-span-1">
                         <label class="block text-sm font-medium text-carbon/70 mb-1.5">Tipo de Inmueble</label>
-                        <select id="property-type" class="w-full px-4 py-3 bg-white border border-carbon/10 rounded-lg outline-none font-light focus:border-terracota">
+                        <select id="property-type" class="w-full px-4 py-3 bg-white border border-carbon/10 rounded-lg outline-none font-light focus:border-terracota cursor-pointer">
                             <option value="Piso">Piso</option>
                             <option value="Chalet">Chalet / Villa</option>
                             <option value="Ático">Ático</option>
                             <option value="Dúplex">Dúplex</option>
                             <option value="Estudio">Estudio</option>
-                            <option value="Terreno">Terreno / Parcela</option>
+                            <option value="Terreno">Terreno</option>
                         </select>
                     </div>
-                </div>
-
-                <!-- Dimensiones y Camas -->
-                <div class="grid grid-cols-2 md:grid-cols-6 gap-6">
-                    <div class="col-span-2"><label class="block text-sm font-medium text-carbon/70 mb-1.5">Ubicación *</label><input type="text" id="location" required class="w-full px-4 py-3 bg-white border border-carbon/10 rounded-lg outline-none font-light focus:border-terracota"></div>
-                    <div><label class="block text-sm font-medium text-carbon/70 mb-1.5">Metros (m²)</label><input type="number" id="sqm" min="0" placeholder="0" class="w-full px-4 py-3 bg-white border border-carbon/10 rounded-lg outline-none font-light focus:border-terracota"></div>
+                    <div><label class="block text-sm font-medium text-carbon/70 mb-1.5">Ubicación *</label><input type="text" id="location" required class="w-full px-4 py-3 bg-white border border-carbon/10 rounded-lg outline-none font-light focus:border-terracota"></div>
                     <div><label class="block text-sm font-medium text-carbon/70 mb-1.5">Habit.</label><input type="number" id="bedrooms" min="0" placeholder="0" class="w-full px-4 py-3 bg-white border border-carbon/10 rounded-lg outline-none font-light focus:border-terracota"></div>
                     <div><label class="block text-sm font-medium text-carbon/70 mb-1.5">Baños</label><input type="number" id="bathrooms" min="0" placeholder="0" class="w-full px-4 py-3 bg-white border border-carbon/10 rounded-lg outline-none font-light focus:border-terracota"></div>
-                    <div><label class="block text-sm font-medium text-carbon/70 mb-1.5">Año Const.</label><input type="number" id="year-built" placeholder="Ej: 2005" class="w-full px-4 py-3 bg-white border border-carbon/10 rounded-lg outline-none font-light focus:border-terracota"></div>
+                    <div><label class="block text-sm font-medium text-carbon/70 mb-1.5">Metros (m²)</label><input type="number" id="sqm" min="0" placeholder="0" class="w-full px-4 py-3 bg-white border border-carbon/10 rounded-lg outline-none font-light focus:border-terracota"></div>
                 </div>
-                
-                <!-- Extras y Equipamiento -->
+
                 <div class="bg-white p-6 rounded-xl border border-carbon/5">
                     <h3 class="font-medium text-carbon mb-4">Equipamiento y Extras</h3>
-                    
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-y-4 gap-x-6">
-                        <!-- Amueblado / Camas -->
                         <div class="flex items-center gap-3">
                             <label class="flex items-center gap-2 cursor-pointer w-full">
                                 <input type="checkbox" id="is-furnished" class="w-5 h-5 rounded text-terracota border-carbon/20 focus:ring-terracota">
@@ -184,14 +207,14 @@
                             </label>
                             <input type="number" id="beds" min="0" placeholder="Camas" class="w-24 px-3 py-2 bg-zahara border border-carbon/10 rounded-lg outline-none font-light text-sm" title="Número de camas">
                         </div>
-                        
-                        <!-- Plantas -->
                         <div class="flex items-center gap-3">
                             <span class="text-sm font-medium text-carbon w-full">Plantas del inmueble:</span>
                             <input type="number" id="floors" min="1" placeholder="1" class="w-20 px-3 py-2 bg-zahara border border-carbon/10 rounded-lg outline-none font-light text-sm text-center">
                         </div>
-
-                        <!-- Checkboxes varios -->
+                        <div class="flex items-center gap-3">
+                            <span class="text-sm font-medium text-carbon w-full">Año construcción:</span>
+                            <input type="number" id="year-built" placeholder="Ej: 2005" class="w-24 px-3 py-2 bg-zahara border border-carbon/10 rounded-lg outline-none font-light text-sm text-center">
+                        </div>
                         <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" id="has-pool" class="w-5 h-5 rounded text-terracota border-carbon/20"><span class="text-sm font-medium text-carbon">Piscina</span></label>
                         <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" id="has-garage" class="w-5 h-5 rounded text-terracota border-carbon/20"><span class="text-sm font-medium text-carbon">Plaza de Garaje</span></label>
                         <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" id="has-terrace" class="w-5 h-5 rounded text-terracota border-carbon/20"><span class="text-sm font-medium text-carbon">Terraza / Balcón</span></label>
@@ -223,7 +246,7 @@
                     <div class="w-px h-6 bg-carbon/10 hidden md:block"></div>
                     <div class="flex items-center gap-3"><label class="text-sm font-medium text-carbon">Estado:</label>
                         <select id="status" class="bg-zahara border border-carbon/10 text-sm rounded-lg px-4 py-2 outline-none">
-                            <option value="Disponible">Disponible</option><option value="Reservado">Reservado</option><option value="Vendido">Vendido</option>
+                            <option value="Disponible">Disponible</option><option value="Reservado">Reservado</option><option value="Vendido">Vendido / Alquilado</option>
                         </select>
                     </div>
                 </div>
@@ -250,6 +273,40 @@
         </div>
     </div>
 
+    <!-- CONTENEDOR MAESTRO DEL PDF -->
+    <div id="pdf-container-wrapper" style="display: none; position: absolute; top: 0; left: 0; width: 100%; min-height: 100vh; background: #EAEAE6; z-index: 99999; justify-content: center; padding-top: 20px;">
+        <div id="pdf-template" style="width: 800px; height: 1131px; background: white; padding: 40px; box-sizing: border-box; font-family: 'Montserrat', sans-serif; position: relative;">
+            <div style="border-bottom: 2px solid #2A2927; padding-bottom: 16px; margin-bottom: 24px; display: flex; justify-content: space-between; align-items: center;">
+                <h1 style="font-family: 'Playfair Display', serif; font-size: 30px; font-weight: bold; margin: 0; color: #2A2927;">Refugios del Sur</h1>
+                <span style="font-size: 14px; font-weight: 500; text-transform: uppercase; color: #6b7280;">Hoja de Visita</span>
+            </div>
+            <div style="margin-bottom: 32px; background-color: #f9fafb; padding: 24px; border: 1px solid #e5e7eb; border-radius: 4px; color: #2A2927;">
+                <p style="margin: 0 0 8px 0; font-size: 16px;"><strong>Fecha y Hora:</strong> <span id="pdf-date" style="font-weight: 300;"></span></p>
+                <p style="margin: 0 0 8px 0; font-size: 16px;"><strong>Inmueble Visitado:</strong> <span id="pdf-property" style="font-weight: 300;"></span></p>
+                <p style="margin: 0 0 8px 0; font-size: 16px;"><strong>Nombre del Cliente:</strong> <span id="pdf-client" style="font-weight: 300;"></span></p>
+                <p style="margin: 0; font-size: 16px;"><strong>DNI / NIE:</strong> <span id="pdf-dni" style="font-weight: 300;"></span></p>
+            </div>
+            <div style="font-size: 14px; text-align: justify; margin-bottom: 40px; line-height: 1.6; color: #2A2927;">
+                <strong style="font-size: 16px; margin-bottom: 8px; display: block;">Acuerdo de Visita y Reconocimiento de Honorarios:</strong>
+                El cliente reconoce haber visitado el inmueble indicado a través de la agencia <strong>Refugios del Sur</strong>. Se compromete expresamente a no realizar ninguna transacción (compra, alquiler, o trato directo con la propiedad) a espaldas de la agencia.<br><br>
+                En caso de formalizar una operación sobre dicho inmueble, de forma directa o indirecta (a través de familiares, socios o empresas vinculadas), el cliente reconoce y asume de forma irrevocable el pago de los honorarios profesionales correspondientes a la agencia inmobiliaria por los servicios prestados de intermediación.
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: flex-end; position: absolute; bottom: 40px; left: 40px; right: 40px;">
+                <div style="width: 50%;">
+                    <p style="font-weight: bold; margin-bottom: 8px; color: #2A2927;">El Cliente (Firma):</p>
+                    <img id="pdf-signature" src="" style="height: 112px; border-bottom: 1px solid #2A2927; width: 80%; object-fit: contain;">
+                </div>
+                <div style="width: 50%; text-align: right;">
+                    <p style="font-size: 12px; color: #6b7280; font-style: italic; line-height: 1.2; margin: 0;">
+                        Documento generado digitalmente<br>
+                        por la plataforma administrativa de<br>
+                        <strong style="color: #2A2927;">Refugios del Sur</strong>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
         var supabaseUrl = 'https://zqsoagqdypchtdtcudre.supabase.co'; 
         var supabaseAnonKey = 'sb_publishable_YUCsQxlUtRpWUiyb1EahFw_Q-o-0grz';
@@ -268,6 +325,20 @@
                 signaturePad = new SignaturePad(canvas, { penColor: "black", minWidth: 2, maxWidth: 4 });
             }
         });
+
+        // ANIMACIÓN DE ALQUILERES
+        window.toggleRentalFields = function() {
+            const type = document.getElementById('transaction-type').value;
+            const rentalDiv = document.getElementById('rental-fields');
+            const lblPrice = document.getElementById('label-price');
+            if(type === 'Alquiler') {
+                rentalDiv.classList.remove('hidden'); rentalDiv.classList.add('grid');
+                lblPrice.innerText = "Precio de Alquiler (€) *";
+            } else {
+                rentalDiv.classList.add('hidden'); rentalDiv.classList.remove('grid');
+                lblPrice.innerText = "Precio de Venta (€) *";
+            }
+        }
 
         document.getElementById('login-form').addEventListener('submit', async (e) => {
             e.preventDefault();
@@ -316,9 +387,7 @@
                     canvas.width = canvas.offsetWidth * ratio; canvas.height = canvas.offsetHeight * ratio;
                     canvas.getContext("2d").scale(ratio, ratio); signaturePad.clear();
                 }
-            } else {
-                document.getElementById(`btn-tab-${tabId}`).className = 'font-medium text-carbon border-b-2 border-carbon pb-1 focus:outline-none transition-colors'; 
-            }
+            } else { document.getElementById(`btn-tab-${tabId}`).className = 'font-medium text-carbon border-b-2 border-carbon pb-1 focus:outline-none transition-colors'; }
             if (tabId === 'add' && !document.getElementById('property-id').value) resetPropertyForm();
         }
 
@@ -359,12 +428,17 @@
         }
 
         window.downloadPDF = function(date, property, client, dni, signatureData) {
-            const element = document.createElement('div');
-            element.style.cssText = 'width: 800px; padding: 40px; background-color: white; color: black; position: absolute; left: 0; top: 0; z-index: -9999; box-sizing: border-box;';
-            element.innerHTML = `<div style="border-bottom: 2px solid #2A2927; padding-bottom: 16px; margin-bottom: 24px; display: flex; justify-content: space-between; align-items: center;"><h1 style="font-family: 'Playfair Display', serif; font-size: 30px; font-weight: bold; margin: 0;">Refugios del Sur</h1><span style="font-size: 14px; font-weight: 500; text-transform: uppercase; color: #6b7280;">Hoja de Visita</span></div><div style="margin-bottom: 32px; background-color: #f9fafb; padding: 24px; border: 1px solid #e5e7eb; border-radius: 4px;"><p style="margin: 0 0 8px 0; font-size: 16px;"><strong>Fecha y Hora:</strong> <span style="font-weight: 300;">${date}</span></p><p style="margin: 0 0 8px 0; font-size: 16px;"><strong>Inmueble Visitado:</strong> <span style="font-weight: 300;">${property}</span></p><p style="margin: 0 0 8px 0; font-size: 16px;"><strong>Nombre del Cliente:</strong> <span style="font-weight: 300;">${client}</span></p><p style="margin: 0; font-size: 16px;"><strong>DNI / NIE:</strong> <span style="font-weight: 300;">${dni}</span></p></div><div style="font-size: 14px; text-align: justify; margin-bottom: 40px; line-height: 1.6;"><strong style="font-size: 16px; margin-bottom: 8px; display: block;">Acuerdo de Visita y Reconocimiento de Honorarios:</strong>El cliente reconoce haber visitado el inmueble indicado a través de la agencia <strong>Refugios del Sur</strong>. Se compromete expresamente a no realizar ninguna transacción (compra, alquiler, o trato directo con la propiedad) a espaldas de la agencia.<br><br>En caso de formalizar una operación sobre dicho inmueble, de forma directa o indirecta (a través de familiares, socios o empresas vinculadas), el cliente reconoce y asume de forma irrevocable el pago de los honorarios profesionales correspondientes a la agencia inmobiliaria por los servicios prestados de intermediación.</div><div style="display: flex; justify-content: space-between; align-items: flex-end; margin-top: 40px;"><div style="width: 50%;"><p style="font-weight: bold; margin-bottom: 8px;">El Cliente (Firma):</p><img src="${signatureData}" style="height: 112px; border-bottom: 1px solid #2A2927; width: 80%; object-fit: contain;"></div><div style="width: 50%; text-align: right;"><p style="font-size: 12px; color: #6b7280; font-style: italic; line-height: 1.2; margin: 0;">Documento generado digitalmente<br>por la plataforma administrativa de<br><strong>Refugios del Sur</strong></p></div></div>`;
-            document.body.appendChild(element);
+            document.getElementById('pdf-date').innerText = date; document.getElementById('pdf-property').innerText = property;
+            document.getElementById('pdf-client').innerText = client; document.getElementById('pdf-dni').innerText = dni;
+            document.getElementById('pdf-signature').src = signatureData;
 
-            html2pdf().set({ margin: 0.4, filename: `Hoja_Visita_${client.replace(/\s+/g, '_')}.pdf`, image: { type: 'jpeg', quality: 0.98 }, html2canvas: { scale: 2, windowWidth: 800 }, jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' } }).from(element).save().then(() => { document.body.removeChild(element); });
+            const wrapper = document.getElementById('pdf-container-wrapper'); const template = document.getElementById('pdf-template');
+            const scrollPos = window.scrollY; window.scrollTo(0, 0); wrapper.style.display = 'flex';
+
+            setTimeout(() => {
+                const opt = { margin: 0, filename: `Hoja_Visita_${client.replace(/\s+/g, '_')}.pdf`, image: { type: 'jpeg', quality: 1 }, html2canvas: { scale: 2, scrollY: 0, scrollX: 0 }, jsPDF: { unit: 'px', format: [800, 1131], orientation: 'portrait' } };
+                html2pdf().set(opt).from(template).save().then(() => { wrapper.style.display = 'none'; window.scrollTo(0, scrollPos); });
+            }, 300);
         }
 
         function setupRealtime() {
@@ -375,7 +449,7 @@
         function renderImagePreviews() { const input = document.getElementById('image-urls'); const container = document.getElementById('preview-images'); container.innerHTML = ''; if (!input.value) { container.innerHTML = '<span class="text-sm font-light text-carbon/40 italic">Aún no hay fotos...</span>'; return; } input.value.split(',').forEach((url, i) => { if(url.trim()==='') return; container.innerHTML += `<div class="relative inline-block"><img src="${url}" class="h-24 w-24 object-cover rounded-lg border border-carbon/10"><button type="button" onclick="removeImage(${i})" class="absolute -top-2 -right-2 bg-zahara text-carbon border border-carbon/10 rounded-full w-6 h-6 text-xs hover:bg-carbon hover:text-zahara transition-colors">&times;</button></div>`; }); }
         window.removeImage = function(i) { const input = document.getElementById('image-urls'); let urls = input.value.split(','); urls.splice(i, 1); input.value = urls.join(','); renderImagePreviews(); };
 
-        function resetPropertyForm() { document.getElementById('property-form').reset(); document.getElementById('property-id').value = ''; document.getElementById('image-urls').value = ''; document.getElementById('map-url').value = ''; document.getElementById('form-title').innerText = 'Añadir Nueva Propiedad'; document.getElementById('is-visible').checked = true; document.getElementById('status').value = 'Disponible'; renderImagePreviews(); }
+        function resetPropertyForm() { document.getElementById('property-form').reset(); document.getElementById('property-id').value = ''; document.getElementById('image-urls').value = ''; document.getElementById('map-url').value = ''; document.getElementById('form-title').innerText = 'Añadir Nueva Propiedad'; document.getElementById('is-visible').checked = true; document.getElementById('status').value = 'Disponible'; document.getElementById('transaction-type').value = 'Venta'; toggleRentalFields(); renderImagePreviews(); }
 
         document.getElementById('property-form').addEventListener('submit', async (e) => {
             e.preventDefault(); const btn = document.getElementById('submit-btn'); btn.innerText = 'Guardando...'; btn.disabled = true;
@@ -383,6 +457,8 @@
                 const idString = document.getElementById('property-id').value;
                 const data = { 
                     title: document.getElementById('title').value, price: parseFloat(document.getElementById('price').value) || 0, 
+                    transaction_type: document.getElementById('transaction-type').value, rental_period: document.getElementById('rental-period').value,
+                    deposit: parseFloat(document.getElementById('deposit').value) || 0, available_from: document.getElementById('available-from').value || null,
                     location: document.getElementById('location').value, bedrooms: parseInt(document.getElementById('bedrooms').value) || 0, 
                     bathrooms: parseInt(document.getElementById('bathrooms').value) || 0, sqm: parseFloat(document.getElementById('sqm').value) || 0, 
                     property_type: document.getElementById('property-type').value, year_built: document.getElementById('year-built').value ? parseInt(document.getElementById('year-built').value) : null,
@@ -401,6 +477,9 @@
         window.editProperty = async function(id) { 
             const { data: p } = await supabase.from('properties').select('*').eq('id', parseInt(id)).single(); 
             document.getElementById('property-id').value = p.id; document.getElementById('title').value = p.title; 
+            document.getElementById('transaction-type').value = p.transaction_type||'Venta'; toggleRentalFields();
+            document.getElementById('rental-period').value = p.rental_period||'Mensual'; document.getElementById('deposit').value = p.deposit||'';
+            document.getElementById('available-from').value = p.available_from||'';
             document.getElementById('price').value = p.price; document.getElementById('location').value = p.location; 
             document.getElementById('bedrooms').value = p.bedrooms||''; document.getElementById('bathrooms').value = p.bathrooms||''; 
             document.getElementById('sqm').value = p.sqm||''; document.getElementById('floors').value = p.floors||1; 
@@ -422,8 +501,14 @@
             const { data } = await supabase.from('properties').select('*').order('created_at', { ascending: false });
             if (!data || data.length === 0) return tbody.innerHTML = '<tr><td colspan="5">No hay propiedades.</td></tr>';
             tbody.innerHTML = data.map(p => {
-                const img = p.image_urls ? p.image_urls.split(',')[0] : ''; const fPrice = new Intl.NumberFormat('es-ES').format(p.price) + ' €'; const sCol = p.status === 'Vendido' ? 'bg-carbon text-zahara' : (p.status === 'Reservado' ? 'bg-terracota/20 text-terracota' : 'bg-salvia/20 text-salvia');
-                return `<tr class="border-b border-carbon/5"><td class="py-3 flex gap-4"><img src="${img}" class="w-12 h-12 object-cover rounded border"><div><span class="font-medium block">${p.title} ${p.is_visible ? '👀' : '🙈'}</span><span class="text-xs text-carbon/60">${p.property_type||'Inmueble'} • ${p.bedrooms} Hab • ${p.sqm} m²</span></div></td><td class="py-3 font-medium">${fPrice}</td><td class="py-3">${p.location}</td><td class="py-3"><span class="text-xs px-2 py-1 rounded-full ${sCol}">${p.status}</span></td><td class="py-3 text-right"><button onclick="editProperty('${p.id}')" class="text-carbon/60 hover:text-carbon mr-3">Editar</button><button onclick="deleteProperty('${p.id}')" class="text-red-400 hover:text-red-600">Borrar</button></td></tr>`;
+                const img = p.image_urls ? p.image_urls.split(',')[0] : ''; 
+                let fPrice = new Intl.NumberFormat('es-ES').format(p.price) + ' €';
+                if(p.transaction_type === 'Alquiler') {
+                    if(p.rental_period === 'Mensual') fPrice += '/mes'; else if(p.rental_period === 'Semanal') fPrice += '/sem'; else fPrice += '/noche';
+                }
+                const sCol = p.status === 'Vendido' ? 'bg-carbon text-zahara' : (p.status === 'Reservado' ? 'bg-terracota/20 text-terracota' : 'bg-salvia/20 text-salvia');
+                const tBadge = p.transaction_type === 'Alquiler' ? '<span class="text-[9px] bg-terracota/20 text-terracota px-1 py-0.5 rounded font-bold uppercase ml-2">Alquiler</span>' : '';
+                return `<tr class="border-b border-carbon/5"><td class="py-3 flex gap-4"><img src="${img}" class="w-12 h-12 object-cover rounded border"><div><span class="font-medium block flex items-center">${p.title} ${p.is_visible ? '👀' : '🙈'} ${tBadge}</span><span class="text-xs text-carbon/60">${p.property_type||'Inmueble'} • ${p.bedrooms} Hab • ${p.sqm} m²</span></div></td><td class="py-3 font-medium">${fPrice}</td><td class="py-3">${p.location}</td><td class="py-3"><span class="text-xs px-2 py-1 rounded-full ${sCol}">${p.status}</span></td><td class="py-3 text-right"><button onclick="editProperty('${p.id}')" class="text-carbon/60 hover:text-carbon mr-3">Editar</button><button onclick="deleteProperty('${p.id}')" class="text-red-400 hover:text-red-600">Borrar</button></td></tr>`;
             }).join('');
         }
 
@@ -434,7 +519,7 @@
             cont.innerHTML = data.map(l => {
                 const date = new Date(l.created_at).toLocaleString('es-ES', { day:'2-digit', month:'short', hour:'2-digit', minute:'2-digit' }); const pend = l.status === 'Pendiente';
                 let reqDateStr = ''; if(l.requested_date) { const rd = new Date(l.requested_date); reqDateStr = `<p class="text-sm font-medium text-terracota mb-2">📅 Desea cita: ${rd.toLocaleString('es-ES', { dateStyle:'long', timeStyle:'short' })}</p>`; }
-                return `<div class="bg-white p-5 rounded-xl border shadow-sm flex justify-between gap-4"><div><div class="flex items-center gap-3 mb-2"><h3 class="font-serif text-lg">${l.customer_name}</h3><span class="text-xs font-medium px-2 py-1 rounded-full ${pend ? 'bg-terracota/20 text-terracota' : 'bg-salvia/20 text-salvia'}">${l.status}</span><span class="text-xs">${date}</span></div><p class="text-sm font-light mb-1">📞 ${l.customer_phone} | ✉️ ${l.customer_email}</p><p class="text-sm mb-3">Interés: <strong>${l.property_title||'-'}</strong></p>${reqDateStr}${l.message ? `<div class="bg-fondo p-3 rounded-lg text-sm italic">"${l.message}"</div>` : ''}</div><div class="flex flex-col gap-2">${pend ? `<button onclick="updateLeadStatus('${l.id}', 'Contactado')" class="bg-zahara border border-carbon text-xs px-4 py-2 rounded">Contactado</button>` : ''}<button onclick="updateLeadStatus('${l.id}', 'Descartado')" class="text-carbon/40 hover:text-red-500 text-xs">Descartar</button></div></div>`;
+                return `<div class="bg-white p-5 rounded-xl border shadow-sm flex flex-col md:flex-row justify-between gap-4"><div><div class="flex items-center gap-3 mb-2"><h3 class="font-serif text-lg">${l.customer_name}</h3><span class="text-xs font-medium px-2 py-1 rounded-full ${pend ? 'bg-terracota/20 text-terracota' : 'bg-salvia/20 text-salvia'}">${l.status}</span><span class="text-xs">${date}</span></div><p class="text-sm font-light mb-1">📞 ${l.customer_phone} | ✉️ ${l.customer_email}</p><p class="text-sm mb-3">Interés: <strong>${l.property_title||'-'}</strong></p>${reqDateStr}${l.message ? `<div class="bg-fondo p-3 rounded-lg text-sm italic">"${l.message}"</div>` : ''}</div><div class="flex flex-row md:flex-col gap-2 shrink-0">${pend ? `<button onclick="updateLeadStatus('${l.id}', 'Contactado')" class="bg-zahara border border-carbon text-xs px-4 py-2 rounded uppercase font-medium tracking-wider">Marcar Contactado</button>` : ''}<button onclick="updateLeadStatus('${l.id}', 'Descartado')" class="text-carbon/40 hover:text-red-500 text-xs uppercase font-medium tracking-wider">Descartar</button></div></div>`;
             }).join('');
         }
         window.updateLeadStatus = async function(id, status) { await supabase.from('leads').update({ status }).eq('id', parseInt(id)); loadLeads(); };
